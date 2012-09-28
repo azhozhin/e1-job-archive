@@ -147,19 +147,29 @@ public class Config {
 					System.out.format("ELEMENT WALKER %s\n", elementWalkerClassName);
 					try {
 				        Class aClass = classLoader.loadClass(elementWalkerClassName);
+				        elementWalker = (ElementWalker) aClass.newInstance();
 				        System.out.println("aClass.getName() = " + aClass.getName());
 				    } catch (ClassNotFoundException e) {
 				        e.printStackTrace();
-				    }
+				    } catch (InstantiationException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
 				}else if (nodeName.equals("propertyTransformer")){
 					String propertyTransformerClassName=n.getTextContent();
 					System.out.format("PROPERTY TRANSFORMER %s\n", propertyTransformerClassName);
 					try {
 				        Class aClass = classLoader.loadClass(propertyTransformerClassName);
+				        propertyTransformer=(PropertyTransformer) aClass.newInstance();
 				        System.out.println("aClass.getName() = " + aClass.getName());
 				    } catch (ClassNotFoundException e) {
 				        e.printStackTrace();
-				    }
+				    } catch (InstantiationException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
 				}
 				System.out.println(n.getNodeName());
 			}
@@ -178,7 +188,6 @@ public class Config {
 		for (int i=0;i<nodes.getLength();i++){
 			Node n=nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
-				//System.out.format("~~~ arg: %s %s\n",n.getNodeName(),n.getTextContent());
 				CSSQueryArg queryArg=new CSSQueryArg(n.getTextContent());
 				result.add(queryArg);
 			}
