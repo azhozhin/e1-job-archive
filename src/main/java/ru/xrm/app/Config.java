@@ -57,7 +57,7 @@ public class Config {
 				if (n.getNodeName().equals("cssNamedQueries")){
 					loadCSSNamedQueries(n);
 				}else if (n.getNodeName().equals("vacancySectionProperties")){
-					loadSectionProperties(n);
+					loadVacancySectionProperties(n);
 				}else if (n.getNodeName().equals("vacancyListProperties")){
 					loadVacancyListProperties(n);
 				}else if (n.getNodeName().equals("vacancyListPaginatorProperties")){
@@ -77,7 +77,7 @@ public class Config {
 			if (n.getNodeType()==Node.ELEMENT_NODE){
 				NamedNodeMap attributes=n.getAttributes();
 				String queryName=attributes.getNamedItem("name").getNodeValue();
-				System.out.format("NAMEDQUERY %s \n", queryName);
+				//System.out.format("NAMEDQUERY %s \n", queryName);
 				NodeList namedQueryNodes=n.getChildNodes();
 				String cssQuery="";
 				int cssArgsCount=0;
@@ -91,14 +91,35 @@ public class Config {
 						}
 					}
 				}
-				System.out.format("NAMEDQUERY CSSQUERY %s ARGS %s\n", cssQuery, cssArgsCount);
+				//System.out.format("NAMEDQUERY CSSQUERY %s ARGS %s\n", cssQuery, cssArgsCount);
 				namedQueries.add(new NamedCSSQuery(queryName, cssQuery, cssArgsCount));
 			}
 		}
 	}
 	
-	private void loadSectionProperties(Node node) {
-		System.out.println("loadSectionProperties");
+	private void loadVacancySectionProperties(Node node) {
+		//System.out.println("loadSectionProperties");
+		NodeList nodes = node.getChildNodes();
+		for (int i=0;i<nodes.getLength();i++){
+			Node n = nodes.item(i);
+			if (n.getNodeType()==Node.ELEMENT_NODE){
+				NodeList entries=n.getChildNodes();
+				String key="";
+				String cssQuery="";
+				for (int j=0;j<entries.getLength();j++){
+					Node entry=entries.item(j);
+					if (entry.getNodeType()==node.ELEMENT_NODE){
+						if ("key".equals(entry.getNodeName())){
+							key=entry.getTextContent();
+						}else if ("cssQuery".equals(entry.getNodeName())){
+							cssQuery=entry.getTextContent();
+						}
+					}
+				}
+				//System.out.format("VACANCY SECTION %s %s\n", key, cssQuery);
+				vacancySectionProperties.add(new VacancySectionProperty(key,cssQuery));
+			}
+		}
 	}
 	
 
@@ -111,12 +132,12 @@ public class Config {
 	}
 	
 	private void loadVacancyProperties(Node node) {
-		System.out.println("loadVacancyProperties");
+		//System.out.println("loadVacancyProperties");
 		NodeList nodes = node.getChildNodes();
 		for (int i=0;i<nodes.getLength();i++){
 			Node n=nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
-				System.out.println(n.getNodeName());
+				//System.out.println(n.getNodeName());
 			    vacancyProperties.add(loadVacancyProperty(n));
 			}
 		}
@@ -140,14 +161,14 @@ public class Config {
 				String nodeName=n.getNodeName();
 				if (nodeName.equals("key")){
 					key=n.getTextContent();
-					System.out.format(">>> %s=%s\n",n.getNodeName(),key);
+					//System.out.format(">>> %s=%s\n",n.getNodeName(),key);
 				}else if (nodeName.equals("cssQuery")){
 					// if we have namedQuery attribute, then we should get it from namedQueries
 					NamedNodeMap attributes = n.getAttributes();
 					Node namedQueryAttributeNode=attributes.getNamedItem("namedQuery");
 					if (namedQueryAttributeNode!=null){
 						String namedQueryName=namedQueryAttributeNode.getNodeValue();
-						System.out.format("*** named Query %s \n",namedQueryName);
+						//System.out.format("*** named Query %s \n",namedQueryName);
 						if (namedQueries.indexOf(namedQueryName)<0){
 							System.out.format("!!! cannot find named query %s \n",namedQueryName);
 						}else{
@@ -156,16 +177,16 @@ public class Config {
 					}else{
 						cssQuery=n.getTextContent();
 					}
-					System.out.format(">>> %s=%s\n", n.getNodeName(),cssQuery);
+					//System.out.format(">>> %s=%s\n", n.getNodeName(),cssQuery);
 				}else if (nodeName.equals("cssQueryArgs")){
 					cssQueryArgs=loadCSSQueryArgs(n);
-					System.out.format("QUERY ARGS:\n");
+					//System.out.format("QUERY ARGS:\n");
 					for (CSSQueryArg arg:cssQueryArgs){
 						System.out.format("&&& %s\n",arg.getArg());
 					}
 				}else if (nodeName.equals("elementWalker")){
 					String elementWalkerClassName=n.getTextContent();
-					System.out.format("ELEMENT WALKER %s\n", elementWalkerClassName);
+					//System.out.format("ELEMENT WALKER %s\n", elementWalkerClassName);
 					try {
 				        Class aClass = classLoader.loadClass(elementWalkerClassName);
 				        elementWalker = (ElementWalker) aClass.newInstance();
@@ -179,7 +200,7 @@ public class Config {
 					}
 				}else if (nodeName.equals("propertyTransformer")){
 					String propertyTransformerClassName=n.getTextContent();
-					System.out.format("PROPERTY TRANSFORMER %s\n", propertyTransformerClassName);
+					//System.out.format("PROPERTY TRANSFORMER %s\n", propertyTransformerClassName);
 					try {
 				        Class aClass = classLoader.loadClass(propertyTransformerClassName);
 				        propertyTransformer=(PropertyTransformer) aClass.newInstance();
