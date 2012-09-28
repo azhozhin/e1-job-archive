@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import transformers.JobPropertyTransform;
+import walkers.JobPropertyElementWalker;
 
 public class JobParser {
 
@@ -36,12 +36,12 @@ public class JobParser {
 				"Дата",
 				"Контактная информация", 
 				"Вакансия предоставлена"};
-		JobPropertyTransform jobPropertyTransform=new JobPropertyTransform();
+		JobPropertyElementWalker jobPropertyTransform=new JobPropertyElementWalker();
 		for (String key: keys){
 			Elements elems= doc.select(String.format("td[width=30%%][align=right][valign=top] > strong:contains(%s)",key)); 
 		
 			for (Element e:elems){
-				Element jobPropertyValue=jobPropertyTransform.transform(e);
+				Element jobPropertyValue=jobPropertyTransform.walk(e);
 				String value=jobPropertyValue.text();
 				System.out.format("%s = %s\n",key ,value);
 			}

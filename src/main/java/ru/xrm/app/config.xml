@@ -1,29 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Structure of data on http://www.e1.ru/business/job/:
+	
+	Vacancy Section
+	    + VacancyList page0
+	        + Vacancy
+	        + Vacancy
+	        ...
+	        + Vacancy
+	    + VacancyList page1
+	    ...
+	    + VacancyList pageX
+-->
+
 <properties>
+<!-- 
+	Named CSS queries
+-->
 	<cssNamedQueries>
 		<cssNamedQuery name="vacancyProperty">
 			<cssQuery>td[width=30%%][align=right][valign=top] > strong:contains(%s)</cssQuery>
 			<cssArgsCount>1</cssArgsCount>
 		</cssNamedQuery>
 	</cssNamedQueries>
-
-	<jobSectionProperties>
+<!--
+	Vacancy Sections
+-->
+	<vacancySectionProperties>
 		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>
 			<cssQueryArgs/>
-			<transformClass/>
+			<elementWalker/>
 		</entry>
-	</jobSectionProperties>
+	</vacancySectionProperties>
 	
-	<jobListProperties>
+	<vacancyListProperties>
 		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=vacancy_item_\\d] a[href~=id=\\d]</cssQuery>
 			<cssQueryArgs/>
-			<transformClass/>
+			<elementWalker/>
 		</entry>
-	</jobListProperties>
+	</vacancyListProperties>
+	
+	<vacancyListPaginatorProperties>
+		<entry>
+		</entry>
+	</vacancyListPaginatorProperties>
 	
 	<vacancyProperties>
 		<entry>
@@ -32,7 +56,7 @@
 			<cssQueryArgs>
 				<arg>Должность</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>  
 		<entry>
 			<key>dutyType</key>
@@ -40,7 +64,7 @@
 			<cssQueryArgs>
 				<arg>Занятость</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>
 		<entry>
 			<key>education</key>
@@ -48,7 +72,7 @@
 			<cssQueryArgs>
 				<arg>Образование</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry> 
 		<entry>
 			<key>experience</key>
@@ -56,7 +80,7 @@
 			<cssQueryArgs>
 				<arg>Опыт работы</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>	
 		<entry>
 			<key>schedule</key>
@@ -64,7 +88,7 @@
 			<cssQueryArgs>
 				<arg>График работы</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry> 
 		<entry>
 			<key>kindOfBusiness</key>
@@ -72,7 +96,7 @@
 			<cssQueryArgs>
 				<arg>Отрасль</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry> 
 		<entry>
 			<key>city</key>
@@ -80,7 +104,7 @@
 			<cssQueryArgs>
 				<arg>Город</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>
 		<entry>
 			<key>employer</key>
@@ -88,7 +112,7 @@
 			<cssQueryArgs>
 				<arg>Работодатель</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>
 		<entry>
 			<key>date</key>
@@ -96,7 +120,8 @@
 			<cssQueryArgs>
 				<arg>Дата</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementTransformer>ru.xrm.app.transformers.JobDatePropertyTransformer</elementTransformer>
 		</entry>
 		<entry>
 			<key>contactInformation</key>
@@ -104,21 +129,21 @@
 			<cssQueryArgs>
 				<arg>Контактная информация</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry> 
 		<entry>
-			<key></key>
+			<key>presentedBy</key>
 			<cssQuery namedQuery="vacancyProperty"/>
 			<cssQueryArgs>
 				<arg>Вакансия предоставлена</arg>
 			</cssQueryArgs>
-			<transformClass>ru.xrm.app.transformers.JobPropertyTransform</transformClass>
+			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 		</entry>
 		<entry>
 			<key>body</key>
 			<cssQuery>td[colspan=2][valign=top]</cssQuery>
 			<cssQueryArgs/>
-			<transformClass/>
+			<elementWalker/>
 		</entry>
 	</vacancyProperties>
 </properties>
