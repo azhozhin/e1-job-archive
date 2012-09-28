@@ -1,20 +1,17 @@
 package ru.xrm.app;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.sun.org.apache.bcel.internal.classfile.Attribute;
 
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
@@ -72,20 +69,44 @@ public class Config {
 		}
 	}
 
-	private void loadCSSNamedQueries(Node n) {
+	private void loadCSSNamedQueries(Node node) {
 		System.out.println("loadCSSNamedQueries");
+		NodeList nodes = node.getChildNodes();
+		for (int i=0;i<nodes.getLength();i++){
+			Node n = nodes.item(i);
+			if (n.getNodeType()==Node.ELEMENT_NODE){
+				NamedNodeMap attributes=n.getAttributes();
+				String queryName=attributes.getNamedItem("name").getNodeValue();
+				System.out.format("NAMEDQUERY %s \n", queryName);
+				NodeList namedQueryNodes=n.getChildNodes();
+				String cssQuery="";
+				int cssArgsCount=0;
+				for (int j=0;j<namedQueryNodes.getLength();j++){
+					Node nq=namedQueryNodes.item(j);
+					if (nq.getNodeType()==Node.ELEMENT_NODE){
+						if ("cssQuery".equals(nq.getNodeName())){
+							cssQuery = nq.getTextContent();
+						}else if ("cssArgsCount".equals(nq.getNodeName())){
+							cssArgsCount = Integer.valueOf(nq.getTextContent());
+						}
+					}
+				}
+				System.out.format("NAMEDQUERY CSSQUERY %s ARGS %s\n", cssQuery, cssArgsCount);
+				namedQueries.add(new NamedCSSQuery(queryName, cssQuery, cssArgsCount));
+			}
+		}
 	}
 	
-	private void loadSectionProperties(Node n) {
+	private void loadSectionProperties(Node node) {
 		System.out.println("loadSectionProperties");
 	}
 	
 
-	private void loadVacancyListProperties(Node n) {
+	private void loadVacancyListProperties(Node node) {
 		System.out.println("loadVacancyListProperties");
 	}
 	
-	private void loadVacancyPaginatorProperties(Node n) {
+	private void loadVacancyPaginatorProperties(Node node) {
 		System.out.println("loadVacancyPaginatorProperties");
 	}
 	
@@ -107,9 +128,9 @@ public class Config {
 		VacancyProperty result=null;
 		String key="";
 		String cssQuery="";
-		List<CSSQueryArg> cssQueryArgs;
-		ElementWalker elementWalker;
-		PropertyTransformer propertyTransformer;
+		List<CSSQueryArg> cssQueryArgs=null;
+		ElementWalker elementWalker=null;
+		PropertyTransformer propertyTransformer=null;
 
 		NodeList nodes=node.getChildNodes();
 		
@@ -130,7 +151,7 @@ public class Config {
 						if (namedQueries.indexOf(namedQueryName)<0){
 							System.out.format("!!! cannot find named query %s \n",namedQueryName);
 						}else{
-							cssQuery=namedQueries.get(namedQueries.indexOf(namedQueryName)).getQuery();
+							cssQuery=namedQueries.get(namedQueries.indexOf(namedQueryName)).getCssQuery();
 						}
 					}else{
 						cssQuery=n.getTextContent();
@@ -175,7 +196,7 @@ public class Config {
 			}
 		}
 		
-		//result=new VacancyProperty(key, cssQuery, cssQueryArgs, elementWalker, propertyTransformer);
+		result=new VacancyProperty(key, cssQuery, cssQueryArgs, elementWalker, propertyTransformer);
 		
 		return result;
 	}
