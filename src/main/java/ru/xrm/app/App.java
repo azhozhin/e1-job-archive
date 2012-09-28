@@ -9,7 +9,11 @@ public class App
 	
     public static void main( String[] args )
     {
-    	JobParser j=new JobParser();
-    	j.parse();
+    	Config c=new Config();
+    	try{
+    		c.load("config.xml");
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
     }
 }

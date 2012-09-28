@@ -8,7 +8,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import walkers.JobPropertyElementWalker;
+import ru.xrm.app.walkers.JobPropertyElementWalker;
+
 
 public class JobParser {
 
