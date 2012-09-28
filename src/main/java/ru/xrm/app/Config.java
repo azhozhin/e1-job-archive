@@ -27,7 +27,7 @@ public class Config {
 	List<VacancyListProperty> vacancyListProperties;
 	List<VacancyProperty> vacancyProperties;
 	
-	public Config(){
+	private void init(){
 		namedQueries=new HashMap<String,NamedCSSQuery>();
 		vacancySectionProperties=new ArrayList<VacancySectionProperty>();
 		vacancyListProperties=new ArrayList<VacancyListProperty>();
@@ -35,6 +35,7 @@ public class Config {
 	}
 	
 	public void load(String filename) throws Exception{
+		init();
 		DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		Document document;
@@ -73,7 +74,7 @@ public class Config {
 	}
 
 	private void loadCSSNamedQueries(Node node) {
-		System.out.println("loadCSSNamedQueries");
+		//System.out.println("loadCSSNamedQueries");
 		NodeList nodes = node.getChildNodes();
 		for (int i=0;i<nodes.getLength();i++){
 			Node n = nodes.item(i);
@@ -152,7 +153,7 @@ public class Config {
 	}
 	
 	private void loadVacancyPaginatorProperties(Node node) {
-		System.out.println("loadVacancyPaginatorProperties");
+		//System.out.println("loadVacancyPaginatorProperties");
 	}
 	
 	private void loadVacancyProperties(Node node) {
@@ -259,4 +260,42 @@ public class Config {
 		
 		return result;
 	}
+
+	//------------
+	public Map<String, NamedCSSQuery> getNamedQueries() {
+		return namedQueries;
+	}
+
+	public void setNamedQueries(Map<String, NamedCSSQuery> namedQueries) {
+		this.namedQueries = namedQueries;
+	}
+
+	public List<VacancySectionProperty> getVacancySectionProperties() {
+		return vacancySectionProperties;
+	}
+
+	public void setVacancySectionProperties(
+			List<VacancySectionProperty> vacancySectionProperties) {
+		this.vacancySectionProperties = vacancySectionProperties;
+	}
+
+	public List<VacancyListProperty> getVacancyListProperties() {
+		return vacancyListProperties;
+	}
+
+	public void setVacancyListProperties(
+			List<VacancyListProperty> vacancyListProperties) {
+		this.vacancyListProperties = vacancyListProperties;
+	}
+
+	public List<VacancyProperty> getVacancyProperties() {
+		return vacancyProperties;
+	}
+
+	public void setVacancyProperties(List<VacancyProperty> vacancyProperties) {
+		this.vacancyProperties = vacancyProperties;
+	}
+	
+	//---------
+	
 }

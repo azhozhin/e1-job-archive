@@ -7,6 +7,7 @@ public class VacancySectionProperty {
 	
 	public VacancySectionProperty(String key, String cssQuString) {
 		this.key = key;
+		this.cssQuery = cssQuString;
 	}
 
 	public String getKey() {
@@ -15,6 +16,14 @@ public class VacancySectionProperty {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+
+	public String getCssQuery() {
+		return cssQuery;
+	}
+
+	public void setCssQuery(String cssQuery) {
+		this.cssQuery = cssQuery;
 	}
 	
 	
