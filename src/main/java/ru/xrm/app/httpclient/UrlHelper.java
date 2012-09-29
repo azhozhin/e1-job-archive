@@ -1,14 +1,16 @@
 package ru.xrm.app.httpclient;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public class UrlEncoder {
+public class UrlHelper {
 
 	MessageDigest md;
 	
-	public UrlEncoder(){
+	public UrlHelper(){
 		try {
 			md=MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
@@ -29,5 +31,18 @@ public class UrlEncoder {
 			sb.append(hex);
 		}
 		return sb.toString();
+	}
+	
+	public String getBasename(String address){
+		// http://google.com/a/yandex.ru
+		// return http://google.com
+		String result="";
+		try {
+			URL url=new URL(address);
+			result=url.getProtocol()+"://"+url.getHost();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

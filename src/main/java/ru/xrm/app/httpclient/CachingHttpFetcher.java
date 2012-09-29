@@ -14,11 +14,11 @@ import java.net.URL;
 public class CachingHttpFetcher {
 
 	String cacheLocation;
-	UrlEncoder urlEncoder;
+	UrlHelper urlEncoder;
 
 	public CachingHttpFetcher(String cacheLocation){
 		this.cacheLocation = cacheLocation+"/";
-		urlEncoder = new UrlEncoder();
+		urlEncoder = new UrlHelper();
 	}
 
 	public String fetch(String address, String encoding){
