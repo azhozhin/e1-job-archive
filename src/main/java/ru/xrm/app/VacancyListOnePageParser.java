@@ -11,6 +11,7 @@ import org.jsoup.select.Elements;
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
 import ru.xrm.app.domain.VacancyLink;
+import ru.xrm.app.domain.VacancyPage;
 
 public class VacancyListOnePageParser {
 
@@ -73,5 +74,17 @@ public class VacancyListOnePageParser {
 			}
 		}
 		return links;
+	}
+	
+	public List<VacancyPage> getPages(){
+		List<VacancyPage> pages=new ArrayList<VacancyPage>();
+		List<Entry> paginatorProperties=config.getVacancyListPaginatorProperties();
+		Document doc=Jsoup.parse(html);
+		
+		for (Entry prop:paginatorProperties){
+			Elements elem=doc.select(prop.getCssQuery());
+			
+		}
+		return pages;
 	}
 }

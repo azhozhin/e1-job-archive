@@ -19,12 +19,14 @@ public class Config {
 	List<Entry> vacancySectionProperties;
 	List<Entry> vacancyListProperties;
 	List<Entry> vacancyProperties;
+	List<Entry> vacancyListPaginatorProperties;
 	
 	private void init(){
 		namedQueries=new HashMap<String,NamedCSSQuery>();
 		vacancySectionProperties=new ArrayList<Entry>();
 		vacancyListProperties=new ArrayList<Entry>();
 		vacancyProperties=new ArrayList<Entry>();
+		vacancyListPaginatorProperties=new ArrayList<Entry>();
 	}
 	
 	public void load(String filename) throws Exception{
@@ -65,8 +67,6 @@ public class Config {
 		}
 	}
 
-	
-	
 	private void loadVacancySectionProperties(Node node) throws Exception {
 		NodeList nodes = node.getChildNodes();
 		for (int i=0;i<nodes.getLength();i++){
@@ -87,8 +87,14 @@ public class Config {
 		}
 	}
 	
-	private void loadVacancyPaginatorProperties(Node node) {
-		//System.out.println("loadVacancyPaginatorProperties");
+	private void loadVacancyPaginatorProperties(Node node) throws Exception {
+		NodeList nodes = node.getChildNodes();
+		for (int i=0;i<nodes.getLength();i++){
+			Node n = nodes.item(i);
+			if (n.getNodeType()==Node.ELEMENT_NODE){
+				vacancyListPaginatorProperties.add(ConfigHelper.loadEntry(n,namedQueries));
+			}
+		}
 	}
 	
 	private void loadVacancyProperties(Node node) throws Exception {
@@ -135,6 +141,15 @@ public class Config {
 
 	public void setVacancyProperties(List<Entry> vacancyProperties) {
 		this.vacancyProperties = vacancyProperties;
+	}
+
+	public List<Entry> getVacancyListPaginatorProperties() {
+		return vacancyListPaginatorProperties;
+	}
+
+	public void setVacancyListPaginatorProperties(
+			List<Entry> vacancyListPaginatorProperties) {
+		this.vacancyListPaginatorProperties = vacancyListPaginatorProperties;
 	}
 	
 	//---------
