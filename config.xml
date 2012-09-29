@@ -5,10 +5,13 @@
 	
 	Vacancy Section
 	    + VacancyList page0
-	        + Vacancy
-	        + Vacancy
+	        + VacancyLink
+	           - Vacancy
+	        + VacancyLink
+	           - Vacancy
 	        ...
-	        + Vacancy
+	        + VacancyLink
+	           - Vacancy
 	    + VacancyList page1
 	    ...
 	    + VacancyList pageX
