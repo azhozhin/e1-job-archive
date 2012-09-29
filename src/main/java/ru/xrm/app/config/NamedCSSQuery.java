@@ -8,7 +8,7 @@ public class NamedCSSQuery {
 	public NamedCSSQuery(String queryName, String cssQuery, int cssArgsCount) {
 		this.name = queryName;
 		this.cssQuery = cssQuery;
-		this.cssArgsCount = cssArgsCount;
+		this.setCssArgsCount(cssArgsCount);
 	}
 
 	public String getName() {
@@ -31,11 +31,11 @@ public class NamedCSSQuery {
 		return cssArgsCount;
 	}
 
-	public void setCssArgsCount(int cssArgsCount) throws Exception {
-		if (cssArgsCount>0){
+	public void setCssArgsCount(int cssArgsCount) {
+		if (cssArgsCount>=0){
 			this.cssArgsCount = cssArgsCount;
 		}else{
-			throw new Exception("Count of arguments cannot be less than zero");
+			this.cssArgsCount=0;
 		}
 	}
 	
