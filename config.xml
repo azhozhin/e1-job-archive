@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8' ?>
 <properties>
 <!--
 	Structure of data on http://www.e1.ru/business/job/:
@@ -20,7 +20,7 @@
 	Named CSS queries
 -->
 	<cssNamedQueries>
-		<cssNamedQuery name="vacancyProperty">
+		<cssNamedQuery name='vacancyProperty'>
 			<cssQuery>td[width=30%%][align=right][valign=top] > strong:contains(%s)</cssQuery>
 			<cssArgsCount>1</cssArgsCount>
 		</cssNamedQuery>
@@ -57,7 +57,7 @@
 	<vacancyProperties>
 		<entry>
 			<key>jobTitle</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Должность</arg>
 			</cssQueryArgs>
@@ -66,7 +66,7 @@
 		</entry>  
 		<entry>
 			<key>dutyType</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Занятость</arg>
 			</cssQueryArgs>
@@ -75,7 +75,7 @@
 		</entry>
 		<entry>
 			<key>education</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Образование</arg>
 			</cssQueryArgs>
@@ -84,7 +84,7 @@
 		</entry> 
 		<entry>
 			<key>experience</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Опыт работы</arg>
 			</cssQueryArgs>
@@ -93,7 +93,7 @@
 		</entry>	
 		<entry>
 			<key>schedule</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>График работы</arg>
 			</cssQueryArgs>
@@ -102,7 +102,7 @@
 		</entry> 
 		<entry>
 			<key>kindOfBusiness</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Отрасль</arg>
 			</cssQueryArgs>
@@ -111,7 +111,7 @@
 		</entry> 
 		<entry>
 			<key>city</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Город</arg>
 			</cssQueryArgs>
@@ -120,7 +120,7 @@
 		</entry>
 		<entry>
 			<key>employer</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Работодатель</arg>
 			</cssQueryArgs>
@@ -129,7 +129,7 @@
 		</entry>
 		<entry>
 			<key>date</key>
-			<cssQuery namedQuery="vacancyProperty"/>
+			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Дата</arg>
 			</cssQueryArgs>
