@@ -34,7 +34,7 @@ public class Entry {
 
 	public String getCssQuery() {
 		String result;
-		if (cssQueryArgs.size()>0){
+		if (cssQueryArgs!=null && cssQueryArgs.size()>0){
 			result=String.format(cssQuery, cssQueryArgs.toArray());
 		}else{
 			result=cssQuery;

@@ -3,6 +3,7 @@ package ru.xrm.app.transformers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class JobDatePropertyTransformer implements PropertyTransformer {
@@ -29,7 +30,7 @@ public class JobDatePropertyTransformer implements PropertyTransformer {
 		int day=Integer.valueOf(parts[0]).intValue();
 		int month=months.indexOf(parts[1]);
 		int year=Integer.valueOf(parts[2]).intValue();
-		result=Calendar.getInstance();
+		result=GregorianCalendar.getInstance();
 		result.set(year, month, day, 0, 0, 0);
 		return result.getTime();
 	}
