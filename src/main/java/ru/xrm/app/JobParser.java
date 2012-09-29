@@ -7,11 +7,13 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
 import ru.xrm.app.config.VacancySectionProperty;
+import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.walkers.JobPropertyElementWalker;
 
 
@@ -39,10 +41,10 @@ public class JobParser {
 			return;
 		}
 
-		
+		Vacancy vacancy=new Vacancy();
 		for (Entry prop:listVacancyProperties){
 			Elements elems=doc.select(prop.getCssQuery());
-			String value="";
+			Object value="";
 			for (Element e:elems){
 			
 				if (prop.getElementWalker() != null){
@@ -52,21 +54,25 @@ public class JobParser {
 					value=prop.getElementEvaluator().evaluate(e);
 				}
 				if (prop.getPropertyTransformer() !=null){
-					value = prop.getPropertyTransformer().transform(value).toString();
+					value = prop.getPropertyTransformer().transform(value.toString());
 				}
 				System.out.format("%s = %s\n",prop.getKey() ,value);
+				try{
+				vacancy.setProperty(prop.getKey(), value);
+				}catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 		}
+		System.out.println(vacancy);
 		
 		/*
-		Elements elems=doc.select("strong.big > b.big:contains(Вакансия)");
+		Elements elems=doc.select("td[valign=top] > strong:contains(Контактная информация) ");
 		for (Element e:elems){
-			Element tr=e.parent().parent().parent();
-			Element salary = tr.child(1);
-			System.out.format("%s\n\n", tr.outerHtml());
-			System.out.format("%s\n\n", salary.html());
-
-		}
-		*/
+			//e=e.parent().parent().child(1);
+			e=e.parent();
+			System.out.format("%s\n\n", e.text());
+		}*/
+		
 	}
 }

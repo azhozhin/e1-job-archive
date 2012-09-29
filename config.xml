@@ -12,6 +12,9 @@
 	    + VacancyList page1
 	    ...
 	    + VacancyList pageX
+	Vacancy Section
+	...
+	Vacancy Section
 -->
 <!-- 
 	Named CSS queries
@@ -136,19 +139,13 @@
 		</entry>
 		<entry>
 			<key>contactInformation</key>
-			<cssQuery namedQuery="vacancyProperty"/>
-			<cssQueryArgs>
-				<arg>Контактная информация</arg>
-			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
-			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
+			<cssQuery>td[valign=top] > strong:contains(Контактная информация)</cssQuery>
+			<elementWalker>ru.xrm.app.walkers.VacancyContactInformationPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancyContactInformationPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
 			<key>presentedBy</key>
-			<cssQuery namedQuery="vacancyProperty"/>
-			<cssQueryArgs>
-				<arg>Вакансия предоставлена</arg>
-			</cssQueryArgs>
+			<cssQuery>td[align=right] > strong:contains(Вакансия предоставлена)</cssQuery>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>
