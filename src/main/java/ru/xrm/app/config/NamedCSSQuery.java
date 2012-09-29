@@ -31,8 +31,12 @@ public class NamedCSSQuery {
 		return cssArgsCount;
 	}
 
-	public void setCssArgsCount(int cssArgsCount) {
-		this.cssArgsCount = cssArgsCount;
+	public void setCssArgsCount(int cssArgsCount) throws Exception {
+		if (cssArgsCount>0){
+			this.cssArgsCount = cssArgsCount;
+		}else{
+			throw new Exception("Count of arguments cannot be less than zero");
+		}
 	}
 	
 	
