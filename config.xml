@@ -31,12 +31,12 @@
 	<vacancySectionProperties>
 		<entry>
 			<key>name</key>
-			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>
+			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionNameElementEvaluator</elementEvaluator>
 		</entry>
 		<entry>
 			<key>href</key>
-			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>
+			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionHrefElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancySectionProperties>
@@ -44,7 +44,7 @@
 	<vacancyListProperties>
 		<entry>
 			<key>href</key>
-			<cssQuery>div[id~=vacancy_item_\\d] a[href~=id=\\d]</cssQuery>
+			<cssQuery>div[id~=vacancy_item_\d] a[href~=id=\d]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.VacancyListHrefElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancyListProperties>
