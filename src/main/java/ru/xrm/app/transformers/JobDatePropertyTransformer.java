@@ -21,7 +21,7 @@ public class JobDatePropertyTransformer implements PropertyTransformer {
 					"ноября",
 					"декабря"));
 
-	public Object transfer(Object from) {
+	public Object transform(String from) {
 		// 28 сентября 2012
 		String fromstr=(String)from;
 		String []parts=fromstr.split(" ");

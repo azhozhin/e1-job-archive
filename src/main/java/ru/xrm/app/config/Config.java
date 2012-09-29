@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 
 import ru.xrm.app.App;
+import ru.xrm.app.evaluators.ElementEvaluator;
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
 
@@ -24,15 +25,15 @@ import ru.xrm.app.walkers.ElementWalker;
 public class Config {
 
 	Map<String,NamedCSSQuery> namedQueries;
-	List<VacancySectionProperty> vacancySectionProperties;
-	List<VacancyListProperty> vacancyListProperties;
-	List<VacancyProperty> vacancyProperties;
+	List<Entry> vacancySectionProperties;
+	List<Entry> vacancyListProperties;
+	List<Entry> vacancyProperties;
 	
 	private void init(){
 		namedQueries=new HashMap<String,NamedCSSQuery>();
-		vacancySectionProperties=new ArrayList<VacancySectionProperty>();
-		vacancyListProperties=new ArrayList<VacancyListProperty>();
-		vacancyProperties=new ArrayList<VacancyProperty>();
+		vacancySectionProperties=new ArrayList<Entry>();
+		vacancyListProperties=new ArrayList<Entry>();
+		vacancyProperties=new ArrayList<Entry>();
 	}
 	
 	public void load(String filename) throws Exception{
@@ -58,7 +59,7 @@ public class Config {
 		for (int i=0;i<nodes.getLength();i++){
 			Node n=nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
-				System.out.format("\t %s\n", n.getNodeName());
+				//System.out.format("\t %s\n", n.getNodeName());
 				if (n.getNodeName().equals("cssNamedQueries")){
 					loadCSSNamedQueries(n);
 				}else if (n.getNodeName().equals("vacancySectionProperties")){
@@ -107,48 +108,21 @@ public class Config {
 		NodeList nodes = node.getChildNodes();
 		for (int i=0;i<nodes.getLength();i++){
 			Node n = nodes.item(i);
-			if (n.getNodeType()==Node.ELEMENT_NODE){
-				NodeList entries=n.getChildNodes();
-				String key="";
-				String cssQuery="";
-				for (int j=0;j<entries.getLength();j++){
-					Node entry=entries.item(j);
-					if (entry.getNodeType()==node.ELEMENT_NODE){
-						if ("key".equals(entry.getNodeName())){
-							key=entry.getTextContent();
-						}else if ("cssQuery".equals(entry.getNodeName())){
-							cssQuery=entry.getTextContent();
-						}
-					}
-				}
+			if (n.getNodeType()==Node.ELEMENT_NODE){				
 				//System.out.format("VACANCY SECTION %s %s\n", key, cssQuery);
-				vacancySectionProperties.add(new VacancySectionProperty(key,cssQuery));
+				vacancySectionProperties.add(loadEntry(n));
 			}
 		}
 	}
 	
-
 	private void loadVacancyListProperties(Node node) {
 		//System.out.println("loadVacancyListProperties");
 		NodeList nodes = node.getChildNodes();
 		for (int i=0;i<nodes.getLength();i++){
 			Node n = nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
-				NodeList entries=n.getChildNodes();
-				String key="";
-				String cssQuery="";
-				for (int j=0;j<entries.getLength();j++){
-					Node entry=entries.item(j);
-					if (entry.getNodeType()==node.ELEMENT_NODE){
-						if ("key".equals(entry.getNodeName())){
-							key=entry.getTextContent();
-						}else if ("cssQuery".equals(entry.getNodeName())){
-							cssQuery=entry.getTextContent();
-						}
-					}
-				}
 				//System.out.format("VACANCY SECTION %s %s\n", key, cssQuery);
-				vacancyListProperties.add(new VacancyListProperty(key,cssQuery));
+				vacancyListProperties.add(loadEntry(n));
 			}
 		}
 	}
@@ -164,35 +138,34 @@ public class Config {
 			Node n=nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
 				//System.out.println(n.getNodeName());
-			    vacancyProperties.add(loadVacancyProperty(n));
+			    vacancyProperties.add(loadEntry(n));
 			}
 		}
 	}
-
-	private VacancyProperty loadVacancyProperty(Node node) {
+	
+	private Entry loadEntry(Node node){
 	    ClassLoader classLoader = App.class.getClassLoader();
-
-		VacancyProperty result=null;
+		Entry result;
 		String key="";
 		String cssQuery="";
-		List<CSSQueryArg> cssQueryArgs=null;
+		List<CSSQueryArg> cssQueryArgs=new ArrayList<CSSQueryArg>();
 		ElementWalker elementWalker=null;
+		ElementEvaluator elementEvaluator=null;
 		PropertyTransformer propertyTransformer=null;
-
 		NodeList nodes=node.getChildNodes();
 		
 		for (int i=0;i<nodes.getLength();i++){
 			Node n=nodes.item(i);
 			if (n.getNodeType()==Node.ELEMENT_NODE){
 				String nodeName=n.getNodeName();
-				if (nodeName.equals("key")){
+				if ("key".equals(nodeName)){
 					key=n.getTextContent();
 					//System.out.format(">>> %s=%s\n",n.getNodeName(),key);
-				}else if (nodeName.equals("cssQuery")){
+				}else if ("cssQuery".equals(nodeName)){
 					// if we have namedQuery attribute, then we should get it from namedQueries
 					NamedNodeMap attributes = n.getAttributes();
 					Node namedQueryAttributeNode=attributes.getNamedItem("namedQuery");
-					Set namedQueriesNamesSet=namedQueries.keySet();
+					Set<String> namedQueriesNamesSet=namedQueries.keySet();
 					if (namedQueryAttributeNode!=null){
 						String namedQueryName=namedQueryAttributeNode.getNodeValue();
 						//System.out.format("*** named Query %s \n",namedQueryName);
@@ -205,10 +178,10 @@ public class Config {
 						cssQuery=n.getTextContent();
 					}
 					//System.out.format(">>> %s=%s\n", n.getNodeName(),cssQuery);
-				}else if (nodeName.equals("cssQueryArgs")){
+				}else if ("cssQueryArgs".equals(nodeName)){
 					cssQueryArgs=loadCSSQueryArgs(n);
 					//System.out.format("QUERY ARGS:\n");
-				}else if (nodeName.equals("elementWalker")){
+				}else if ("elementWalker".equals(nodeName)){
 					String elementWalkerClassName=n.getTextContent();
 					//System.out.format("ELEMENT WALKER %s\n", elementWalkerClassName);
 					try {
@@ -222,7 +195,19 @@ public class Config {
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					}
-				}else if (nodeName.equals("propertyTransformer")){
+				}else if ("elementEvaluator".equals(nodeName)){
+					String elementEvaluatorClassName = n.getTextContent();
+					try{
+						Class aClass = classLoader.loadClass(elementEvaluatorClassName);
+						elementEvaluator = (ElementEvaluator) aClass.newInstance();
+					}catch (ClassNotFoundException e) {
+				        e.printStackTrace();
+				    } catch (InstantiationException e) {
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}else if ("propertyTransformer".equals(nodeName)){
 					String propertyTransformerClassName=n.getTextContent();
 					//System.out.format("PROPERTY TRANSFORMER %s\n", propertyTransformerClassName);
 					try {
@@ -241,8 +226,7 @@ public class Config {
 			}
 		}
 		
-		result=new VacancyProperty(key, cssQuery, cssQueryArgs, elementWalker, propertyTransformer);
-		
+		result=new Entry(key, cssQuery, cssQueryArgs, elementWalker, elementEvaluator, propertyTransformer);
 		return result;
 	}
 	
@@ -271,29 +255,29 @@ public class Config {
 		this.namedQueries = namedQueries;
 	}
 
-	public List<VacancySectionProperty> getVacancySectionProperties() {
+	public List<Entry> getVacancySectionProperties() {
 		return vacancySectionProperties;
 	}
 
 	public void setVacancySectionProperties(
-			List<VacancySectionProperty> vacancySectionProperties) {
+			List<Entry> vacancySectionProperties) {
 		this.vacancySectionProperties = vacancySectionProperties;
 	}
 
-	public List<VacancyListProperty> getVacancyListProperties() {
+	public List<Entry> getVacancyListProperties() {
 		return vacancyListProperties;
 	}
 
 	public void setVacancyListProperties(
-			List<VacancyListProperty> vacancyListProperties) {
+			List<Entry> vacancyListProperties) {
 		this.vacancyListProperties = vacancyListProperties;
 	}
 
-	public List<VacancyProperty> getVacancyProperties() {
+	public List<Entry> getVacancyProperties() {
 		return vacancyProperties;
 	}
 
-	public void setVacancyProperties(List<VacancyProperty> vacancyProperties) {
+	public void setVacancyProperties(List<Entry> vacancyProperties) {
 		this.vacancyProperties = vacancyProperties;
 	}
 	

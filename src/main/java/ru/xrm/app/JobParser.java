@@ -2,18 +2,31 @@ package ru.xrm.app;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import ru.xrm.app.config.Config;
+import ru.xrm.app.config.Entry;
+import ru.xrm.app.config.VacancySectionProperty;
 import ru.xrm.app.walkers.JobPropertyElementWalker;
 
 
 public class JobParser {
 
 	public void parse(){
+		
+		Config config=new Config();
+    	try{
+    		config.load("config.xml");
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	List<Entry> listVacancyProperties=config.getVacancyProperties();
 		
 		File input = new File("input/job-859573.html");
 		Document doc;
@@ -25,32 +38,22 @@ public class JobParser {
 			return;
 		}
 
-		String[] keys=new String[]{ 
-				"Должность", 
-				"Занятость", 
-				"Образование", 
-				"Опыт работы", 
-				"График работы", 
-				"Отрасль", 
-				"Город", 
-				"Работодатель",
-				"Дата",
-				"Контактная информация", 
-				"Вакансия предоставлена"};
-		JobPropertyElementWalker jobPropertyTransform=new JobPropertyElementWalker();
-		for (String key: keys){
-			Elements elems= doc.select(String.format("td[width=30%%][align=right][valign=top] > strong:contains(%s)",key)); 
-		
+		for (Entry prop:listVacancyProperties){
+			Elements elems=doc.select(prop.getCssQuery());
+			String value="";
 			for (Element e:elems){
-				Element jobPropertyValue=jobPropertyTransform.walk(e);
-				String value=jobPropertyValue.text();
-				System.out.format("%s = %s\n",key ,value);
+			
+				if (prop.getElementWalker() != null){
+					e=prop.getElementWalker().walk(e);
+				}
+				if (prop.getElementEvaluator() !=null){
+					value=prop.getElementEvaluator().evaluate(e);
+				}
+				if (prop.getPropertyTransformer() !=null){
+					value = prop.getPropertyTransformer().transform(value).toString();
+				}
+				System.out.format("%s = %s\n",prop.getKey() ,value);
 			}
-		}
-		
-		Elements elems= doc.select("td[colspan=2][valign=top]");
-		for (Element e:elems){
-			System.out.format("%s\n", e.html());
 		}
 	}
 }

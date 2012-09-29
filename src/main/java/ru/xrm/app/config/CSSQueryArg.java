@@ -15,4 +15,7 @@ public class CSSQueryArg {
 		this.arg = arg;
 	}
 	
+	public String toString(){
+		return arg;
+	}
 }

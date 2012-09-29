@@ -27,8 +27,14 @@
 -->
 	<vacancySectionProperties>
 		<entry>
+			<key>name</key>
+			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionNameElementEvaluator</elementEvaluator>
+		</entry>
+		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionHrefElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancySectionProperties>
 	
@@ -36,6 +42,7 @@
 		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=vacancy_item_\\d] a[href~=id=\\d]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancyListHrefElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancyListProperties>
 	
@@ -52,6 +59,7 @@
 				<arg>Должность</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>  
 		<entry>
 			<key>dutyType</key>
@@ -60,6 +68,7 @@
 				<arg>Занятость</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>
 		<entry>
 			<key>education</key>
@@ -68,6 +77,7 @@
 				<arg>Образование</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
 			<key>experience</key>
@@ -76,6 +86,7 @@
 				<arg>Опыт работы</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>	
 		<entry>
 			<key>schedule</key>
@@ -84,6 +95,7 @@
 				<arg>График работы</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
 			<key>kindOfBusiness</key>
@@ -92,6 +104,7 @@
 				<arg>Отрасль</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
 			<key>city</key>
@@ -100,6 +113,7 @@
 				<arg>Город</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>
 		<entry>
 			<key>employer</key>
@@ -108,6 +122,7 @@
 				<arg>Работодатель</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>
 		<entry>
 			<key>date</key>
@@ -116,6 +131,7 @@
 				<arg>Дата</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 			<propertyTransformer>ru.xrm.app.transformers.JobDatePropertyTransformer</propertyTransformer>
 		</entry>
 		<entry>
@@ -125,6 +141,7 @@
 				<arg>Контактная информация</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
 			<key>presentedBy</key>
@@ -133,11 +150,12 @@
 				<arg>Вакансия предоставлена</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry>
 		<entry>
 			<key>body</key>
 			<cssQuery>td[colspan=2][valign=top]</cssQuery>
-			<cssQueryArgs/>
+			<elementEvaluator>ru.xrm.app.evaluators.JobBodyPropertyElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancyProperties>
 </properties>
