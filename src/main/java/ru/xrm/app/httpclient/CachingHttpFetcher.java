@@ -22,6 +22,8 @@ public class CachingHttpFetcher {
 	}
 
 	public String fetch(String address, String encoding){
+		// TODO: caching time should be placed
+		// TODO: caching folder should be cleaned over time
 		StringBuilder result=new StringBuilder();
 		try {
 			String encodedUrl=urlEncoder.encode(address);

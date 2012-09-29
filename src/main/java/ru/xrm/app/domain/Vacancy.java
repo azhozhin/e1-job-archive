@@ -3,7 +3,7 @@ package ru.xrm.app.domain;
 import java.lang.reflect.Field;
 import java.util.Date;
 
-public class Vacancy {
+public class Vacancy extends DomainObject{
 
 	private Integer id;
 
@@ -134,37 +134,5 @@ public class Vacancy {
 		this.body = body;
 	}
 
-	public void setProperty(String property, Object value)
-			throws SecurityException, NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
-		@SuppressWarnings("rawtypes")
-		Class aClass = Vacancy.class;
-		Field field = aClass.getDeclaredField(property);
-		field.set(this, value);
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().getName());
-		sb.append("{\n");
-		try {
-			for (Field f : getClass().getDeclaredFields()) {
-				sb.append("\t");
-				sb.append(f.getName());
-				sb.append(" : ");
-
-				sb.append(f.get(this));
-
-				sb.append(", \n");
-			}
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sb.append("}\n");
-		return sb.toString();
-	}
+	
 }

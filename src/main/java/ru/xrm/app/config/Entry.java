@@ -2,11 +2,12 @@ package ru.xrm.app.config;
 
 import java.util.List;
 
+import ru.xrm.app.domain.DomainObject;
 import ru.xrm.app.evaluators.ElementEvaluator;
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
 
-public class Entry {
+public class Entry extends DomainObject{
 	String key;
 	String cssQuery;
 	List<CSSQueryArg> cssQueryArgs;
