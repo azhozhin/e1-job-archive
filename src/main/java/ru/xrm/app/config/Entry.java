@@ -2,21 +2,22 @@ package ru.xrm.app.config;
 
 import java.util.List;
 
-import ru.xrm.app.domain.DomainObject;
 import ru.xrm.app.evaluators.ElementEvaluator;
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
 
-public class Entry extends DomainObject{
+public class Entry{
 	String key;
 	String cssQuery;
 	List<CSSQueryArg> cssQueryArgs;
 	ElementWalker elementWalker;
 	ElementEvaluator elementEvaluator;
 	PropertyTransformer propertyTransformer;
-	
+
 	public Entry(String key, String cssQuery, List<CSSQueryArg> cssQueryArgs, 
-			ElementWalker elementWalker, ElementEvaluator elementEvaluator,PropertyTransformer propertyTransformer){
+			ElementWalker elementWalker, 
+			ElementEvaluator elementEvaluator,
+			PropertyTransformer propertyTransformer){
 		this.key = key;
 		this.cssQuery = cssQuery;
 		this.cssQueryArgs = cssQueryArgs;
@@ -78,5 +79,5 @@ public class Entry extends DomainObject{
 	public void setPropertyTransformer(PropertyTransformer propertyTransformer) {
 		this.propertyTransformer = propertyTransformer;
 	}
-	
+
 }

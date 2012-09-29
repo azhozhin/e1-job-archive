@@ -1,26 +1,26 @@
 package ru.xrm.app.domain;
 
-import java.lang.reflect.Field;
 import java.util.Date;
 
 public class Vacancy extends DomainObject{
 
-	private Integer id;
+	// All fields should be protected for DomainObject methods
+	protected Integer id;
 
-	private Integer salary;
+	protected Integer salary;
 
-	private String jobTitle;
-	private String dutyType;
-	private String education;
-	private String experience;
-	private String schedule;
-	private String kindOfBusiness;
-	private String city;
-	private String employer;
-	private Date date;
-	private String contactInformation;
-	private String presentedBy;
-	private String body;
+	protected String jobTitle;
+	protected String dutyType;
+	protected String education;
+	protected String experience;
+	protected String schedule;
+	protected String kindOfBusiness;
+	protected String city;
+	protected String employer;
+	protected Date date;
+	protected String contactInformation;
+	protected String presentedBy;
+	protected String body;
 
 	public Integer getId() {
 		return id;

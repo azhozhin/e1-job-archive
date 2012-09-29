@@ -36,8 +36,8 @@ public class App
     	d2=new Date();
     	System.out.format("Fetching time %s\n",d2.getTime()-d1.getTime());
     	
-    	VacancySectionParser sp=new VacancySectionParser(config, content);
-    	VacancySection s=sp.parse();
+    	VacancySectionParser vsp=new VacancySectionParser(config, content);
+    	List<VacancySection> s=vsp.parse();
     	
     	System.out.println(s);
     	//UrlEncoder ue=new UrlEncoder();

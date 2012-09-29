@@ -4,15 +4,6 @@ import java.lang.reflect.Field;
 
 public abstract class DomainObject {
 
-	public void setProperty(String property, Object value)
-			throws SecurityException, NoSuchFieldException,
-			IllegalArgumentException, IllegalAccessException {
-		@SuppressWarnings("rawtypes")
-		Class aClass = Vacancy.class;
-		Field field = aClass.getDeclaredField(property);
-		field.set(this, value);
-	}
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
@@ -25,7 +16,7 @@ public abstract class DomainObject {
 
 				sb.append(f.get(this));
 
-				sb.append(", \n");
+				sb.append("\n");
 			}
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
@@ -36,6 +27,15 @@ public abstract class DomainObject {
 		}
 		sb.append("}\n");
 		return sb.toString();
+	}
+	
+	public void setProperty(String property, Object value)
+			throws SecurityException, NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
+		@SuppressWarnings("rawtypes")
+		Class aClass = getClass();
+		Field field = aClass.getDeclaredField(property);
+		field.set(this, value);
 	}
 	
 }
