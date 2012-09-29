@@ -169,7 +169,8 @@ public class Config {
 				}else if ("elementWalker".equals(nodeName)){
 					String elementWalkerClassName=n.getTextContent();
 					try {
-				        Class aClass = classLoader.loadClass(elementWalkerClassName);
+				        @SuppressWarnings("rawtypes")
+						Class aClass = classLoader.loadClass(elementWalkerClassName);
 				        elementWalker = (ElementWalker) aClass.newInstance();
 				    } catch (ClassNotFoundException e) {
 				        throw new Exception(String.format("Cannot find element walker class %s",elementWalkerClassName));
@@ -177,6 +178,7 @@ public class Config {
 				}else if ("elementEvaluator".equals(nodeName)){
 					String elementEvaluatorClassName = n.getTextContent();
 					try{
+						@SuppressWarnings("rawtypes")
 						Class aClass = classLoader.loadClass(elementEvaluatorClassName);
 						elementEvaluator = (ElementEvaluator) aClass.newInstance();
 					}catch (ClassNotFoundException e) {
@@ -185,6 +187,7 @@ public class Config {
 				}else if ("propertyTransformer".equals(nodeName)){
 					String propertyTransformerClassName=n.getTextContent();
 					try {
+						@SuppressWarnings("rawtypes")
 				        Class aClass = classLoader.loadClass(propertyTransformerClassName);
 				        propertyTransformer=(PropertyTransformer) aClass.newInstance();
 				    } catch (ClassNotFoundException e) {

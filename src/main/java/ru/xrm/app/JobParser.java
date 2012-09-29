@@ -7,15 +7,11 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
-import ru.xrm.app.config.VacancySectionProperty;
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.walkers.JobPropertyElementWalker;
-
 
 public class JobParser {
 
@@ -56,7 +52,7 @@ public class JobParser {
 				if (prop.getPropertyTransformer() !=null){
 					value = prop.getPropertyTransformer().transform(value.toString());
 				}
-				System.out.format("%s = %s\n",prop.getKey() ,value);
+				//System.out.format("%s = %s\n",prop.getKey() ,value);
 				try{
 				vacancy.setProperty(prop.getKey(), value);
 				}catch(Exception ex){

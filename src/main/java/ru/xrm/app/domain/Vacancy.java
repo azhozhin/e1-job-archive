@@ -137,6 +137,7 @@ public class Vacancy {
 	public void setProperty(String property, Object value)
 			throws SecurityException, NoSuchFieldException,
 			IllegalArgumentException, IllegalAccessException {
+		@SuppressWarnings("rawtypes")
 		Class aClass = Vacancy.class;
 		Field field = aClass.getDeclaredField(property);
 		field.set(this, value);
