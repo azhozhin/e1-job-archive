@@ -54,6 +54,9 @@
 	
 	<vacancyListPaginatorProperties>
 		<entry>
+			<key>href</key>
+			<cssQuery>table[border=0][cellspacing=0][cellpadding=3]:not([align=left]) span.big a[href~=search=yes]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancyListPaginatorHrefElementEvaluator</elementEvaluator>
 		</entry>
 	</vacancyListPaginatorProperties>
 	
