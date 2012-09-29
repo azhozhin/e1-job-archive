@@ -3,6 +3,8 @@ package ru.xrm.app.domain;
 import java.util.Date;
 
 public class Vacancy {
+	
+	private Integer id;
 
 	private String jobTitle;
 	private String dutyType;
@@ -17,6 +19,13 @@ public class Vacancy {
 	private String presentedBy;
 	private String body;
 
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getJobTitle() {
 		return jobTitle;
 	}

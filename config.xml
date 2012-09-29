@@ -157,5 +157,12 @@
 			<cssQuery>td[colspan=2][valign=top]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.JobBodyPropertyElementEvaluator</elementEvaluator>
 		</entry>
+		<entry>
+			<key>salary</key>
+			<cssQuery>strong.big > b.big:contains(Вакансия)</cssQuery>
+			<elementWalker>ru.xrm.app.walkers.VacancySalaryElementWalker</elementWalker>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancySalaryElementEvaluator</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancySalaryPropertyTransformer</propertyTransformer>
+		</entry>
 	</vacancyProperties>
 </properties>

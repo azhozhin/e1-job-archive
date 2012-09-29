@@ -49,7 +49,7 @@ public class Config {
 		
 		for (int i=0;i<nodes.getLength();i++){
 			Node n=nodes.item(i);
-			System.out.format("%s \n",n.getNodeName());
+			//System.out.format("%s \n",n.getNodeName());
 			loadProperties(n);
 		}
 	}

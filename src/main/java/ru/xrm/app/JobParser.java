@@ -26,6 +26,7 @@ public class JobParser {
     		e.printStackTrace();
     	}
     	
+    	
     	List<Entry> listVacancyProperties=config.getVacancyProperties();
 		
 		File input = new File("input/job-859573.html");
@@ -38,6 +39,7 @@ public class JobParser {
 			return;
 		}
 
+		
 		for (Entry prop:listVacancyProperties){
 			Elements elems=doc.select(prop.getCssQuery());
 			String value="";
@@ -55,5 +57,16 @@ public class JobParser {
 				System.out.format("%s = %s\n",prop.getKey() ,value);
 			}
 		}
+		
+		/*
+		Elements elems=doc.select("strong.big > b.big:contains(Вакансия)");
+		for (Element e:elems){
+			Element tr=e.parent().parent().parent();
+			Element salary = tr.child(1);
+			System.out.format("%s\n\n", tr.outerHtml());
+			System.out.format("%s\n\n", salary.html());
+
+		}
+		*/
 	}
 }
