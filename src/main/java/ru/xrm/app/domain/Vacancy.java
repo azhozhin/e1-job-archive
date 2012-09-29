@@ -6,6 +6,8 @@ public class Vacancy {
 	
 	private Integer id;
 
+	private Integer salary;
+	
 	private String jobTitle;
 	private String dutyType;
 	private String education;
@@ -25,6 +27,13 @@ public class Vacancy {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Integer getSalary() {
+		return salary;
+	}
+	public void setSalary(Integer salary) {
+		this.salary = salary;
 	}
 	public String getJobTitle() {
 		return jobTitle;
