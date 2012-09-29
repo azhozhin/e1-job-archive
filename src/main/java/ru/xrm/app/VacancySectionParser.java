@@ -30,6 +30,7 @@ public class VacancySectionParser {
 			
 		Document doc = Jsoup.parse(html);
 		for (Entry prop:vacancySectionProperties){
+			// here we got multiple elements for each vacancySectionProperty
 			Elements elems=doc.select(prop.getCssQuery());
 			Object value="";
 			int idx=0;
@@ -47,6 +48,7 @@ public class VacancySectionParser {
 				
 				VacancySection section;
 				
+				// if object of some index does not exists, create it and add to result
 				try{
 					section=sections.get(idx);
 				}catch(IndexOutOfBoundsException e1){
@@ -54,6 +56,7 @@ public class VacancySectionParser {
 					sections.add(idx, section);
 				}			
 				
+				// fill property for current object
 				try {
 					section.setProperty(prop.getKey(), value);
 				} catch (SecurityException e1) {
@@ -67,7 +70,6 @@ public class VacancySectionParser {
 				}
 				
 				idx++;
-
 			}
 		}
 		return sections;
