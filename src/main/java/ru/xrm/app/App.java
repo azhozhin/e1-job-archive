@@ -2,6 +2,9 @@ package ru.xrm.app;
 
 import java.util.List;
 
+import ru.xrm.app.config.Config;
+import ru.xrm.app.config.VacancySectionProperty;
+
 /**
  * Hello world!
  *

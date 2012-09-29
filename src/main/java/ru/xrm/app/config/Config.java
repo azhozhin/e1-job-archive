@@ -1,4 +1,4 @@
-package ru.xrm.app;
+package ru.xrm.app.config;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
+import ru.xrm.app.App;
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
 

@@ -1,13 +1,13 @@
-package ru.xrm.app;
+package ru.xrm.app.config;
 
 public class VacancySectionProperty {
 
 	private String key;
 	private String cssQuery;
 	
-	public VacancySectionProperty(String key, String cssQuString) {
+	public VacancySectionProperty(String key, String cssQuery) {
 		this.key = key;
-		this.cssQuery = cssQuString;
+		this.cssQuery = cssQuery;
 	}
 
 	public String getKey() {
