@@ -32,7 +32,7 @@ public class UrlHelper {
 		StringBuilder sb=new StringBuilder();
 
 		for (int i=0;i<digest.length;i++){
-			String hex=Integer.toHexString(0xFF & (digest[i]+128));
+			String hex=Integer.toHexString(0x000000FF & (int)(digest[i]+128));
 			
 			if (hex.length()==1){
 				sb.append('0');
