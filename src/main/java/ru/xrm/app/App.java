@@ -76,7 +76,8 @@ public class App
 				if (vacancyNextPageUrl.endsWith("page=0")){
 					continue;
 				}
-				System.out.format("%d %s ",pageCounter, vacancyNextPageUrl);
+				//System.out.format("%d %s ",pageCounter, vacancyNextPageUrl);
+				System.out.format(" -- %d --\n",pageCounter);
 				// try to add some new pages
 				List<VacancyPage> newPages=vlopp.getPages();
 				for (VacancyPage newPage:newPages){
@@ -93,10 +94,9 @@ public class App
 					}
 				}
 
-				Date d1=new Date();
+				
 				content=hf.fetch(vacancyNextPageUrl, "windows-1251");
-				Date d2=new Date();
-				System.out.format(" - %d\n",d2.getTime()-d1.getTime());
+				
 				vlopp.setHtml(content);
 
 				List<VacancyLink> lvl = vlopp.parse();
@@ -110,11 +110,15 @@ public class App
 					//System.out.format("Fetching %s\n",link);
 
 					// get vacancy itself
-					//content=hf.fetch(link, "windows-1251");
+					Date d1=new Date();
+					content=hf.fetch(link, "windows-1251");
+					Date d2=new Date();
+					System.out.format(" %d ms ",d2.getTime()-d1.getTime());
 					//VacancyParser vacancyParser=new VacancyParser(config, content);
 					//Vacancy v=vacancyParser.parse();
 
 				} // loop vacancies
+				System.out.println();
 				pageCounter++;
 			}// loop pages
 		}

@@ -1,7 +1,5 @@
 package ru.xrm.app.domain;
 
-import java.util.Comparator;
-
 public class VacancyPage extends DomainObject implements Comparable{
 
 	protected String href;
