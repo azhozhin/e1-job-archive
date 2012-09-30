@@ -37,23 +37,28 @@ public class App
 		VacancySectionParser vsp=new VacancySectionParser(config, content);
 		List<VacancySection> sections=vsp.parse();
 
-		// get one kindOfBusiness
+		Date d1=new Date();
+		
+		// for all sections
 		for (VacancySection section:sections){
 			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
-			String vacancyListUrl=section.getHref();
+			String vacancyListCurrentPageUrl=section.getHref();
 
-			if (vacancyListUrl.charAt(0)=='/'){
+			if (vacancyListCurrentPageUrl.charAt(0)=='/'){
 				// relative url
-				vacancyListUrl=urlHelper.getBasename(homePage)+vacancyListUrl;
+				vacancyListCurrentPageUrl=urlHelper.getBasename(homePage)+vacancyListCurrentPageUrl;
 			}
 
 			// get first page of vacancies
-			content=hf.fetch(vacancyListUrl,"windows-1251");
-			VacancyListOnePageParser vlopp=new VacancyListOnePageParser(config, content);
-			// get rest pages
-			VacancyPage firstPage=new VacancyPage(vacancyListUrl);
-			List<VacancyPage> pages=vlopp.getPages();			
-			pages.add(0, firstPage);
+			content=hf.fetch(vacancyListCurrentPageUrl,"windows-1251");
+			VacancyListOnePageParser onePageParser=new VacancyListOnePageParser(config, content);
+			// get pages except current, link to first page we'll get from other pages
+			List<VacancyPage> pages=onePageParser.getPages();		
+			// if we have just one page, then getPages returns zero size list
+			if (pages.size()==0){
+				pages.add(new VacancyPage(vacancyListCurrentPageUrl));
+			}
+
 			SortedSet<VacancyPage> allPages=new TreeSet<VacancyPage>(pages);
 
 			Deque<VacancyPage> pageQueue = new LinkedList<VacancyPage>();
@@ -72,14 +77,11 @@ public class App
 				if (vacancyNextPageUrl.charAt(0)=='/'){
 					vacancyNextPageUrl=urlHelper.getBasename(homePage)+vacancyNextPageUrl;
 				}
-				// will not process page0 again
-				if (vacancyNextPageUrl.endsWith("page=0")){
-					continue;
-				}
+				
 				//System.out.format("%d %s ",pageCounter, vacancyNextPageUrl);
 				System.out.format(" -- %d --\n",pageCounter);
 				// try to add some new pages
-				List<VacancyPage> newPages=vlopp.getPages();
+				List<VacancyPage> newPages=onePageParser.getPages();
 				for (VacancyPage newPage:newPages){
 					boolean exists=false;
 					for (VacancyPage ap:allPages){
@@ -97,9 +99,9 @@ public class App
 				
 				content=hf.fetch(vacancyNextPageUrl, "windows-1251");
 				
-				vlopp.setHtml(content);
+				onePageParser.setHtml(content);
 
-				List<VacancyLink> lvl = vlopp.parse();
+				List<VacancyLink> lvl = onePageParser.parse();
 
 				for (VacancyLink vl: lvl){
 
@@ -110,10 +112,9 @@ public class App
 					//System.out.format("Fetching %s\n",link);
 
 					// get vacancy itself
-					Date d1=new Date();
+					
 					content=hf.fetch(link, "windows-1251");
-					Date d2=new Date();
-					System.out.format(" %d ms ",d2.getTime()-d1.getTime());
+					
 					//VacancyParser vacancyParser=new VacancyParser(config, content);
 					//Vacancy v=vacancyParser.parse();
 
@@ -122,6 +123,8 @@ public class App
 				pageCounter++;
 			}// loop pages
 		}
+		Date d2=new Date();
+		System.out.format(" %d ms ",d2.getTime()-d1.getTime());
 		System.out.println("Done!");
 	}
 }
