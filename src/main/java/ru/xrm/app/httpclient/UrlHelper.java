@@ -9,8 +9,16 @@ import java.security.NoSuchAlgorithmException;
 public class UrlHelper {
 
 	MessageDigest md;
+	static UrlHelper instance;
 	
-	public UrlHelper(){
+	public static UrlHelper getInstance(){
+		if (instance==null){
+			instance=new UrlHelper();
+		}
+		return instance;
+	}
+	
+	private UrlHelper(){
 		try {
 			md=MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
@@ -18,13 +26,14 @@ public class UrlHelper {
 		}
 	}
 	
-	public String encode(String url){
+	public synchronized String encode(String url){
 		md.update(url.getBytes());
 		byte[] digest=md.digest();
 		StringBuilder sb=new StringBuilder();
 
 		for (int i=0;i<digest.length;i++){
-			String hex=Integer.toHexString(0xFF & digest[i]);
+			String hex=Integer.toHexString(0xFF & (digest[i]+128));
+			
 			if (hex.length()==1){
 				sb.append('0');
 			}
