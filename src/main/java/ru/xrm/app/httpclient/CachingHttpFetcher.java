@@ -33,7 +33,7 @@ public class CachingHttpFetcher {
 		this.innerCache=new HashMap<String, String>();
 	}
 
-	public String fetch(String address, String encoding){
+	public String fetch(String address, String encoding) throws IOException{
 		// TODO: caching time should be placed
 		// TODO: caching folder should be cleaned over time
 		StringBuilder result=new StringBuilder();
@@ -80,9 +80,28 @@ public class CachingHttpFetcher {
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} 
 		return result.toString();
+	}
+	
+	public String fetchWithRetry(String address, String encoding, int sleep){
+		String result=null;
+		try{
+			result=fetch(address, encoding);
+		}catch(IOException e){
+			try {
+				Thread.sleep(sleep);
+				result=fetch(address,encoding);
+			} catch (Exception e1) {
+				try{
+					Thread.sleep(sleep);
+					result=fetch(address,encoding);
+				}catch(Exception e2){
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return result;
 	}
 }
