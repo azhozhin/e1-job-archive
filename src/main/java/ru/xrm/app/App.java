@@ -1,22 +1,13 @@
 package ru.xrm.app;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -31,6 +22,8 @@ import ru.xrm.app.threads.OnePageWorker;
 
 public class App 
 {
+	static final int THREAD_NUMBER = 3;
+	static final String ENCODING = "windows-1251";
 
 	public static void main( String[] args )
 	{
@@ -47,20 +40,18 @@ public class App
 		String basename=urlHelper.getBasename(homePage);
 
 		cf=CachingHttpFetcher.getInstance();
-		
-		
 
 		// home page
-		String content = cf.fetch(homePage,"windows-1251");
+		String content = cf.fetchWithRetry(homePage,ENCODING,1000);
 
 		VacancySectionParser vsp=new VacancySectionParser(config, content);
 		List<VacancySection> sections=vsp.parse();
 
 		Date d1=new Date();
-		ExecutorService executorService=Executors.newFixedThreadPool(20);
+		ExecutorService executorService=Executors.newFixedThreadPool(THREAD_NUMBER);
 
 		List<Future<List<Vacancy>>> allVacancyListParts=new LinkedList<Future<List<Vacancy>>>();
-
+		
 		// for all sections
 		for (VacancySection section:sections){
 			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
@@ -69,7 +60,7 @@ public class App
 			vacancyListCurrentPageUrl=urlHelper.constructAbsoluteUrl(vacancyListCurrentPageUrl, basename);
 
 			// get first page of vacancies
-			content=cf.fetch(vacancyListCurrentPageUrl,"windows-1251");
+			content=cf.fetchWithRetry(vacancyListCurrentPageUrl,ENCODING,1000);
 			VacancyListOnePageParser onePageParser=new VacancyListOnePageParser(config, content);
 			// get pages except current, link to first page we'll get from other pages
 			List<VacancyPage> pages=onePageParser.getPages();		
@@ -88,7 +79,7 @@ public class App
 			}
 
 			int pageCounter=0;
-
+	
 			// loop through all pages
 			while(true){
 				if (pageQueue.isEmpty())break;
@@ -98,7 +89,13 @@ public class App
 
 				System.out.format("%d ",pageCounter);
 				// try to add some new pages
-				content=cf.fetch(vacancyNextPageUrl, "windows-1251");
+				content=cf.fetchWithRetry(vacancyNextPageUrl, ENCODING, 1000);
+				if (content==null){
+					System.err.format("Cannot download page %s adding it to end of queue\n",vacancyNextPageUrl);
+					pageQueue.addLast(p);
+					continue;
+				}
+
 				onePageParser.setHtml(content);
 				List<VacancyPage> newPages=onePageParser.getPages();
 				for (VacancyPage newPage:newPages){
@@ -115,7 +112,7 @@ public class App
 					}
 				}
 
-				Future<List<Vacancy>> partVacancyList=executorService.submit(new OnePageWorker(config, vacancyNextPageUrl, basename, "windows-1251", cf));
+				Future<List<Vacancy>> partVacancyList=executorService.submit(new OnePageWorker(config, vacancyListCurrentPageUrl, basename, ENCODING, cf));
 				allVacancyListParts.add(partVacancyList);
 
 				pageCounter++;
@@ -124,25 +121,31 @@ public class App
 				}
 			}// loop pages
 			System.out.println();
-			break; // try one section
 		}// loop sections
+
+
+		System.out.format("<<< Done filling pages >>>\n");
 
 		// Wait for all threads ends
 		boolean allReady=false;
 
+		int threadCounter;
+
 		do{
+			threadCounter=0;
 			allReady=true;
 			for (Future<List<Vacancy>> f:allVacancyListParts){
 				if (!f.isDone()){
 					allReady=false;
+					threadCounter++;
 				}
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.print(".");
+			System.out.format("remaining tasks: %d \n", threadCounter);
 		}while(!allReady);
 
 		List<Vacancy> allVacancies=new LinkedList<Vacancy>();
@@ -156,13 +159,11 @@ public class App
 			}
 		}
 		System.out.format("Total vacancies: %s\n", allVacancies.size());
-		
+
 		executorService.shutdown();
 		Date d2=new Date();
 		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
 		System.out.println("Done!");
-		
-		
-	    
+
 	}
 }
