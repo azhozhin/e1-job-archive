@@ -10,15 +10,27 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CachingHttpFetcher {
 
 	String cacheLocation;
-	UrlHelper urlEncoder;
-
-	public CachingHttpFetcher(String cacheLocation){
+	UrlHelper urlHelper;
+	static CachingHttpFetcher instance;
+	Map<String,String> innerCache;
+	
+	public static CachingHttpFetcher getInstance(){
+		if (instance==null){
+			instance=new CachingHttpFetcher("cache");
+		}
+		return instance;
+	}
+	
+	private CachingHttpFetcher(String cacheLocation){
 		this.cacheLocation = cacheLocation+"/";
-		urlEncoder = new UrlHelper();
+		this.urlHelper = UrlHelper.getInstance();
+		this.innerCache=new HashMap<String, String>();
 	}
 
 	public String fetch(String address, String encoding){
@@ -26,20 +38,28 @@ public class CachingHttpFetcher {
 		// TODO: caching folder should be cleaned over time
 		StringBuilder result=new StringBuilder();
 		try {
-			String encodedUrl=urlEncoder.encode(address);
+			String encodedUrl;
+			if (!innerCache.containsKey(address)){
+				encodedUrl=urlHelper.encode(address);
+				innerCache.put(address, encodedUrl);
+			}else{
+				encodedUrl=innerCache.get(address);
+			}
 			String cacheFileName=cacheLocation+encodedUrl;
 
 			File f=new File(cacheFileName);
 			if (f.exists()){
-				BufferedReader br=new BufferedReader(new FileReader(cacheFileName));
+				FileReader fr=new FileReader(cacheFileName);
+				BufferedReader br=new BufferedReader(fr);
 				String s;
 				while((s=br.readLine())!=null){
 					result.append(s);
 				}
+				fr.close();
 				br.close();
 				return result.toString();
 			}else{
-				System.err.format("Fetching from internet %s\n",address);
+				System.err.format("\nFetching from internet %s\n cachefile: %s\n",address, encodedUrl);
 
 				URL url=new URL(address);
 				HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -59,10 +79,8 @@ public class CachingHttpFetcher {
 				fw.close();
 			}
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return result.toString();
