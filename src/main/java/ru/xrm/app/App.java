@@ -13,6 +13,7 @@ import ru.xrm.app.domain.VacancyPage;
 import ru.xrm.app.domain.VacancySection;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
+import ru.xrm.app.threads.OnePageWorker;
 
 public class App 
 {
@@ -92,26 +93,12 @@ public class App
 					}
 				}
 	
-				content=hf.fetch(vacancyNextPageUrl, "windows-1251");
-				
-				onePageParser.setHtml(content);
-
-				List<VacancyLink> lvl = onePageParser.parse();
-
-				for (VacancyLink vl: lvl){
-
-					String link=vl.getHref();
-					
-					link=urlHelper.constructAbsoluteUrl(link, basename);
-										
-					// get vacancy itself
-					
-					content=hf.fetch(link, "windows-1251");
-					
-					//VacancyParser vacancyParser=new VacancyParser(config, content);
-					//Vacancy v=vacancyParser.parse();
-
-				} // loop vacancies
+				OnePageWorker opw=new OnePageWorker(config, vacancyNextPageUrl, basename, "windows-1251", hf);
+				try {
+					opw.call();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				pageCounter++;
 				if (pageCounter%30==0){
 					System.out.println();
@@ -120,7 +107,7 @@ public class App
 			System.out.println();
 		}
 		Date d2=new Date();
-		System.out.format(" %d s ",(d2.getTime()-d1.getTime())/1000);
+		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
 		System.out.println("Done!");
 	}
 }
