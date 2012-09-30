@@ -68,6 +68,8 @@ public class App
 
 			int pageCounter=0;
 			
+			OnePageWorker opw=new OnePageWorker(config, "", basename, "windows-1251", hf);
+			
 			// loop through all pages
 			while(true){
 				if (pageQueue.isEmpty())break;
@@ -78,6 +80,8 @@ public class App
 				//System.out.format("%d %s ",pageCounter, vacancyNextPageUrl);
 				System.out.format("%d ",pageCounter);
 				// try to add some new pages
+				content=hf.fetch(vacancyNextPageUrl, "windows-1251");
+				onePageParser.setHtml(content);
 				List<VacancyPage> newPages=onePageParser.getPages();
 				for (VacancyPage newPage:newPages){
 					boolean exists=false;
@@ -93,7 +97,7 @@ public class App
 					}
 				}
 	
-				OnePageWorker opw=new OnePageWorker(config, vacancyNextPageUrl, basename, "windows-1251", hf);
+				opw.setUrl(vacancyNextPageUrl);
 				try {
 					opw.call();
 				} catch (Exception e) {

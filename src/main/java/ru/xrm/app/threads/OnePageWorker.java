@@ -63,4 +63,15 @@ public class OnePageWorker implements Callable<List<Vacancy>>{
 		return null;
 	}
 
+
+	public String getUrl() {
+		return url;
+	}
+
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	
 }
