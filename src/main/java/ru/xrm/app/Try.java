@@ -11,7 +11,7 @@ public class Try {
 
 	public static void main(String[] args){
 		
-    	CachingHttpFetcher hf=new CachingHttpFetcher("cache");
+    	CachingHttpFetcher hf=CachingHttpFetcher.getInstance();
 	
     	String content=hf.fetch("http://www.e1.ru/business/job/vacancy.search.php?search=yes&section=23", "windows-1251");
     	Document doc=Jsoup.parse(content);
