@@ -45,4 +45,13 @@ public class UrlHelper {
 		}
 		return result;
 	}
+	
+	public String constructAbsoluteUrl(String address, String basename){
+		// relative url
+		if (address.charAt(0)=='/'){
+			return basename+address;
+		}else{
+			return address;
+		}
+	}
 }

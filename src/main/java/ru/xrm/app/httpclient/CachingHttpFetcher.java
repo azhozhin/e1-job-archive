@@ -39,6 +39,7 @@ public class CachingHttpFetcher {
 				br.close();
 				return result.toString();
 			}else{
+				System.err.format("Fetching from internet %s\n",address);
 
 				URL url=new URL(address);
 				HttpURLConnection conn = (HttpURLConnection)url.openConnection();

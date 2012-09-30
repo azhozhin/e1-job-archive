@@ -28,6 +28,7 @@ public class App
 		}
 
 		String homePage="http://e1.ru/business/job";
+		String basename=urlHelper.getBasename(homePage);
 
 		CachingHttpFetcher hf=new CachingHttpFetcher("cache");
 
@@ -44,10 +45,7 @@ public class App
 			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
 			String vacancyListCurrentPageUrl=section.getHref();
 
-			if (vacancyListCurrentPageUrl.charAt(0)=='/'){
-				// relative url
-				vacancyListCurrentPageUrl=urlHelper.getBasename(homePage)+vacancyListCurrentPageUrl;
-			}
+			vacancyListCurrentPageUrl=urlHelper.constructAbsoluteUrl(vacancyListCurrentPageUrl, basename);
 
 			// get first page of vacancies
 			content=hf.fetch(vacancyListCurrentPageUrl,"windows-1251");
@@ -74,12 +72,10 @@ public class App
 				if (pageQueue.isEmpty())break;
 				VacancyPage p=pageQueue.poll();
 				String vacancyNextPageUrl=p.getHref();
-				if (vacancyNextPageUrl.charAt(0)=='/'){
-					vacancyNextPageUrl=urlHelper.getBasename(homePage)+vacancyNextPageUrl;
-				}
+				vacancyNextPageUrl=urlHelper.constructAbsoluteUrl(vacancyNextPageUrl, basename);
 				
 				//System.out.format("%d %s ",pageCounter, vacancyNextPageUrl);
-				System.out.format(" -- %d --\n",pageCounter);
+				System.out.format("%d ",pageCounter);
 				// try to add some new pages
 				List<VacancyPage> newPages=onePageParser.getPages();
 				for (VacancyPage newPage:newPages){
@@ -95,8 +91,7 @@ public class App
 						pageQueue.addLast(newPage);
 					}
 				}
-
-				
+	
 				content=hf.fetch(vacancyNextPageUrl, "windows-1251");
 				
 				onePageParser.setHtml(content);
@@ -106,11 +101,9 @@ public class App
 				for (VacancyLink vl: lvl){
 
 					String link=vl.getHref();
-					if (link.charAt(0)=='/'){
-						link=urlHelper.getBasename(homePage) + link;
-					}
-					//System.out.format("Fetching %s\n",link);
-
+					
+					link=urlHelper.constructAbsoluteUrl(link, basename);
+										
 					// get vacancy itself
 					
 					content=hf.fetch(link, "windows-1251");
@@ -119,12 +112,15 @@ public class App
 					//Vacancy v=vacancyParser.parse();
 
 				} // loop vacancies
-				System.out.println();
 				pageCounter++;
+				if (pageCounter%30==0){
+					System.out.println();
+				}
 			}// loop pages
+			System.out.println();
 		}
 		Date d2=new Date();
-		System.out.format(" %d ms ",d2.getTime()-d1.getTime());
+		System.out.format(" %d s ",(d2.getTime()-d1.getTime())/1000);
 		System.out.println("Done!");
 	}
 }
