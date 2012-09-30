@@ -30,7 +30,7 @@ public class OnePageWorker implements Callable<List<Vacancy>>{
 		this.encoding = encoding;
 		this.onePageParser = new VacancyListOnePageParser(config, "");
 		this.fetcher = fetcher;
-		this.urlHelper=new UrlHelper();
+		this.urlHelper=UrlHelper.getInstance();
 	}
 
 
@@ -60,7 +60,7 @@ public class OnePageWorker implements Callable<List<Vacancy>>{
 			result.add(vacancy);
 		} // loop vacancies
 
-		return null;
+		return result;
 	}
 
 
