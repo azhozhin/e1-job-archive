@@ -1,4 +1,4 @@
-package ru.xrm.app;
+package ru.xrm.app.parsers;
 
 import java.util.ArrayList;
 import java.util.List;
