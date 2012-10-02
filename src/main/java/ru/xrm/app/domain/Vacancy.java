@@ -5,7 +5,7 @@ import java.util.Date;
 public class Vacancy extends DomainObject{
 
 	// All fields should be protected for DomainObject methods
-	protected Integer id;
+	protected Long id;
 
 	protected Integer salary;
 
@@ -22,11 +22,11 @@ public class Vacancy extends DomainObject{
 	protected String presentedBy;
 	protected String body;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

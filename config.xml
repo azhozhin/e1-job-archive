@@ -65,7 +65,7 @@
 			<key>id</key>
 			<cssQuery>input[type=hidden][name=url][value~=/business/job/vacancy.detail.php\?id=\d]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.VacancyIdElementEvaluator</elementEvaluator>
-			<propertyTransformer>ru.xrm.app.transformers.ToInteger</propertyTransformer>
+			<propertyTransformer>ru.xrm.app.transformers.ToLong</propertyTransformer>
 		</entry>
 		<entry>
 			<key>jobTitle</key>
