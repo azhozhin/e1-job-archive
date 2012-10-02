@@ -2,24 +2,62 @@ package ru.xrm.app.domain;
 
 import java.util.Date;
 
-public class Vacancy extends DomainObject{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Type;
+
+@Entity
+public class Vacancy extends DomainObject {
 
 	// All fields should be protected for DomainObject methods
+	@Id
+	@Column
 	protected Long id;
 
+	@Column
 	protected Integer salary;
 
+	@Column(name = "job_title")
 	protected String jobTitle;
+
+	@Column(name = "duty_type")
 	protected String dutyType;
+
+	@Column
 	protected String education;
+
+	@Column
 	protected String experience;
+
+	@Column
 	protected String schedule;
+
+	@ManyToOne
+	@JoinColumn(name = "section_id")
 	protected Section section;
+
+	@Column
 	protected String city;
+
+	// TODO: make employer as separate class
+	@Column
 	protected String employer;
+
+	@Column(name = "vacancy_date")
+	@Type(type = "date")
 	protected Date date;
+
+	@Column(name = "contact_information")
 	protected String contactInformation;
+
+	@Column(name = "presented_by")
 	protected String presentedBy;
+
+	@Column
 	protected String body;
 
 	public Long getId() {
@@ -134,5 +172,4 @@ public class Vacancy extends DomainObject{
 		this.body = body;
 	}
 
-	
 }
