@@ -35,7 +35,7 @@
 		<entry>
 			<key>name</key>
 			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
-			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionNameElementEvaluator</elementEvaluator>
+			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>
 		<entry>
 			<key>href</key>
