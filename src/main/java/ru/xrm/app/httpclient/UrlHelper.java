@@ -11,7 +11,7 @@ public class UrlHelper {
 	MessageDigest md;
 	static UrlHelper instance;
 	
-	public static UrlHelper getInstance(){
+	public static synchronized UrlHelper getInstance(){
 		if (instance==null){
 			instance=new UrlHelper();
 		}

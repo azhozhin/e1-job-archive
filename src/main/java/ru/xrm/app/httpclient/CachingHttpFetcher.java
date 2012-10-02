@@ -20,7 +20,7 @@ public class CachingHttpFetcher {
 	static CachingHttpFetcher instance;
 	Map<String,String> innerCache;
 	
-	public static CachingHttpFetcher getInstance(){
+	public static synchronized CachingHttpFetcher getInstance(){
 		if (instance==null){
 			instance=new CachingHttpFetcher("cache");
 		}
