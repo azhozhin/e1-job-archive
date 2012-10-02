@@ -1,10 +1,25 @@
 package ru.xrm.app.domain;
 
-public class VacancySection extends DomainObject{
+public class Section extends DomainObject{
 
 	// All fields should be protected for DomainObject methods
 	protected String name;
 	protected String href;
+	
+	public Section(){
+		this.name="";
+		this.href="";
+	}
+	
+	public Section(String name){
+		this.name=name;
+		this.href="";
+	}
+	
+	public Section(String name, String href){
+		this.name=name;
+		this.href=href;
+	}
 	
 	public String getName() {
 		return name;
@@ -19,6 +34,8 @@ public class VacancySection extends DomainObject{
 		this.href = href;
 	}
 	
-	
-	
+	@Override
+	public boolean equals(Object o){
+		return name.equals((String)o);
+	}
 }
