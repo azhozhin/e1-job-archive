@@ -48,7 +48,7 @@
 		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=vacancy_item_\d] a[href~=id=\d]</cssQuery>
-			<elementEvaluator>ru.xrm.app.evaluators.VacancyListHrefElementEvaluator</elementEvaluator>
+			<elementEvaluator>ru.xrm.app.evaluators.GetAttrHref</elementEvaluator>
 		</entry>
 	</vacancyListProperties>
 	
