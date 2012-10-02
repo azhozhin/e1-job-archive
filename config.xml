@@ -165,7 +165,7 @@
 		<entry>
 			<key>body</key>
 			<cssQuery>td[colspan=2][valign=top]</cssQuery>
-			<elementEvaluator>ru.xrm.app.evaluators.JobBodyPropertyElementEvaluator</elementEvaluator>
+			<elementEvaluator>ru.xrm.app.evaluators.GetHtml</elementEvaluator>
 		</entry>
 		<entry>
 			<key>salary</key>
