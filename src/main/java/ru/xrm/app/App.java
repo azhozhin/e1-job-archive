@@ -1,10 +1,13 @@
 package ru.xrm.app;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import java.util.concurrent.ExecutionException;
 
@@ -15,7 +18,7 @@ import java.util.concurrent.Future;
 import ru.xrm.app.config.Config;
 import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.domain.VacancyPage;
-import ru.xrm.app.domain.VacancySection;
+import ru.xrm.app.domain.Section;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
 import ru.xrm.app.threads.OnePageWorker;
@@ -37,6 +40,7 @@ public class App
 		}
 
 		String homePage="http://e1.ru/business/job";
+		
 		String basename=urlHelper.getBasename(homePage);
 
 		cf=CachingHttpFetcher.getInstance();
@@ -45,7 +49,7 @@ public class App
 		String content = cf.fetchWithRetry(homePage,ENCODING,1000);
 
 		VacancySectionParser vsp=new VacancySectionParser(config, content);
-		List<VacancySection> sections=vsp.parse();
+		List<Section> sections=vsp.parse();
 
 		Date d1=new Date();
 		ExecutorService executorService=Executors.newFixedThreadPool(THREAD_NUMBER);
@@ -53,7 +57,7 @@ public class App
 		List<Future<List<Vacancy>>> allVacancyListParts=new LinkedList<Future<List<Vacancy>>>();
 		
 		// for all sections
-		for (VacancySection section:sections){
+		for (Section section:sections){
 			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
 			String vacancyListCurrentPageUrl=section.getHref();
 
@@ -151,7 +155,11 @@ public class App
 		List<Vacancy> allVacancies=new LinkedList<Vacancy>();
 		for (Future<List<Vacancy>> f:allVacancyListParts){
 			try {
-				allVacancies.addAll(f.get());
+				List<Vacancy> lv=f.get();
+				if (lv.size()!=10){
+					System.err.println("there is not all vacancies processed");
+				}
+				allVacancies.addAll(lv);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
@@ -159,11 +167,27 @@ public class App
 			}
 		}
 		System.out.format("Total vacancies: %s\n", allVacancies.size());
-
+		
+		System.out.format("Vacancy and count\n");
+		Map<String,Integer> stats=new HashMap<String,Integer>();
+		for (Vacancy v:allVacancies){
+			String key=v.getSection().getName();
+			Integer value;
+			if (!stats.containsKey(key)){
+				value=1;
+			}else{
+				value=stats.get(key)+1;
+			}
+			stats.put(key, value);
+		}
+		
+		for(String vacancy:stats.keySet()){
+			System.out.format("%s \t %s\n",vacancy,stats.get(vacancy));
+		}
+		
 		executorService.shutdown();
 		Date d2=new Date();
 		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
 		System.out.println("Done!");
-
 	}
 }
