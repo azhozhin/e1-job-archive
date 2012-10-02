@@ -40,7 +40,7 @@
 		<entry>
 			<key>href</key>
 			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
-			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionHrefElementEvaluator</elementEvaluator>
+			<elementEvaluator>ru.xrm.app.evaluators.GetHref</elementEvaluator>
 		</entry>
 	</vacancySectionProperties>
 	
