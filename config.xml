@@ -62,6 +62,12 @@
 	
 	<vacancyProperties>
 		<entry>
+			<key>id</key>
+			<cssQuery>input[type=hidden][name=url][value~=/business/job/vacancy.detail.php\?id=\d]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.VacancyIdElementEvaluator</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.ToInteger</propertyTransformer>
+		</entry>
+		<entry>
 			<key>jobTitle</key>
 			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
