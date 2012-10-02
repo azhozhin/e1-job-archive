@@ -73,7 +73,7 @@
 			<cssQueryArgs>
 				<arg>Должность</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>  
 		<entry>
@@ -82,7 +82,7 @@
 			<cssQueryArgs>
 				<arg>Занятость</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>
 		<entry>
@@ -91,7 +91,7 @@
 			<cssQueryArgs>
 				<arg>Образование</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry> 
 		<entry>
@@ -100,7 +100,7 @@
 			<cssQueryArgs>
 				<arg>Опыт работы</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>	
 		<entry>
@@ -109,7 +109,7 @@
 			<cssQueryArgs>
 				<arg>График работы</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry> 
 		<entry>
@@ -118,7 +118,7 @@
 			<cssQueryArgs>
 				<arg>Отрасль</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 			<propertyTransformer>ru.xrm.app.transformers.VacancySectionPropertyTransformer</propertyTransformer>
 		</entry> 
@@ -128,7 +128,7 @@
 			<cssQueryArgs>
 				<arg>Город</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>
 		<entry>
@@ -137,7 +137,7 @@
 			<cssQueryArgs>
 				<arg>Работодатель</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>
 		<entry>
@@ -146,7 +146,7 @@
 			<cssQueryArgs>
 				<arg>Дата</arg>
 			</cssQueryArgs>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 			<propertyTransformer>ru.xrm.app.transformers.JobDatePropertyTransformer</propertyTransformer>
 		</entry>
@@ -159,7 +159,7 @@
 		<entry>
 			<key>presentedBy</key>
 			<cssQuery>td[align=right] > strong:contains(Вакансия предоставлена)</cssQuery>
-			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
+			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 		</entry>
 		<entry>
