@@ -123,8 +123,10 @@ public class App
 				if (pageCounter%30==0){
 					System.out.println();
 				}
+				break; // FIXME
 			}// loop pages
 			System.out.println();
+			break; // FIME
 		}// loop sections
 
 
@@ -171,6 +173,7 @@ public class App
 		System.out.format("Vacancy and count\n");
 		Map<String,Integer> stats=new HashMap<String,Integer>();
 		for (Vacancy v:allVacancies){
+			System.out.print(v);
 			String key=v.getSection().getName();
 			Integer value;
 			if (!stats.containsKey(key)){
