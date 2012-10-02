@@ -28,7 +28,7 @@ public abstract class DomainObject {
 		sb.append("}\n");
 		return sb.toString();
 	}
-	
+
 	public void setProperty(String property, Object value)
 			throws SecurityException, NoSuchFieldException,
 			IllegalArgumentException, IllegalAccessException {
@@ -37,5 +37,5 @@ public abstract class DomainObject {
 		Field field = aClass.getDeclaredField(property);
 		field.set(this, value);
 	}
-	
+
 }
