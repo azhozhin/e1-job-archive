@@ -1,35 +1,36 @@
 package ru.xrm.app;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import java.util.concurrent.ExecutionException;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import ru.xrm.app.config.Config;
-import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.domain.VacancyPage;
 import ru.xrm.app.domain.Section;
+import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
+import ru.xrm.app.misc.VacancyPage;
+import ru.xrm.app.parsers.VacancyListOnePageParser;
+import ru.xrm.app.parsers.VacancySectionParser;
 import ru.xrm.app.threads.OnePageWorker;
 
 public class App 
 {
-	static final int THREAD_NUMBER = 3;
+	static final int THREAD_NUMBER = 2;
 	static final String ENCODING = "windows-1251";
 
 	public static void main( String[] args )
 	{
+		System.out.println(java.lang.Runtime.getRuntime().maxMemory()); 
+
 		UrlHelper urlHelper= UrlHelper.getInstance();
 		CachingHttpFetcher cf;
 		Config config=new Config();
@@ -40,7 +41,7 @@ public class App
 		}
 
 		String homePage="http://e1.ru/business/job";
-		
+
 		String basename=urlHelper.getBasename(homePage);
 
 		cf=CachingHttpFetcher.getInstance();
@@ -55,7 +56,7 @@ public class App
 		ExecutorService executorService=Executors.newFixedThreadPool(THREAD_NUMBER);
 
 		List<Future<List<Vacancy>>> allVacancyListParts=new LinkedList<Future<List<Vacancy>>>();
-		
+
 		// for all sections
 		for (Section section:sections){
 			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
@@ -83,7 +84,7 @@ public class App
 			}
 
 			int pageCounter=0;
-	
+
 			// loop through all pages
 			while(true){
 				if (pageQueue.isEmpty())break;
@@ -123,10 +124,10 @@ public class App
 				if (pageCounter%30==0){
 					System.out.println();
 				}
-				break; // FIXME
+				//break; // FIXME
 			}// loop pages
 			System.out.println();
-			break; // FIME
+			//break; // FIME
 		}// loop sections
 
 
@@ -169,25 +170,30 @@ public class App
 			}
 		}
 		System.out.format("Total vacancies: %s\n", allVacancies.size());
-		
+
 		System.out.format("Vacancy and count\n");
 		Map<String,Integer> stats=new HashMap<String,Integer>();
 		for (Vacancy v:allVacancies){
-			System.out.print(v);
-			String key=v.getSection().getName();
-			Integer value;
-			if (!stats.containsKey(key)){
-				value=1;
+			//System.out.print(v);
+			if (v.getSection()==null){
+				System.err.format("There is empty section for vacancy\n");
+				System.err.println(v);
 			}else{
-				value=stats.get(key)+1;
+				String key=v.getSection().getName();
+				Integer value;
+				if (!stats.containsKey(key)){
+					value=1;
+				}else{
+					value=stats.get(key)+1;
+				}
+				stats.put(key, value);
 			}
-			stats.put(key, value);
 		}
-		
+
 		for(String vacancy:stats.keySet()){
 			System.out.format("%s \t %s\n",vacancy,stats.get(vacancy));
 		}
-		
+
 		executorService.shutdown();
 		Date d2=new Date();
 		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());

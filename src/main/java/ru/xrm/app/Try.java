@@ -1,37 +1,57 @@
 package ru.xrm.app;
-/*
-import java.io.IOException;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import java.util.Date;
 
-import ru.xrm.app.httpclient.CachingHttpFetcher;
-*/
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import ru.xrm.app.domain.Section;
+import ru.xrm.app.domain.Vacancy;
+import ru.xrm.app.misc.HibernateUtil;
+
 public class Try {
 
-	public static void main(String[] args){
-/*
-		CachingHttpFetcher hf=CachingHttpFetcher.getInstance();
+	public static void main(String[] args) {
 
-		String content;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Transaction transaction = null;
 		try {
-			content = hf.fetch("http://www.e1.ru/business/job/vacancy.detail.php?id=859856", "windows-1251");
+			transaction = session.beginTransaction();
 
-			Document doc=Jsoup.parse(content);
-			Elements elems=doc.select("input[type=hidden][name=url][value~=/business/job/vacancy.detail.php\\?id=\\d]");
+			Section section = new Section("Section 1", "http://ya.ru");
+			section.setId(new Long(1));
 
-			for (Element e:elems){
-				System.out.format("%s \n",e.attr("value"));					
-				String[] parts=e.attr("value").split("=");
-				System.out.format("%s \n",parts[parts.length-1]);
-			}
+			Vacancy vacancy1 = new Vacancy();
+			vacancy1.setId(new Long(1));
+			vacancy1.setSalary(new Integer(100));
+			vacancy1.setJobTitle("worker");
+			vacancy1.setDutyType("full");
+			vacancy1.setEducation("educ");
+			vacancy1.setExperience(" ");
+			vacancy1.setSchedule("any");
+			vacancy1.setCity("moscow");
+			vacancy1.setEmployer("empl");
+			vacancy1.setDate(new Date(2012, 8, 1));
+			vacancy1.setContactInformation("fhgf");
+			vacancy1.setPresentedBy("me");
 
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			vacancy1.setBody("text");
+
+			vacancy1.setSection(section);
+
+			// System.out.print(vacancy1);
+
+			session.save(section);
+			session.save(vacancy1);
+
+			transaction.commit();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
-		*/
 	}
 }
