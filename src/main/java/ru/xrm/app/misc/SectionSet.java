@@ -1,7 +1,9 @@
-package ru.xrm.app.domain;
+package ru.xrm.app.misc;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import ru.xrm.app.domain.Section;
 
 public class SectionSet {
 	static SectionSet instance;

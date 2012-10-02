@@ -1,4 +1,6 @@
-package ru.xrm.app.domain;
+package ru.xrm.app.misc;
+
+import ru.xrm.app.domain.DomainObject;
 
 public class VacancyLink extends DomainObject {
 
