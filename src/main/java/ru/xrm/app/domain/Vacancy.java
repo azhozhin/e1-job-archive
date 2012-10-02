@@ -14,7 +14,7 @@ public class Vacancy extends DomainObject{
 	protected String education;
 	protected String experience;
 	protected String schedule;
-	protected String kindOfBusiness;
+	protected Section section;
 	protected String city;
 	protected String employer;
 	protected Date date;
@@ -78,12 +78,12 @@ public class Vacancy extends DomainObject{
 		this.schedule = schedule;
 	}
 
-	public String getKindOfBusiness() {
-		return kindOfBusiness;
+	public Section getSection() {
+		return section;
 	}
 
-	public void setKindOfBusiness(String kindOfBusiness) {
-		this.kindOfBusiness = kindOfBusiness;
+	public void setSection(Section section) {
+		this.section = section;
 	}
 
 	public String getCity() {

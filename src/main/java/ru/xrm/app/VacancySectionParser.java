@@ -1,6 +1,5 @@
 package ru.xrm.app;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -10,21 +9,23 @@ import org.jsoup.select.Elements;
 
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
-import ru.xrm.app.domain.VacancySection;
+import ru.xrm.app.domain.Section;
+import ru.xrm.app.domain.SectionSet;
 
 public class VacancySectionParser {
 
 	Config config;
 	String html;
-	VacancySection sections;
+	Section sections;
 	
 	public VacancySectionParser(Config config, String html){
 		this.config = config;
 		this.html = html;
 	}
 	
-	public List<VacancySection> parse() {
-		List<VacancySection> sections = new ArrayList<VacancySection>();
+	public List<Section> parse() {
+		SectionSet sections=SectionSet.getInstance();
+		//List<Section> sections = new ArrayList<Section>();
 	
 		List<Entry> vacancySectionProperties=config.getVacancySectionProperties();
 			
@@ -46,14 +47,14 @@ public class VacancySectionParser {
 					value = prop.getPropertyTransformer().transform(value.toString());
 				}
 				
-				VacancySection section;
+				Section section;
 				
 				// if object of some index does not exists, create it and add to result
 				try{
-					section=sections.get(idx);
+					section=sections.getByIndex(idx);
 				}catch(IndexOutOfBoundsException e1){
-					section=new VacancySection();
-					sections.add(idx, section);
+					section=new Section();
+					sections.add(section);
 				}			
 				
 				// fill property for current object
@@ -64,6 +65,7 @@ public class VacancySectionParser {
 				} catch (IllegalArgumentException e1) {
 					e1.printStackTrace();
 				} catch (NoSuchFieldException e1) {
+					// configuration exception
 					e1.printStackTrace();
 				} catch (IllegalAccessException e1) {
 					e1.printStackTrace();
@@ -72,6 +74,6 @@ public class VacancySectionParser {
 				idx++;
 			}
 		}
-		return sections;
+		return sections.getSections();
 	}
 }

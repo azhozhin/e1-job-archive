@@ -107,13 +107,14 @@
 			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
 		</entry> 
 		<entry>
-			<key>kindOfBusiness</key>
+			<key>section</key>
 			<cssQuery namedQuery='vacancyProperty'/>
 			<cssQueryArgs>
 				<arg>Отрасль</arg>
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancySectionPropertyTransformer</propertyTransformer>
 		</entry> 
 		<entry>
 			<key>city</key>
