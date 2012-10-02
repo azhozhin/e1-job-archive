@@ -171,7 +171,7 @@
 			<key>salary</key>
 			<cssQuery>strong.big > b.big:contains(Вакансия)</cssQuery>
 			<elementWalker>ru.xrm.app.walkers.VacancySalaryElementWalker</elementWalker>
-			<elementEvaluator>ru.xrm.app.evaluators.VacancySalaryElementEvaluator</elementEvaluator>
+			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
 			<propertyTransformer>ru.xrm.app.transformers.VacancySalaryPropertyTransformer</propertyTransformer>
 		</entry>
 	</vacancyProperties>
