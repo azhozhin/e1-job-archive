@@ -3,14 +3,14 @@ package ru.xrm.app.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.jsoup.nodes.Element;
 import org.junit.Test;
 
 import ru.xrm.app.evaluators.ElementEvaluator;
 import ru.xrm.app.transformers.PropertyTransformer;
 import ru.xrm.app.walkers.ElementWalker;
-
-import junit.framework.TestCase;
 
 public class EntryTest extends TestCase {
 
