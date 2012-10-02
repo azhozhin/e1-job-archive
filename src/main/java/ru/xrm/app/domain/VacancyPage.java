@@ -1,6 +1,6 @@
 package ru.xrm.app.domain;
 
-public class VacancyPage extends DomainObject implements Comparable{
+public class VacancyPage extends DomainObject{
 
 	protected String href;
 	
@@ -22,7 +22,7 @@ public class VacancyPage extends DomainObject implements Comparable{
 
 	@Override
 	public boolean equals(Object obj) {
-	
+
 		if (this==obj){
 			return true;
 		}
@@ -32,20 +32,6 @@ public class VacancyPage extends DomainObject implements Comparable{
 		}
 		VacancyPage vp=(VacancyPage)obj;
 		return this.href.equals(vp.getHref());
-	}
-
-	public int compareTo(Object obj) {
-		if (this==obj){
-			return 0;
-		}
-		
-		if (obj==null || !(this.getClass() != obj.getClass())){
-			return -1;
-		}
-		
-		VacancyPage vp=(VacancyPage)obj;
-		
-		return this.href.compareTo(vp.getHref());
 	}
 	
 }
