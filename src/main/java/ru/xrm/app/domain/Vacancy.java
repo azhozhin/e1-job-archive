@@ -14,53 +14,52 @@ import org.hibernate.annotations.Type;
 @Entity
 public class Vacancy {
 
-	// All fields should be protected for DomainObject methods
 	@Id
 	@Column(name="vacancy_id")
-	protected Long id;
+	private Long id;
 
 	@Column(name="salary")
-	protected Integer salary;
+	private Integer salary;
 
 	@Column(name = "job_title")
-	protected String jobTitle;
+	private String jobTitle;
 
 	@Column(name = "duty_type")
-	protected String dutyType;
+	private String dutyType;
 
 	@Column(name="education")
-	protected String education;
+	private String education;
 
 	@Column(name="experience")
-	protected String experience;
+	private String experience;
 
 	@Column(name="schedule")
-	protected String schedule;
+	private String schedule;
 
 	@ManyToOne
 	@JoinColumn(name = "section_id")
-	protected Section section;
+	private Section section;
 
 	@Column(name="city")
-	protected String city;
+	private String city;
 
 	// TODO: make employer as separate class
 	@Column(name="employer")
-	protected String employer;
+	private String employer;
 
 	@Column(name = "vacancy_date")
 	@Type(type = "date")
-	protected Date date;
+	private Date date;
 
 	@Column(name = "contact_information")
-	protected String contactInformation;
+	private String contactInformation;
 
 	@Column(name = "presented_by")
-	protected String presentedBy;
+	private String presentedBy;
 
 	@Column(name="body")
 	@Lob 
-	protected String body;
+	private String body;
 
 	public Long getId() {
 		return id;

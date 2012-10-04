@@ -11,19 +11,18 @@ import javax.persistence.OneToMany;
 @Entity
 public class Section {
 
-	// All fields should be protected for DomainObject methods
 	@Id
 	@Column(name="section_id")
-	protected Long id;
+	private Long id;
 
 	@Column(name="name")
-	protected String name;
+	private String name;
 
 	@Column(name="href")
-	protected String href;
+	private String href;
 
 	@OneToMany(mappedBy = "section")
-	protected Set<Vacancy> vacancies = new HashSet<Vacancy>();
+	private Set<Vacancy> vacancies = new HashSet<Vacancy>();
 
 	public Section() {
 		this("","");
