@@ -33,6 +33,12 @@
 -->
 	<vacancySectionProperties>
 		<entry>
+			<key>id</key>
+			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
+			<elementEvaluator>ru.xrm.app.evaluators.GetAttrHref</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancySectionId</propertyTransformer>
+		</entry>
+		<entry>
 			<key>name</key>
 			<cssQuery>div[id~=secion_\d] a[href~=section=\d]</cssQuery>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
