@@ -44,7 +44,7 @@ public class ConfigHelperTest {
 			"		<entry>"+
 			"			<key>name</key>"+
 			"			<cssQuery>div[id~=secion_\\d] a[href~=section=\\d]</cssQuery>"+
-			"			<elementEvaluator>ru.xrm.app.evaluators.VacancySectionNameElementEvaluator</elementEvaluator>"+
+			"			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>"+
 			"		</entry>"+
 			"		<entry>" +
 			"			<key>date</key>" +
@@ -52,8 +52,8 @@ public class ConfigHelperTest {
 			"			<cssQueryArgs>"+
 			"				<arg>Date</arg>"+
 			"			</cssQueryArgs>"+
-			"			<elementWalker>ru.xrm.app.walkers.JobPropertyElementWalker</elementWalker>"+
-			"			<elementEvaluator>ru.xrm.app.evaluators.JobPropertyElementEvaluator</elementEvaluator>"+
+			"			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>"+
+			"			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>"+
 			"			<propertyTransformer>ru.xrm.app.transformers.JobDatePropertyTransformer</propertyTransformer>"+
 			"		</entry>" +
 			"	</vacancySectionProperties>"+
@@ -106,7 +106,7 @@ public class ConfigHelperTest {
 			e=ConfigHelper.loadEntry(firstEntry, namedQueries);
 			assertEquals("name", e.getKey());
 			assertEquals("div[id~=secion_\\d] a[href~=section=\\d]", e.getCssQuery());
-			assertEquals("ru.xrm.app.evaluators.VacancySectionNameElementEvaluator", e.getElementEvaluator().getClass().getName());
+			assertEquals("ru.xrm.app.evaluators.GetText", e.getElementEvaluator().getClass().getName());
 			assertNull(e.getElementWalker());
 			assertNull(e.getPropertyTransformer());
 			assertEquals(0,e.cssQueryArgs.size());
@@ -116,8 +116,8 @@ public class ConfigHelperTest {
 			e=ConfigHelper.loadEntry(secondEntry, namedQueries);
 			assertEquals("date", e.getKey());
 			assertEquals("Date=Date", e.getCssQuery());
-			assertEquals("ru.xrm.app.walkers.JobPropertyElementWalker", e.getElementWalker().getClass().getName());
-			assertEquals("ru.xrm.app.evaluators.JobPropertyElementEvaluator", e.getElementEvaluator().getClass().getName());
+			assertEquals("ru.xrm.app.walkers.VacancyPropertyElementWalker", e.getElementWalker().getClass().getName());
+			assertEquals("ru.xrm.app.evaluators.GetText", e.getElementEvaluator().getClass().getName());
 			assertEquals("ru.xrm.app.transformers.JobDatePropertyTransformer", e.getPropertyTransformer().getClass().getName());
 			assertEquals(1, e.cssQueryArgs.size());
 
