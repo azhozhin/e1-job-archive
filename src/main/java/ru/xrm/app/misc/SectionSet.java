@@ -22,7 +22,7 @@ public class SectionSet {
 	
 	public synchronized boolean exists(String name){
 		for (Section s:sections){
-			if (s.equals(name)){
+			if (s.getName().equals(name)){
 				return true;
 			}
 		}
@@ -33,13 +33,10 @@ public class SectionSet {
 		sections.add(section);
 	}
 	
-	public synchronized Section getByIndex(int num){
-		return (Section)sections.toArray()[num];
-	}
 	
 	public synchronized Section getByName(String name){
 		for(Section s:sections){
-			if (s.equals(name)){
+			if (s.getName().equals(name)){
 				return s; 
 			}
 		}
@@ -48,4 +45,5 @@ public class SectionSet {
 	public synchronized List<Section> getSections(){
 		return sections;
 	}
+	
 }
