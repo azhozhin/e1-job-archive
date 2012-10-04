@@ -4,8 +4,7 @@ import java.lang.reflect.Field;
 
 public class VacancyLink {
 
-	// All fields should be protected for DomainObject methods
-	protected String href;
+	private String href;
 	
 	public String getHref() {
 		return href;
@@ -14,5 +13,13 @@ public class VacancyLink {
 		this.href = href;
 	}
 	
+	public void setProperty(String property, Object value)
+			throws SecurityException, NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
+		@SuppressWarnings("rawtypes")
+		Class aClass = getClass();
+		Field field = aClass.getDeclaredField(property);
+		field.set(this, value);
+	}
 	
 }

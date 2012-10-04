@@ -1,5 +1,6 @@
 package ru.xrm.app.domain;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,4 +95,35 @@ public class Section {
 		return true;
 	}
 
+	public void setProperty(String property, Object value)
+			throws SecurityException, NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
+		@SuppressWarnings("rawtypes")
+		Class aClass = getClass();
+		Field field = aClass.getDeclaredField(property);
+		field.set(this, value);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getName());
+		sb.append("{\n");
+		try {
+			for (Field f : getClass().getDeclaredFields()) {
+				sb.append("\t");
+				sb.append(f.getName());
+				sb.append(" : ");
+
+				sb.append(f.get(this));
+
+				sb.append("\n");
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		sb.append("}\n");
+		return sb.toString();
+	}
 }

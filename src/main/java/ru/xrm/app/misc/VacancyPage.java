@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 public class VacancyPage {
 
-	protected String href;
+	private String href;
 	
 	public VacancyPage(){
 		
@@ -22,18 +22,13 @@ public class VacancyPage {
 		this.href = href;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-
-		if (this==obj){
-			return true;
-		}
-		
-		if (obj==null || !(this.getClass() != obj.getClass())){
-			return false;
-		}
-		VacancyPage vp=(VacancyPage)obj;
-		return this.href.equals(vp.getHref());
+	public void setProperty(String property, Object value)
+			throws SecurityException, NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
+		@SuppressWarnings("rawtypes")
+		Class aClass = getClass();
+		Field field = aClass.getDeclaredField(property);
+		field.set(this, value);
 	}
 	
 }

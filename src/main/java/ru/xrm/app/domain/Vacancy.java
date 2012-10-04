@@ -1,5 +1,6 @@
 package ru.xrm.app.domain;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -123,6 +124,7 @@ public class Vacancy {
 
 	public void setSection(Section section) {
 		this.section = section;
+		section.getVacancies().add(this);
 	}
 
 	public String getCity() {
@@ -196,6 +198,46 @@ public class Vacancy {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	public void setProperty(String property, Object value)
+			throws SecurityException, NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
+		if ("section".equals(property)){
+			this.setSection((Section)value);
+		}else{
+			@SuppressWarnings("rawtypes")
+			Class aClass = getClass();
+			Field field = aClass.getDeclaredField(property);
+			field.set(this, value);
+		}
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getName());
+		sb.append("{\n");
+		try {
+			for (Field f : getClass().getDeclaredFields()) {
+				sb.append("\t");
+				sb.append(f.getName());
+				sb.append(" : ");
+
+				if ("ru.xrm.app.domain.Section".equals(f.get(this).getClass().getName())){
+					sb.append("ru.xrm.app.domain.Section");
+				}
+				else{
+					sb.append(f.get(this));
+				}
+				sb.append("\n");
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		sb.append("}\n");
+		return sb.toString();
 	}
 
 }
