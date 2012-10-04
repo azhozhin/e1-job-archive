@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
@@ -15,10 +16,10 @@ public class Vacancy extends DomainObject {
 
 	// All fields should be protected for DomainObject methods
 	@Id
-	@Column
+	@Column(name="vacancy_id")
 	protected Long id;
 
-	@Column
+	@Column(name="salary")
 	protected Integer salary;
 
 	@Column(name = "job_title")
@@ -27,24 +28,24 @@ public class Vacancy extends DomainObject {
 	@Column(name = "duty_type")
 	protected String dutyType;
 
-	@Column
+	@Column(name="education")
 	protected String education;
 
-	@Column
+	@Column(name="experience")
 	protected String experience;
 
-	@Column
+	@Column(name="schedule")
 	protected String schedule;
 
 	@ManyToOne
 	@JoinColumn(name = "section_id")
 	protected Section section;
 
-	@Column
+	@Column(name="city")
 	protected String city;
 
 	// TODO: make employer as separate class
-	@Column
+	@Column(name="employer")
 	protected String employer;
 
 	@Column(name = "vacancy_date")
@@ -57,7 +58,8 @@ public class Vacancy extends DomainObject {
 	@Column(name = "presented_by")
 	protected String presentedBy;
 
-	@Column
+	@Column(name="body")
+	@Lob 
 	protected String body;
 
 	public Long getId() {
@@ -170,6 +172,31 @@ public class Vacancy extends DomainObject {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vacancy other = (Vacancy) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }
