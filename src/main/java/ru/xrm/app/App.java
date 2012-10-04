@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.Session;
 
 import ru.xrm.app.config.Config;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
+import ru.xrm.app.misc.HibernateUtil;
 import ru.xrm.app.misc.VacancyPage;
 import ru.xrm.app.parsers.VacancyListOnePageParser;
 import ru.xrm.app.parsers.VacancySectionParser;
@@ -117,6 +123,7 @@ public class App
 					}
 				}
 
+				// FIXME: should be vacancyNextPageUrl not vacancyListCurrentPageUrl
 				Future<List<Vacancy>> partVacancyList=executorService.submit(new OnePageWorker(config, vacancyListCurrentPageUrl, basename, ENCODING, cf));
 				allVacancyListParts.add(partVacancyList);
 
@@ -124,7 +131,7 @@ public class App
 				if (pageCounter%30==0){
 					System.out.println();
 				}
-				//break; // FIXME
+				break; // FIXME
 			}// loop pages
 			System.out.println();
 			//break; // FIME
@@ -148,7 +155,7 @@ public class App
 				}
 			}
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -159,9 +166,11 @@ public class App
 		for (Future<List<Vacancy>> f:allVacancyListParts){
 			try {
 				List<Vacancy> lv=f.get();
-				if (lv.size()!=10){
-					System.err.println("there is not all vacancies processed");
+				System.out.print("[");
+				for (int i=0;i<lv.size();i++){
+					System.out.format("%d ",lv.get(i).getId());
 				}
+				System.out.println("]");
 				allVacancies.addAll(lv);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -195,8 +204,55 @@ public class App
 		}
 
 		executorService.shutdown();
+		
 		Date d2=new Date();
 		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
+		System.out.println("Done Loading!");
+		
+		d1=new Date();
+		System.out.println("Start storing to database");
+		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
+
+		// get stored section, delete them
+		session.beginTransaction();
+		List<Section> allStoredSection = session.createQuery("from Section").list();
+		List<Vacancy> allStoredVacancies = session.createQuery("from Vacancy").list();
+		allStoredSection.clear();
+		allStoredVacancies.clear();
+		session.getTransaction().commit();
+
+		session=HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
+		for (Section s:sections){
+			session.saveOrUpdate(s);
+		}
+		int c=0;
+		int dups=0;
+		int upds=0;
+		Set<Vacancy> vacs=new HashSet<Vacancy>();
+		for (Vacancy v:allVacancies){
+			c++;
+			
+			if (vacs.contains(v)){
+				System.out.format("Duplicate id %s\n",v.getId());
+				dups++;
+				continue;
+			}
+			else{
+				upds++;
+				session.saveOrUpdate(v);
+				vacs.add(v);
+			}
+			
+			if (c%20==0){
+				session.flush();
+				session.clear();
+			}
+		}
+		session.getTransaction().commit();
 		System.out.println("Done!");
+		d2=new Date();
+		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
+		System.out.format("Duplicates %d Updates %d\n", dups, upds);
 	}
 }
