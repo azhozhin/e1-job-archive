@@ -51,8 +51,8 @@ public class VacancySectionParser {
 				
 				// if object of some index does not exists, create it and add to result
 				try{
-					section=sections.getByIndex(idx);
-				}catch(IndexOutOfBoundsException e1){
+					section=sections.getSections().get(idx);
+				}catch(IndexOutOfBoundsException ex){
 					section=new Section();
 					sections.add(section);
 				}			
