@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Section extends DomainObject {
+public class Section {
 
 	// All fields should be protected for DomainObject methods
 	@Id

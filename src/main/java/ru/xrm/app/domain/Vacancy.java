@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.Type;
 
 @Entity
-public class Vacancy extends DomainObject {
+public class Vacancy {
 
 	// All fields should be protected for DomainObject methods
 	@Id

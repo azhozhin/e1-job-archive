@@ -1,8 +1,8 @@
 package ru.xrm.app.misc;
 
-import ru.xrm.app.domain.DomainObject;
+import java.lang.reflect.Field;
 
-public class VacancyPage extends DomainObject{
+public class VacancyPage {
 
 	protected String href;
 	

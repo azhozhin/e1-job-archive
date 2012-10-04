@@ -1,8 +1,8 @@
 package ru.xrm.app.misc;
 
-import ru.xrm.app.domain.DomainObject;
+import java.lang.reflect.Field;
 
-public class VacancyLink extends DomainObject {
+public class VacancyLink {
 
 	// All fields should be protected for DomainObject methods
 	protected String href;
