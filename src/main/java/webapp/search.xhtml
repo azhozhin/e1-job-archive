@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Hello!</title>
+</h:head>
+<h:body>
+	<h:messages />
+	<h3>Enter vacancy name</h3>
+	<h:form>
+		<h:inputText binding="#{search.searchString}" />
+		<h:commandButton action="#{search.doSearch}" value="Search" />
+		<h:commandButton action="#{search.doLoadSections}"
+			value="LoadSections" />
+
+		<table>
+			<tr valign="top">
+				<td><h:dataTable value="#{search.sections}" var="section"
+						rendered="#{search.sections.size() > 0}">
+						<h:column>
+							<h:commandLink
+								action="#{search.doShowVacancies(section.id)}"
+								value="#{section.getName()}" />
+						</h:column>
+					</h:dataTable></td>
+				<td><h:dataTable value="#{search.currentSectionVacancies}"
+						var="vacancy" rendered="#{search.currentSectionVacancies.size() > 0}">
+						<h:column>
+							<h:outputText value="#{vacancy.id}"/>
+							<h:outputText value=" "/>
+							<h:outputText value="#{vacancy.jobTitle}"/>
+							<h:outputText value=" "/>
+							<h:outputText value="#{vacancy.salary}"/>
+						</h:column>
+					</h:dataTable></td>
+			</tr>
+		</table>
+	</h:form>
+
+</h:body>
+</html>
