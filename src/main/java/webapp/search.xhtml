@@ -21,21 +21,29 @@
 				<td><h:dataTable value="#{search.sections}" var="section"
 						rendered="#{search.sections.size() > 0}">
 						<h:column>
-							<h:commandLink
-								action="#{search.doShowVacancies(section.id)}"
+							<h:commandLink action="#{search.doShowVacancies(section.id,0)}"
 								value="#{section.getName()}" />
 						</h:column>
 					</h:dataTable></td>
-				<td><h:dataTable value="#{search.currentSectionVacancies}"
-						var="vacancy" rendered="#{search.currentSectionVacancies.size() > 0}">
+				<td><h:dataTable value="#{search.vacancyPages}"
+						var="vacancyPage" rendered="#{search.vacancyPages.size() > 0}">
 						<h:column>
-							<h:outputText value="#{vacancy.id}"/>
-							<h:outputText value=" "/>
-							<h:outputText value="#{vacancy.jobTitle}"/>
-							<h:outputText value=" "/>
-							<h:outputText value="#{vacancy.salary}"/>
+							<h:commandLink
+								action="#{search.doShowVacancies(vacancyPage.sectionId,vacancyPage.pageNum)}" 
+								value="#{vacancyPage.pageNum}"/>
+						</h:column>
+					</h:dataTable> <h:dataTable value="#{search.currentSectionVacancies}"
+						var="vacancy"
+						rendered="#{search.currentSectionVacancies.size() > 0}">
+						<h:column>
+							<h:outputText value="#{vacancy.id}" />
+							<h:outputText value=" " />
+							<h:outputText value="#{vacancy.jobTitle}" />
+							<h:outputText value=" " />
+							<h:outputText value="#{vacancy.salary}" />
 						</h:column>
 					</h:dataTable></td>
+
 			</tr>
 		</table>
 	</h:form>
