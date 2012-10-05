@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 
 import ru.xrm.app.config.Config;
@@ -215,8 +214,13 @@ public class App
 
 		// get stored section, delete them
 		session.beginTransaction();
+		
+		@SuppressWarnings("unchecked")
 		List<Section> allStoredSection = session.createQuery("from Section").list();
+		
+		@SuppressWarnings("unchecked")		
 		List<Vacancy> allStoredVacancies = session.createQuery("from Vacancy").list();
+		
 		allStoredSection.clear();
 		allStoredVacancies.clear();
 		session.getTransaction().commit();
