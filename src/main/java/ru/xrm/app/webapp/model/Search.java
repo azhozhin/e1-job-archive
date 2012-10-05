@@ -19,7 +19,7 @@ import ru.xrm.app.misc.HibernateUtil;
 @SessionScoped
 public class Search implements Serializable {
 
-	private static final int PERPAGE=10; 
+	private static final int PERPAGE=3; 
 
 	private HtmlInputText searchString;
 	private List<Section> sections;
@@ -68,7 +68,16 @@ public class Search implements Serializable {
 	public void setVacancyPages(List<PaginatorItem> vacancyPages) {
 		this.vacancyPages = vacancyPages;
 	}
+	// misc
+	
+	public boolean ifNotCurrentPage(Integer pageNum){
+		return pageNum!=currentPage;
+	}
 
+	public boolean ifCurrentPage(Integer pageNum){
+		return pageNum==currentPage;
+	}
+	
 	// web actions
 	public String doSearch(){
 		searchString.setValue("processed");

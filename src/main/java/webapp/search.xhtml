@@ -30,7 +30,10 @@
 						<h:column>
 							<h:commandLink
 								action="#{search.doShowVacancies(vacancyPage.sectionId,vacancyPage.pageNum)}" 
-								value="#{vacancyPage.pageNum}"/>
+								value="#{vacancyPage.pageNum}" 
+								rendered="#{search.ifNotCurrentPage(vacancyPage.pageNum)}"/>
+							<h:outputText value="#{vacancyPage.pageNum}" 
+								rendered="#{search.ifCurrentPage(vacancyPage.pageNum)}"/>
 						</h:column>
 					</h:dataTable> <h:dataTable value="#{search.currentSectionVacancies}"
 						var="vacancy"
