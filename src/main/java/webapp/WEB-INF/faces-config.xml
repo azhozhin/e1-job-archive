@@ -4,14 +4,6 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
 	version="2.0">
 
-	<!-- Config here. Can even be kept empty. -->
- 
-	<managed-bean>
-		<managed-bean-name>visitor</managed-bean-name>
-		<managed-bean-class>ru.xrm.app.webapp.model.Visitor</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-
 	<managed-bean>
 		<managed-bean-name>search</managed-bean-name>
 		<managed-bean-class>ru.xrm.app.webapp.model.Search</managed-bean-class>
