@@ -42,7 +42,7 @@ public class UrlHelper {
 		return sb.toString();
 	}
 	
-	public String getBasename(String address){
+	public static String getBasename(String address){
 		// http://google.com/a/yandex.ru
 		// return http://google.com
 		String result="";
@@ -55,7 +55,7 @@ public class UrlHelper {
 		return result;
 	}
 	
-	public String constructAbsoluteUrl(String address, String basename){
+	public static String constructAbsoluteUrl(String address, String basename){
 		// relative url
 		if (address.charAt(0)=='/'){
 			return basename+address;
