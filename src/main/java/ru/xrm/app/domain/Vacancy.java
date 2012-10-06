@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
 
@@ -25,8 +26,9 @@ public class Vacancy {
 	@Column(name = "job_title")
 	private String jobTitle;
 
-	@Column(name = "duty_type")
-	private String dutyType;
+	@ManyToOne
+	@JoinColumn(name = "dutytype_id")
+	private DutyType dutyType;
 
 	@Column(name="education")
 	private String education;
@@ -86,11 +88,11 @@ public class Vacancy {
 		this.jobTitle = jobTitle;
 	}
 
-	public String getDutyType() {
+	public DutyType getDutyType() {
 		return dutyType;
 	}
 
-	public void setDutyType(String dutyType) {
+	public void setDutyType(DutyType dutyType) {
 		this.dutyType = dutyType;
 	}
 
