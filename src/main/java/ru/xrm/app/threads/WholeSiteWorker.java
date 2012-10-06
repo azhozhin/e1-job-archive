@@ -14,10 +14,10 @@ import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
-import ru.xrm.app.misc.SectionSet;
-import ru.xrm.app.misc.VacancyPage;
 import ru.xrm.app.parsers.VacancyListOnePageParser;
 import ru.xrm.app.parsers.VacancySectionParser;
+import ru.xrm.app.util.SectionSet;
+import ru.xrm.app.util.VacancyPage;
 
 public class WholeSiteWorker implements Runnable {
 
@@ -120,7 +120,7 @@ public class WholeSiteWorker implements Runnable {
 				if (pageCounter%30==0){
 					System.out.println();
 				}
-				//break; // FIXME
+				break; // FIXME
 			}// loop pages
 			System.out.println();
 			//break; // FIME

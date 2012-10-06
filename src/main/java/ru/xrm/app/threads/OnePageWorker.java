@@ -8,9 +8,9 @@ import ru.xrm.app.config.Config;
 import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.httpclient.CachingHttpFetcher;
 import ru.xrm.app.httpclient.UrlHelper;
-import ru.xrm.app.misc.VacancyLink;
 import ru.xrm.app.parsers.VacancyListOnePageParser;
 import ru.xrm.app.parsers.VacancyParser;
+import ru.xrm.app.util.VacancyLink;
 
 public class OnePageWorker implements Callable<List<Vacancy>>{
 

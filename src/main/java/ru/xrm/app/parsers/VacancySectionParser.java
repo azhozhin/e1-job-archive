@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
 import ru.xrm.app.domain.Section;
-import ru.xrm.app.misc.SectionSet;
+import ru.xrm.app.util.SectionSet;
 
 public class VacancySectionParser {
 

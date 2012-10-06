@@ -10,8 +10,8 @@ import org.jsoup.select.Elements;
 
 import ru.xrm.app.config.Config;
 import ru.xrm.app.config.Entry;
-import ru.xrm.app.misc.VacancyLink;
-import ru.xrm.app.misc.VacancyPage;
+import ru.xrm.app.util.VacancyLink;
+import ru.xrm.app.util.VacancyPage;
 
 public class VacancyListOnePageParser {
 
