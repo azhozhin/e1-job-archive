@@ -5,34 +5,53 @@ import ru.xrm.app.dao.hibernate.impl.*;
 
 public class DAOUtil {
 
-	private static VacancyDAO vacancyDAO = DAOFactory.getInstance().getDao(VacancyDAOHibernateImpl.class);
-	private static SectionDAO sectionDAO = DAOFactory.getInstance().getDao(SectionDAOHibernateImpl.class);
-	private static ScheduleDAO scheduleDAO = DAOFactory.getInstance().getDao(ScheduleDAOHibernateImpl.class);
-	private static EmployerDAO employerDAO = DAOFactory.getInstance().getDao(EmployerDAOHibernateImpl.class);
-	private static EducationDAO educationDAO = DAOFactory.getInstance().getDao(EducationDAOHibernateImpl.class);
-	private static DutyTypeDAO dutyTypeDAO = DAOFactory.getInstance().getDao(DutyTypeDAOHibernateImpl.class);
-	private static CityDAO cityDAO = DAOFactory.getInstance().getDao(CityDAOHibernateImpl.class);
+	private final VacancyDAO vacancyDAO;
+	private final SectionDAO sectionDAO;
+	private final ScheduleDAO scheduleDAO;
+	private final EmployerDAO employerDAO;
+	private final EducationDAO educationDAO;
+	private final DutyTypeDAO dutyTypeDAO;
+	private final CityDAO cityDAO;
+	
+	private static DAOUtil instance;
+	public static synchronized DAOUtil getInstance(){
+		if (instance==null){
+			instance = new DAOUtil();
+		}
+		return instance;
+	}
 
-	public static VacancyDAO getVacancyDAO() {
+	private DAOUtil(){
+		vacancyDAO = DAOFactory.getInstance().getDao(VacancyDAOHibernateImpl.class);
+		sectionDAO = DAOFactory.getInstance().getDao(SectionDAOHibernateImpl.class);
+		scheduleDAO = DAOFactory.getInstance().getDao(ScheduleDAOHibernateImpl.class);
+		employerDAO = DAOFactory.getInstance().getDao(EmployerDAOHibernateImpl.class);
+		educationDAO = DAOFactory.getInstance().getDao(EducationDAOHibernateImpl.class);
+		dutyTypeDAO = DAOFactory.getInstance().getDao(DutyTypeDAOHibernateImpl.class);
+		cityDAO = DAOFactory.getInstance().getDao(CityDAOHibernateImpl.class);
+	}
+
+	
+	public VacancyDAO getVacancyDAO() {
 		return vacancyDAO;
 	}
 
-	public static SectionDAO getSectionDAO() {
+	public SectionDAO getSectionDAO() {
 		return sectionDAO;
 	}
-	public static ScheduleDAO getScheduleDAO() {
+	public ScheduleDAO getScheduleDAO() {
 		return scheduleDAO;
 	}
-	public static EmployerDAO getEmployerDAO() {
+	public EmployerDAO getEmployerDAO() {
 		return employerDAO;
 	}
-	public static EducationDAO getEducationDAO() {
+	public EducationDAO getEducationDAO() {
 		return educationDAO;
 	}
-	public static DutyTypeDAO getDutyTypeDAO() {
+	public DutyTypeDAO getDutyTypeDAO() {
 		return dutyTypeDAO;
 	}
-	public static CityDAO getCityDAO() {
+	public CityDAO getCityDAO() {
 		return cityDAO;
 	}
 	
