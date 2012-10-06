@@ -19,5 +19,8 @@
 		<mapping class="ru.xrm.app.domain.Vacancy" />
 		<mapping class="ru.xrm.app.domain.DutyType" />
 		<mapping class="ru.xrm.app.domain.Education" />
+		<mapping class="ru.xrm.app.domain.Schedule" />
+		<mapping class="ru.xrm.app.domain.City" />
+		<mapping class="ru.xrm.app.domain.Employer" />
 	</session-factory>
 </hibernate-configuration>
