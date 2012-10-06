@@ -17,15 +17,21 @@ import java.util.concurrent.Future;
 import org.hibernate.Session;
 
 import ru.xrm.app.config.Config;
+import ru.xrm.app.domain.City;
 import ru.xrm.app.domain.DutyType;
 import ru.xrm.app.domain.Education;
+import ru.xrm.app.domain.Employer;
+import ru.xrm.app.domain.Schedule;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.misc.DutyTypeSet;
-import ru.xrm.app.misc.EducationSet;
-import ru.xrm.app.misc.HibernateUtil;
-import ru.xrm.app.misc.SectionSet;
 import ru.xrm.app.threads.WholeSiteWorker;
+import ru.xrm.app.util.CitySet;
+import ru.xrm.app.util.DutyTypeSet;
+import ru.xrm.app.util.EducationSet;
+import ru.xrm.app.util.EmployerSet;
+import ru.xrm.app.util.HibernateUtil;
+import ru.xrm.app.util.ScheduleSet;
+import ru.xrm.app.util.SectionSet;
 
 public class App 
 {
@@ -146,12 +152,16 @@ public class App
 		// get stored section, delete them
 		session.beginTransaction();
 		
-		session.createQuery("from DutyType").list().clear();
-		session.createQuery("from Education").list().clear();
+		session.createQuery("delete from Vacancy").executeUpdate();
 		
-		session.createQuery("from Section").list().clear();
-		session.createQuery("from Vacancy").list().clear();
-				
+		session.createQuery("delete from Section").executeUpdate();
+		
+		session.createQuery("delete from DutyType").executeUpdate();
+		session.createQuery("delete from Education").executeUpdate();
+		session.createQuery("delete from Schedule").executeUpdate();
+		session.createQuery("delete from City").executeUpdate();
+		session.createQuery("delete from Employer").executeUpdate();
+
 		session.getTransaction().commit();
 
 		// save
@@ -164,6 +174,18 @@ public class App
 		
 		for (Education e:EducationSet.getInstance().getEducations()){
 			session.save(e);
+		}
+		
+		for (Schedule sc:ScheduleSet.getInstance().getSchedules()){
+			session.save(sc);
+		}
+		
+		for (City ci:CitySet.getInstance().getCities()){
+			session.save(ci);
+		}
+		
+		for (Employer em:EmployerSet.getInstance().getEmployers()){
+			session.save(em);
 		}
 	 
 		for (Section s:SectionSet.getInstance().getSections()){
@@ -183,7 +205,7 @@ public class App
 			}
 			else{
 				upds++;
-				session.saveOrUpdate(v);
+				session.save(v);
 				vacs.add(v);
 			}
 

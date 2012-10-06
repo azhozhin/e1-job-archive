@@ -9,12 +9,23 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.TypedValue;
 
+import ru.xrm.app.dao.DAOFactory;
+import ru.xrm.app.dao.SectionDAO;
+import ru.xrm.app.dao.hibernate.impl.SectionDAOHibernateImpl;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.misc.HibernateUtil;
+import ru.xrm.app.util.DAOUtil;
+import ru.xrm.app.util.HibernateUtil;
 
 @ManagedBean(name="session")
 @SessionScoped
@@ -34,7 +45,6 @@ public class Search implements Serializable {
 
 	public Search(){
 		init();
-
 	}
 	
 	private void init(){
@@ -46,8 +56,9 @@ public class Search implements Serializable {
 		List<Section> sections = session.createQuery("from Section").list();
 		
 		for (Section s:sections){
-			Query q=session.createQuery("select count(v) from Vacancy v where v.section.id=:id").setParameter("id", s.getId());
+			Query q=session.getNamedQuery("Vacancy.countByCategoryId").setParameter("id", s.getId());
 			Integer vacanciesCount=((Long)q.iterate().next()).intValue();
+			
 			sectionHolders.add(new SectionHolder(s, vacanciesCount));
 		}
 
@@ -128,7 +139,7 @@ public class Search implements Serializable {
 		// this is new section, get count of vacancies in this section and calculate pages
 
 		if (currentSectionId!=sectionId){
-			q=session.createQuery("select count(v) from Vacancy v where v.section.id=:id");
+			q=session.createQuery("Vacancy.countByCategoryId");
 			q.setParameter("id", sectionId);
 			Integer totalVacanvies=((Long)q.iterate().next()).intValue();
 
@@ -155,7 +166,7 @@ public class Search implements Serializable {
 		}
 
 		// get data with paginationg
-		q=session.createQuery("from Vacancy as v where v.section.id=:id");
+		q=session.getNamedQuery("Vacancy.findByCategoryId");
 		q.setParameter("id", sectionId);
 		q.setFirstResult(PERPAGE*page);
 		q.setMaxResults(PERPAGE);

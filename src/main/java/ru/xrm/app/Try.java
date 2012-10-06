@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.misc.HibernateUtil;
+import ru.xrm.app.util.HibernateUtil;
 
 public class Try {
 /*
