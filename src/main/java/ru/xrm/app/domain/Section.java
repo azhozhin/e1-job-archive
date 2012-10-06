@@ -103,7 +103,7 @@ public class Section {
 		Field field = aClass.getDeclaredField(property);
 		field.set(this, value);
 	}
-	
+	/*
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getName());
@@ -125,5 +125,5 @@ public class Section {
 		}
 		sb.append("}\n");
 		return sb.toString();
-	}
+	}*/
 }

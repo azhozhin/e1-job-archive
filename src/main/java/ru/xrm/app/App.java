@@ -123,14 +123,14 @@ public class App
 				}
 
 				// FIXME: should be vacancyNextPageUrl not vacancyListCurrentPageUrl
-				Future<List<Vacancy>> partVacancyList=executorService.submit(new OnePageWorker(config, vacancyListCurrentPageUrl, basename, ENCODING, cf));
+				Future<List<Vacancy>> partVacancyList=executorService.submit(new OnePageWorker(config, vacancyNextPageUrl, basename, ENCODING, cf));
 				allVacancyListParts.add(partVacancyList);
 
 				pageCounter++;
 				if (pageCounter%30==0){
 					System.out.println();
 				}
-				break; // FIXME
+				//break; // FIXME
 			}// loop pages
 			System.out.println();
 			//break; // FIME
@@ -185,7 +185,8 @@ public class App
 			//System.out.print(v);
 			if (v.getSection()==null){
 				System.err.format("There is empty section for vacancy\n");
-				System.err.println(v);
+				//System.err.println(v);
+				continue;
 			}else{
 				String key=v.getSection().getName();
 				Integer value;
