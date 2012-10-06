@@ -3,52 +3,141 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>Hello!</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputScript library="js" name="bootstrap.js" />
 </h:head>
 <h:body>
 	<h:messages />
-	<h3>Enter vacancy name</h3>
-	<h:form>
-		<h:inputText binding="#{search.searchString}" />
-		<h:commandButton action="#{search.doSearch}" value="Search" />
-		<h:commandButton action="#{search.doLoadSections}"
-			value="LoadSections" />
 
-		<table>
-			<tr valign="top">
-				<td><h:dataTable value="#{search.sections}" var="section"
-						rendered="#{search.sections.size() > 0}">
-						<h:column>
-							<h:commandLink action="#{search.doShowVacancies(section.id,0)}"
-								value="#{section.getName()}" />
-						</h:column>
-					</h:dataTable></td>
-				<td><h:dataTable value="#{search.vacancyPages}"
-						var="vacancyPage" rendered="#{search.vacancyPages.size() > 0}">
-						<h:column>
-							<h:commandLink
-								action="#{search.doShowVacancies(vacancyPage.sectionId,vacancyPage.pageNum)}" 
-								value="#{vacancyPage.pageNum}" 
-								rendered="#{search.ifNotCurrentPage(vacancyPage.pageNum)}"/>
-							<h:outputText value="#{vacancyPage.pageNum}" 
-								rendered="#{search.ifCurrentPage(vacancyPage.pageNum)}"/>
-						</h:column>
-					</h:dataTable> <h:dataTable value="#{search.currentSectionVacancies}"
-						var="vacancy"
-						rendered="#{search.currentSectionVacancies.size() > 0}">
-						<h:column>
-							<h:outputText value="#{vacancy.id}" />
-							<h:outputText value=" " />
-							<h:outputText value="#{vacancy.jobTitle}" />
-							<h:outputText value=" " />
-							<h:outputText value="#{vacancy.salary}" />
-						</h:column>
-					</h:dataTable></td>
+	<div class="page-header">
+		<h1>e1.ru vacancy archive</h1>
+	</div>
 
-			</tr>
-		</table>
+	<h:form styleClass="search-form form-horizontal">
+		<div class="tabbable">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">Simple Search</a></li>
+				<li><a href="#tab2" data-toggle="tab">Advanced Search</a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab1">
+					<div class="input-append">
+						<h:inputText binding="#{search.searchString}" styleClass="span2" />
+						<h:commandButton action="#{search.doSearch}" styleClass="btn" value="Search" />
+					</div>
+				</div>
+				<div class="tab-pane" id="tab2">
+					<div class="control-group">
+						<label class="control-label" for="inputEmail">Salary</label>
+						<div class="controls">
+							<input type="text" id="inputEmail" placeholder="Email"/>
+							<input type="text" id="inputEmail" placeholder="Email"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">JobTitle</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">dutyType</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">education</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">expirience</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">schedule</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">city</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">employer</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="inputPassword">section;</label>
+						<div class="controls">
+							<input type="password" id="inputPassword" placeholder="Password"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="submit" class="btn">Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="span4">
+				<h:dataTable value="#{search.sectionHolders}" var="sectionHolder"
+					rendered="#{search.sectionHolders.size() > 0}"
+					styleClass="table table-hover table-condensed">
+					<h:column>
+						<h:commandLink
+							action="#{search.doShowVacancies(sectionHolder.section.id,0)}"
+							value="#{sectionHolder.section.name}" />
+						<h:outputText value=" (#{sectionHolder.vacanciesCount})" />
+					</h:column>
+				</h:dataTable>
+			</div>
+			<div class="span8">
+				<!-- Paginator -->
+				<div class="pagination">
+					<ul>
+						<ui:repeat value="#{search.vacancyPages}" var="page">
+							<li class="#{search.currentPage==page.pageNum ? 'active' : '' }">
+								<h:commandLink
+									action="#{search.doShowVacancies(page.sectionId,page.pageNum)}"
+									value="#{page.pageNum}" />
+							</li>
+						</ui:repeat>
+					</ul>
+				</div>
+
+				<!-- Vacancies -->
+				<h:dataTable value="#{search.currentSectionVacancies}" var="vacancy"
+					rendered="#{search.currentSectionVacancies.size() > 0}">
+					<h:column>
+						<h:outputText value="#{vacancy.id}" />
+						<h:outputText value=" " />
+						<h:outputText value="#{vacancy.jobTitle}" />
+						<h:outputText value=" " />
+						<h:outputText value="#{vacancy.salary}" />
+					</h:column>
+				</h:dataTable>
+
+			</div>
+		</div>
 	</h:form>
 
 </h:body>

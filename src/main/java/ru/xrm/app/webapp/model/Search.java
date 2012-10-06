@@ -2,6 +2,7 @@ package ru.xrm.app.webapp.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -19,15 +20,39 @@ import ru.xrm.app.misc.HibernateUtil;
 @SessionScoped
 public class Search implements Serializable {
 
-	private static final int PERPAGE=3; 
+	private static final long serialVersionUID = 1L;
+
+	private static final int PERPAGE=10; 
 
 	private HtmlInputText searchString;
-	private List<Section> sections;
+	private List<SectionHolder> sectionHolders;
 	private List<Vacancy> currentSectionVacancies;
 	private Long currentSectionId=-1L;
 	private Integer totalPages=-1;
 	private Integer currentPage=-1;
 	private List<PaginatorItem> vacancyPages=new ArrayList<PaginatorItem>();
+
+	public Search(){
+		init();
+
+	}
+	
+	private void init(){
+		sectionHolders=new ArrayList<SectionHolder>();
+		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
+
+		session.beginTransaction();
+
+		List<Section> sections = session.createQuery("from Section").list();
+		
+		for (Section s:sections){
+			Query q=session.createQuery("select count(v) from Vacancy v where v.section.id=:id").setParameter("id", s.getId());
+			Integer vacanciesCount=((Long)q.iterate().next()).intValue();
+			sectionHolders.add(new SectionHolder(s, vacanciesCount));
+		}
+
+		session.getTransaction().commit();
+	}
 
 	public HtmlInputText getSearchString() {
 		return searchString;
@@ -37,12 +62,12 @@ public class Search implements Serializable {
 		this.searchString = searchString;
 	}
 
-	public List<Section> getSections() {
-		return sections;
+	public List<SectionHolder> getSectionHolders() {
+		return sectionHolders;
 	}
 
-	public void setSections(List<Section> sections) {
-		this.sections = sections;
+	public void setSectionHolders(List<SectionHolder> sectionHolders) {
+		this.sectionHolders = sectionHolders;
 	}
 
 	public List<Vacancy> getCurrentSectionVacancies() {
@@ -68,8 +93,17 @@ public class Search implements Serializable {
 	public void setVacancyPages(List<PaginatorItem> vacancyPages) {
 		this.vacancyPages = vacancyPages;
 	}
-	// misc
+
+	public Integer getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
 	
+	// misc
+
 	public boolean ifNotCurrentPage(Integer pageNum){
 		return pageNum!=currentPage;
 	}
@@ -78,24 +112,13 @@ public class Search implements Serializable {
 		return pageNum==currentPage;
 	}
 	
+
 	// web actions
 	public String doSearch(){
 		searchString.setValue("processed");
 		return ""; // stay on same page
 	}
-
-	public String doLoadSections(){
-		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
-
-		session.beginTransaction();
-
-		sections = session.createQuery("from Section").list();
-
-		session.getTransaction().commit();
-
-		return "";
-	}
-
+	
 	public String doShowVacancies(Long sectionId, Integer page){
 		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
 		Query q;
@@ -103,26 +126,33 @@ public class Search implements Serializable {
 		session.beginTransaction();
 
 		// this is new section, get count of vacancies in this section and calculate pages
+
 		if (currentSectionId!=sectionId){
 			q=session.createQuery("select count(v) from Vacancy v where v.section.id=:id");
 			q.setParameter("id", sectionId);
 			Integer totalVacanvies=((Long)q.iterate().next()).intValue();
-			
+
 			if (totalVacanvies % PERPAGE == 0){
 				totalPages=totalVacanvies/PERPAGE;
 			}else{
 				totalPages=totalVacanvies/PERPAGE+1;
 			}
-
-			vacancyPages.clear();
-			for (int i=0;i<totalPages;i++){
-				vacancyPages.add(new PaginatorItem(sectionId,i));
-			}
-
 			currentSectionId=sectionId;
 		}
 
-		currentPage=page;		
+		currentPage=page;
+		
+		vacancyPages.clear();
+		int left=Math.max(0, currentPage-5);
+		int right=Math.min(currentPage+5, totalPages);
+		if (right-left<10){
+				right=Math.min(right+(10-right+left), totalPages);
+				left=Math.max(0, left-(10-right+left));
+		}
+
+		for (int i=left;i<right;i++){
+			vacancyPages.add(new PaginatorItem(sectionId,i));
+		}
 
 		// get data with paginationg
 		q=session.createQuery("from Vacancy as v where v.section.id=:id");
