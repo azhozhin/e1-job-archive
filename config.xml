@@ -1,36 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <properties>
-<!--
-	Structure of data on http://www.e1.ru/business/job/:
-	
-	Vacancy Section
-	    + VacancyList page0
-	        + VacancyLink
-	           - Vacancy
-	        + VacancyLink
-	           - Vacancy
-	        ...
-	        + VacancyLink
-	           - Vacancy
-	    + VacancyList page1
-	    ...
-	    + VacancyList pageX
-	Vacancy Section
-	...
-	Vacancy Section
--->
-<!-- 
-	Named CSS queries
--->
+
 	<cssNamedQueries>
 		<cssNamedQuery name='vacancyProperty'>
 			<cssQuery>td[width=30%%][align=right][valign=top] > strong:contains(%s)</cssQuery>
 			<cssArgsCount>1</cssArgsCount>
 		</cssNamedQuery>
 	</cssNamedQueries>
-<!--
-	Vacancy Sections
--->
+
 	<vacancySectionProperties>
 		<entry>
 			<key>id</key>
@@ -90,6 +67,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancyDutyTypePropertyTransformer</propertyTransformer>
 		</entry>
 		<entry>
 			<key>education</key>
@@ -99,6 +77,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancyEducationPropertyTransformer</propertyTransformer>
 		</entry> 
 		<entry>
 			<key>experience</key>

@@ -30,8 +30,9 @@ public class Vacancy {
 	@JoinColumn(name = "dutytype_id")
 	private DutyType dutyType;
 
-	@Column(name="education")
-	private String education;
+	@ManyToOne
+	@JoinColumn(name="education_id")
+	private Education education;
 
 	@Column(name="experience")
 	private String experience;
@@ -96,11 +97,11 @@ public class Vacancy {
 		this.dutyType = dutyType;
 	}
 
-	public String getEducation() {
+	public Education getEducation() {
 		return education;
 	}
 
-	public void setEducation(String education) {
+	public void setEducation(Education education) {
 		this.education = education;
 	}
 
