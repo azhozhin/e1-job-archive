@@ -8,3 +8,23 @@ IDE: eclipse
 + m2e (maven for eclipse) 
 + eclemma (code coverage)
 + junit
+
+
+Structure of data on http://www.e1.ru/business/job/:
+	
+Vacancy Section1
+    + VacancyList page0
+        + VacancyLink1
+           - Vacancy1
+        + VacancyLink2
+           - Vacancy2
+        ...
+        + VacancyLinkN
+           - VacancyN
+    + VacancyList page1
+    ...
+    + VacancyList pageX
+    
+Vacancy Section2
+...
+Vacancy SectionN

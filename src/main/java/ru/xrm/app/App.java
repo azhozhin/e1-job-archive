@@ -17,8 +17,12 @@ import java.util.concurrent.Future;
 import org.hibernate.Session;
 
 import ru.xrm.app.config.Config;
+import ru.xrm.app.domain.DutyType;
+import ru.xrm.app.domain.Education;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
+import ru.xrm.app.misc.DutyTypeSet;
+import ru.xrm.app.misc.EducationSet;
 import ru.xrm.app.misc.HibernateUtil;
 import ru.xrm.app.misc.SectionSet;
 import ru.xrm.app.threads.WholeSiteWorker;
@@ -53,8 +57,6 @@ public class App
 		int threadCounter;
 		
 		ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
-	    
-
 
 		do{
 			threadCounter=0;
@@ -130,28 +132,42 @@ public class App
 			System.out.format("%s \t %s\n",vacancy,stats.get(vacancy));
 		}
 
+
+		System.out.println("DutyTypes:");
+		for(DutyType dt:DutyTypeSet.getInstance().getDutyTypes()){
+			System.out.format("DT %s\n", dt.getName());
+		}
+	
+		
 		Date d1=new Date();
 		System.out.println("Start storing to database");
 		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
 
 		// get stored section, delete them
 		session.beginTransaction();
-
-		@SuppressWarnings("unchecked")
-		List<Section> allStoredSection = session.createQuery("from Section").list();
-
-		@SuppressWarnings("unchecked")		
-		List<Vacancy> allStoredVacancies = session.createQuery("from Vacancy").list();
-
-		allStoredSection.clear();
-		allStoredVacancies.clear();
+		
+		session.createQuery("from DutyType").list().clear();
+		session.createQuery("from Education").list().clear();
+		
+		session.createQuery("from Section").list().clear();
+		session.createQuery("from Vacancy").list().clear();
+				
 		session.getTransaction().commit();
 
+		// save
 		session=HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List<Section> sections=SectionSet.getInstance().getSections();
-		for (Section s:sections){
-			session.saveOrUpdate(s);
+		
+		for (DutyType dt:DutyTypeSet.getInstance().getDutyTypes()){
+			session.save(dt);
+		}
+		
+		for (Education e:EducationSet.getInstance().getEducations()){
+			session.save(e);
+		}
+	 
+		for (Section s:SectionSet.getInstance().getSections()){
+			session.save(s);
 		}
 		int c=0;
 		int dups=0;

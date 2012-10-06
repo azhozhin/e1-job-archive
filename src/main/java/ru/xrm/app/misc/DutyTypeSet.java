@@ -39,30 +39,4 @@ public class DutyTypeSet {
 		return dutyTypes;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((dutyTypes == null) ? 0 : dutyTypes.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DutyTypeSet other = (DutyTypeSet) obj;
-		if (dutyTypes == null) {
-			if (other.dutyTypes != null)
-				return false;
-		} else if (!dutyTypes.equals(other.dutyTypes))
-			return false;
-		return true;
-	}
-	
 }

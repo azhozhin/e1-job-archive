@@ -11,7 +11,7 @@ import ru.xrm.app.domain.Vacancy;
 import ru.xrm.app.misc.HibernateUtil;
 
 public class Try {
-
+/*
 	public static void main(String[] args) {
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -54,4 +54,5 @@ public class Try {
 			session.close();
 		}
 	}
+	*/
 }
