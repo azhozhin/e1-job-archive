@@ -17,5 +17,7 @@
 		
 		<mapping class="ru.xrm.app.domain.Section" />
 		<mapping class="ru.xrm.app.domain.Vacancy" />
+		<mapping class="ru.xrm.app.domain.DutyType" />
+		<mapping class="ru.xrm.app.domain.Education" />
 	</session-factory>
 </hibernate-configuration>
