@@ -44,20 +44,21 @@ public class Search implements Serializable {
 	private List<PaginatorItem> vacancyPages=new ArrayList<PaginatorItem>();
 
 	public Search(){
-		init();
 	}
 	
 	private void init(){
 		sectionHolders=new ArrayList<SectionHolder>();
 		Session session=HibernateUtil.getSessionFactory().getCurrentSession();
-
 		session.beginTransaction();
 
-		List<Section> sections = session.createQuery("from Section").list();
+//		List<Section> sections = session.createQuery("from Section").list();
+
+		List<Section> sections = DAOUtil.getInstance().getSectionDAO().findAll(Section.class);
 		
 		for (Section s:sections){
-			Query q=session.getNamedQuery("Vacancy.countByCategoryId").setParameter("id", s.getId());
-			Integer vacanciesCount=((Long)q.iterate().next()).intValue();
+			//Query q=session.getNamedQuery("Vacancy.countByCategoryId").setParameter("id", s.getId());
+			//Integer vacanciesCount=((Long)q.iterate().next()).intValue();
+			Integer vacanciesCount=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(s.getId());
 			
 			sectionHolders.add(new SectionHolder(s, vacanciesCount));
 		}
@@ -125,6 +126,12 @@ public class Search implements Serializable {
 	
 
 	// web actions
+
+	public String doLoad(){
+		init();
+		return "";
+	}
+	
 	public String doSearch(){
 		searchString.setValue("processed");
 		return ""; // stay on same page
