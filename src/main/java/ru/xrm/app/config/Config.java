@@ -15,13 +15,22 @@ import org.w3c.dom.NodeList;
 
 public class Config {
 
+	private static Config instance;
+	
 	Map<String,NamedCSSQuery> namedQueries;
 	List<Entry> vacancySectionProperties;
 	List<Entry> vacancyListProperties;
 	List<Entry> vacancyProperties;
 	List<Entry> vacancyListPaginatorProperties;
+
+	public static Config getInstance(){
+		if (instance==null){
+			instance=new Config();
+		}
+		return instance;
+	}
 	
-	private void init(){
+	private Config(){
 		namedQueries=new HashMap<String,NamedCSSQuery>();
 		vacancySectionProperties=new ArrayList<Entry>();
 		vacancyListProperties=new ArrayList<Entry>();
@@ -30,7 +39,6 @@ public class Config {
 	}
 	
 	public void load(String filename) throws Exception{
-		init();
 		DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
 		Document document;
