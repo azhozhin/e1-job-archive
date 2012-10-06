@@ -1,6 +1,6 @@
 package ru.xrm.app.transformers;
 
-import ru.xrm.app.misc.DutyTypeSet;
+import ru.xrm.app.util.DutyTypeSet;
 
 public class VacancyDutyTypePropertyTransformer implements PropertyTransformer {
 

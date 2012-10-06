@@ -1,7 +1,7 @@
 package ru.xrm.app.transformers;
 
 import ru.xrm.app.domain.Section;
-import ru.xrm.app.misc.SectionSet;
+import ru.xrm.app.util.SectionSet;
 
 public class VacancySectionPropertyTransformer implements PropertyTransformer {
 

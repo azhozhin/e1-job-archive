@@ -9,11 +9,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Type;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Vacancy.findByCategoryId", query="from Vacancy v where v.section.id=:id"),
+	@NamedQuery(name="Vacancy.countByCategoryId", query="select count(v) from Vacancy v where v.section.id=:id")
+})
 public class Vacancy {
 
 	@Id
@@ -35,21 +40,23 @@ public class Vacancy {
 	private Education education;
 
 	@Column(name="experience")
-	private String experience;
+	private Integer experience;
 
-	@Column(name="schedule")
-	private String schedule;
+	@ManyToOne
+	@JoinColumn(name="schedule")
+	private Schedule schedule;
 
 	@ManyToOne
 	@JoinColumn(name = "section_id")
 	private Section section;
 
-	@Column(name="city")
-	private String city;
+	@ManyToOne
+	@JoinColumn(name="city_id")
+	private City city;
 
-	// TODO: make employer as separate class
-	@Column(name="employer")
-	private String employer;
+	@ManyToOne
+	@JoinColumn(name="employer_id")
+	private Employer employer;
 
 	@Column(name = "vacancy_date")
 	@Type(type = "date")
@@ -105,19 +112,19 @@ public class Vacancy {
 		this.education = education;
 	}
 
-	public String getExperience() {
+	public Integer getExperience() {
 		return experience;
 	}
 
-	public void setExperience(String experience) {
+	public void setExperience(Integer experience) {
 		this.experience = experience;
 	}
 
-	public String getSchedule() {
+	public Schedule getSchedule() {
 		return schedule;
 	}
 
-	public void setSchedule(String schedule) {
+	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
 	}
 
@@ -130,19 +137,19 @@ public class Vacancy {
 		section.getVacancies().add(this);
 	}
 
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
-	public String getEmployer() {
+	public Employer getEmployer() {
 		return employer;
 	}
 
-	public void setEmployer(String employer) {
+	public void setEmployer(Employer employer) {
 		this.employer = employer;
 	}
 

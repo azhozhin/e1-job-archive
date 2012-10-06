@@ -1,6 +1,6 @@
 package ru.xrm.app.transformers;
 
-import ru.xrm.app.misc.EducationSet;
+import ru.xrm.app.util.EducationSet;
 
 public class VacancyEducationPropertyTransformer implements PropertyTransformer {
 
