@@ -87,6 +87,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancyExperiencePropertyTransformer</propertyTransformer>
 		</entry>	
 		<entry>
 			<key>schedule</key>
@@ -96,6 +97,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancySchedulePropertyTransformer</propertyTransformer>
 		</entry> 
 		<entry>
 			<key>section</key>
@@ -115,6 +117,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancyCityPropertyTransformer</propertyTransformer>
 		</entry>
 		<entry>
 			<key>employer</key>
@@ -124,6 +127,7 @@
 			</cssQueryArgs>
 			<elementWalker>ru.xrm.app.walkers.VacancyPropertyElementWalker</elementWalker>
 			<elementEvaluator>ru.xrm.app.evaluators.GetText</elementEvaluator>
+			<propertyTransformer>ru.xrm.app.transformers.VacancyEmployerPropertyTransformer</propertyTransformer>
 		</entry>
 		<entry>
 			<key>date</key>
