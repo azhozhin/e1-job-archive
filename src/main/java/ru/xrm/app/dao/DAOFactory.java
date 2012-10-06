@@ -24,6 +24,7 @@ public class DAOFactory {
 			try {
 				dao = daoClazz.newInstance();
 				daos.put(daoClazz, dao);
+				return dao;
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
