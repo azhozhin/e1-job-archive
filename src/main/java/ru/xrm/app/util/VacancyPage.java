@@ -1,4 +1,4 @@
-package ru.xrm.app.misc;
+package ru.xrm.app.util;
 
 import java.lang.reflect.Field;
 

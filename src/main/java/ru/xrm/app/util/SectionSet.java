@@ -1,4 +1,4 @@
-package ru.xrm.app.misc;
+package ru.xrm.app.util;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,8 +42,9 @@ public class SectionSet {
 		}
 		return null;
 	}
+	
 	public synchronized List<Section> getSections(){
 		return sections;
 	}
-	
+
 }
