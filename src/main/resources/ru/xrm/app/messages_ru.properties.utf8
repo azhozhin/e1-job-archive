@@ -1,0 +1,19 @@
+page.title = e1.ru архив вакансий
+page.search.simple = Простой поиск
+page.search.advanced = Расширенный поиск
+page.search.button = Найти!
+page.sections.header = Разделы
+property.jobTitle = Должность
+property.salary = Заработная плата
+property.dutyType = Занятость
+property.education = Образование 
+property.experience = Опыт работы
+property.schedule = График работы
+property.city = Город
+property.employer = Компания
+property.date =  Дата размещения
+property.contactInformation = Контакты
+property.presentedBy = Предоставлено
+
+common.from = от
+common.to = до

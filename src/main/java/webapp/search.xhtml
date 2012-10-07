@@ -13,132 +13,232 @@
 	<h:outputScript library="js" name="bootstrap.js" />
 </h:head>
 <h:body>
-	<h:messages />
-
-	<div class="page-header">
-		<h1>e1.ru vacancy archive</h1>
-	</div>
-
 	<h:form styleClass="search-form form-horizontal">
-		<div class="tabbable">
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab1" data-toggle="tab">Simple Search</a></li>
-				<li><a href="#tab2" data-toggle="tab">Advanced Search</a></li>
-			</ul>
-			<div class="tab-content">
-				<div class="tab-pane active" id="tab1">
-					<div class="input-append">
-						<h:inputText binding="#{search.searchString}" styleClass="span2" />
-						<h:commandButton action="#{search.doSearch}" styleClass="btn" value="Search" />
-						<h:commandButton action="#{search.doLoad}" styleClass="btn" value="Load"/>
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+					<h:messages />
+					<div class="page-header">
+						<h1>#{msg['page.title']}</h1>
 					</div>
-				</div>
-				<div class="tab-pane" id="tab2">
-					<div class="control-group">
-						<label class="control-label" for="inputEmail">Salary</label>
-						<div class="controls">
-							<input type="text" id="inputEmail" placeholder="Email"/>
-							<input type="text" id="inputEmail" placeholder="Email"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">JobTitle</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">dutyType</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">education</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">expirience</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">schedule</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">city</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">employer</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="inputPassword">section;</label>
-						<div class="controls">
-							<input type="password" id="inputPassword" placeholder="Password"/>
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="submit" class="btn">Search</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="span4">
-				<h:dataTable value="#{search.sectionHolders}" var="sectionHolder"
-					rendered="#{search.sectionHolders.size() > 0}"
-					styleClass="table table-hover table-condensed">
-					<h:column>
-						<h:commandLink
-							action="#{search.doShowVacancies(sectionHolder.section.id,0)}"
-							value="#{sectionHolder.section.name}" />
-						<h:outputText value=" (#{sectionHolder.vacanciesCount})" />
-					</h:column>
-				</h:dataTable>
+					<div class="tabbable">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">#{msg['page.search.simple']}</a></li>
+							<li><a href="#tab2" data-toggle="tab">#{msg['page.search.advanced']}</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab1">
+								<div class="input-append">
+									<h:inputText binding="#{search.searchString}"
+										styleClass="span4" />
+									<h:commandButton action="#{search.doSearch}" styleClass="btn"
+										value="#{msg['page.search.button']}" />
+								</div>
+							</div>
+							<div class="tab-pane" id="tab2">
+								<div class="row-fluid">
+									<!-- left column -->
+									<div class="span6">
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.jobTitle']}</label>
+											<div class="controls">
+												<input type="password" id="inputPassword" />
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputEmail">#{msg['property.salary']}</label>
+											<div class="controls">
+												#{msg['common.from']}: <input type="text" id="inputEmail" /><br />
+												#{msg['common.to']}:<input type="text" id="inputEmail" />
+											</div>
+										</div>
+
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.dutyType']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedDutyType}">
+													<f:selectItems value="#{search.dutyTypes}" var="dt"
+														itemLabel="#{dt.name}" itemValue="#{dt.id}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.education']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedEducation}">
+													<f:selectItems value="#{search.educations}" var="edu"
+														itemLabel="#{edu.name}" itemValue="#{edu.id}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.experience']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedExperience}">
+													<f:selectItems value="#{search.experiences}" var="exp"
+														itemLabel="#{exp}" itemValue="#{exp}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.schedule']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedSchedule}">
+													<f:selectItems value="#{search.schedules}" var="schedule"
+														itemLabel="#{schedule.name}" itemValue="#{schedule.id}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.city']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedCity}">
+													<f:selectItems value="#{search.cities}" var="city"
+														itemLabel="#{city.name}" itemValue="#{city.id}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="inputPassword">#{msg['property.employer']}</label>
+											<div class="controls">
+												<h:selectOneMenu value="#{search.selectedEmployer}">
+													<f:selectItems value="#{search.employers}" var="emp"
+														itemLabel="#{emp.name}" itemValue="#{emp.id}" />
+												</h:selectOneMenu>
+											</div>
+										</div>
+									</div>
+									<!-- right column -->
+									<div class="span6">
+										<h:selectManyCheckbox value="#{search.selectedSections}" layout="pageDirection" styleClass="table table-condensed" unselectedClass="checkbox inline" selectedClass="checkbox inline">
+											<f:selectItems value="#{search.sections}" var="section"	itemLabel="#{section.name}" itemValue="#{section.id}" />
+										</h:selectManyCheckbox>
+									</div>
+
+									<div class="row-fluid">
+										<div class="span12">
+											<div class="control-group">
+												<div class="controls">
+													<button type="submit" class="btn">#{msg['page.search.button']}</button>
+												</div>
+											</div>
+										</div>
+									</div>	
+								</div> <!-- fluid row -->
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="span8">
-				<!-- Paginator -->
-				<div class="pagination">
-					<ul>
-						<ui:repeat value="#{search.vacancyPages}" var="page">
-							<li class="#{search.currentPage==page.pageNum ? 'active' : '' }">
-								<h:commandLink
-									action="#{search.doShowVacancies(page.sectionId,page.pageNum)}"
-									value="#{page.pageNum}" />
-							</li>
+			<div class="divider">&nbsp;</div>
+			<div class="row">
+				<!-- Sidebar -->
+				<div class="span5">
+					<div class="well" style="padding: 8px 0;">
+						<ul class="nav nav-list">
+							<li class="nav-header">#{msg['page.sections.header']}</li>
+							<ui:repeat value="#{search.sectionHolders}" var="sectionHolder">
+								<li
+									class="#{search.currentSectionId == sectionHolder.section.id ? 'active' : '' }"><h:commandLink
+										action="#{search.doShowVacancies(sectionHolder.section.id,0)}"
+										value="#{sectionHolder.section.name} (#{sectionHolder.vacanciesCount})" />
+								</li>
+							</ui:repeat>
+						</ul>
+					</div>
+				</div>
+				<!-- Content -->
+				<div class="span7">
+					<!-- Paginator -->
+					<div class="pagination pagination-centered">
+						<ul>
+							<ui:repeat value="#{search.vacancyPages}" var="page">
+								<li class="#{search.currentPage==page.pageNum ? 'active' : '' }">
+									<h:commandLink
+										action="#{search.doShowVacancies(page.sectionId,page.pageNum)}"
+										value="#{page.pageNum}" />
+								</li>
+							</ui:repeat>
+						</ul>
+					</div>
+
+					<!-- Vacancies -->
+
+					<div>
+						<ui:repeat value="#{search.currentSectionVacancies}" var="vacancy">
+							<div>
+								<div>
+									<a href="#" data-toggle="collapse"
+										data-target="#vacancy_#{vacancy.id}">
+										<div class="row-fluid">
+											<div class="span10">
+												<h:outputText value="#{vacancy.jobTitle}" />
+											</div>
+											<div class="span2">
+												<h:outputText value="#{vacancy.salary}" />
+											</div>
+										</div>
+									</a>
+								</div>
+								<div id="vacancy_#{vacancy.id}" class="collapse out">
+									<dl class="dl-horizontal">
+										<dt>#{msg['property.dutyType']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.dutyType.name}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.education']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.education.name}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.experience']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.experience}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.schedule']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.schedule.name}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.city']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.city.name}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.employer']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.employer.name}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.date']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.date}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.contactInformation']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.contactInformation}" />
+											&nbsp;
+										</dd>
+										<dt>#{msg['property.presentedBy']}</dt>
+										<dd>
+											<h:outputText value="#{vacancy.presentedBy}" />
+											&nbsp;
+										</dd>
+									</dl>
+									<div>
+										<h:outputText value="#{vacancy.body}" escape="false" />
+									</div>
+									<hr />
+								</div>
+							</div>
 						</ui:repeat>
-					</ul>
+					</div>
+
 				</div>
-
-				<!-- Vacancies -->
-				<h:dataTable value="#{search.currentSectionVacancies}" var="vacancy"
-					rendered="#{search.currentSectionVacancies.size() > 0}">
-					<h:column>
-						<h:outputText value="#{vacancy.id}" />
-						<h:outputText value=" " />
-						<h:outputText value="#{vacancy.jobTitle}" />
-						<h:outputText value=" " />
-						<h:outputText value="#{vacancy.salary}" />
-						<h:outputText value=" " />
-						<h:outputText value="#{vacancy.employer.name}" />
-					</h:column>
-				</h:dataTable>
-
 			</div>
 		</div>
 	</h:form>
