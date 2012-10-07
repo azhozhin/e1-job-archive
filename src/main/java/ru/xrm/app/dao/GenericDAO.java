@@ -16,6 +16,8 @@ public interface GenericDAO<ID extends Serializable, T> {
   
     public T findOne(Query query);
     
+    public T findOne(Class clazz, Criterion... crits);
+    
     public T findOne(Criterion... crits);
  
     @SuppressWarnings("rawtypes")
@@ -23,9 +25,12 @@ public interface GenericDAO<ID extends Serializable, T> {
     
     public List<T> findMany(Query query);
     
+    public List<T> findMany(Class clazz, Criterion... crits);
+    
     public List<T> findMany(Criterion... crits);
     
     @SuppressWarnings("rawtypes")
 	public List<T> findAll(Class clazz);
     
+    public List<T> findAll();
 }

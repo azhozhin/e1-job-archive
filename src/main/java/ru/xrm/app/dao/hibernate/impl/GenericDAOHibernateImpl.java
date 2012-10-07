@@ -35,9 +35,9 @@ public abstract class GenericDAOHibernateImpl<ID extends Serializable, T> implem
 		return result;
 	}
 	
-	public T findOne(Criterion... crits){
+	public T findOne(Class clazz, Criterion... crits){
 		Session session=HibernateUtil.getSession();
-		Criteria criteria=session.createCriteria(getClass());
+		Criteria criteria=session.createCriteria(clazz);
 		for (Criterion c:crits){
 			criteria.add(c);
 		}
@@ -58,9 +58,9 @@ public abstract class GenericDAOHibernateImpl<ID extends Serializable, T> implem
 		return result;
 	}
 	
-	public List<T> findMany(Criterion... crits){
+	public List<T> findMany(Class clazz, Criterion... crits){
 		Session session=HibernateUtil.getSession();
-		Criteria criteria=session.createCriteria(getClass());
+		Criteria criteria=session.createCriteria(clazz);
 		for (Criterion c:crits){
 			criteria.add(c);
 		}
