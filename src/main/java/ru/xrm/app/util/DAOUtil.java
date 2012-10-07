@@ -31,6 +31,13 @@ public class DAOUtil {
 		cityDAO = DAOFactory.getInstance().getDao(CityDAOHibernateImpl.class);
 	}
 
+	public void beginTransaction(){
+		HibernateUtil.beginTransaction();
+	}
+	
+	public void commitTransaction(){
+		HibernateUtil.commitTransaction();
+	}
 	
 	public VacancyDAO getVacancyDAO() {
 		return vacancyDAO;
