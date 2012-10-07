@@ -1,0 +1,10 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+  
+<div class="input-append">
+	<h:inputText binding="#{search.simpleSearchString}" styleClass="span4" />
+	<h:commandButton action="#{search.doSimpleSearch}" styleClass="btn" value="#{msg['page.search.button']}" />
+</div>
+
+</ui:composition>

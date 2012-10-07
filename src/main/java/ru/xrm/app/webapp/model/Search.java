@@ -40,13 +40,13 @@ public class Search implements Serializable {
 
 	private static final int PERPAGE=10; 
 
-	private HtmlInputText searchString;
+	private HtmlInputText simpleSearchString;
 	private List<SectionHolder> sectionHolders;
-	private List<Vacancy> currentSectionVacancies;
+	private List<Vacancy> currentSearchVacancies;
 	private Long currentSectionId=-1L;
 	private Integer totalPages=-1;
 	private Integer currentPage=-1;
-	private List<PaginatorItem> vacancyPages=new ArrayList<PaginatorItem>();
+	private List<PaginatorItem> pages=new ArrayList<PaginatorItem>();
 
 	private List<City> cities;
 	private List<Schedule> schedules;
@@ -74,7 +74,7 @@ public class Search implements Serializable {
 		DAOUtil.getInstance().beginTransaction();
 
 		// Load sections and vacancies count per section
-		sections = DAOUtil.getInstance().getSectionDAO().findAll(Section.class);
+		sections = DAOUtil.getInstance().getSectionDAO().findAll();
 		
 		for (Section s:sections){
 
@@ -85,11 +85,11 @@ public class Search implements Serializable {
 		
 		// Load cities
 		cities=new ArrayList<City>();
-		cities=DAOUtil.getInstance().getCityDAO().findAll(City.class);
+		cities=DAOUtil.getInstance().getCityDAO().findAll();
 		
 		// Load schedules
 		schedules=new ArrayList<Schedule>();
-		schedules=DAOUtil.getInstance().getScheduleDAO().findAll(Schedule.class);
+		schedules=DAOUtil.getInstance().getScheduleDAO().findAll();
 		
 		// populate experiences
 		experiences = new ArrayList<Integer>();
@@ -99,25 +99,25 @@ public class Search implements Serializable {
 		
 		// load educations
 		educations = new ArrayList<Education>();
-		educations = DAOUtil.getInstance().getEducationDAO().findAll(Education.class);
+		educations = DAOUtil.getInstance().getEducationDAO().findAll();
 		
 		// load dutyTypes
 		dutyTypes = new ArrayList<DutyType>();
-		dutyTypes = DAOUtil.getInstance().getDutyTypeDAO().findAll(DutyType.class);
+		dutyTypes = DAOUtil.getInstance().getDutyTypeDAO().findAll();
 		
 		// load employers
 		employers = new ArrayList<Employer>();
-		employers = DAOUtil.getInstance().getEmployerDAO().findAll(Employer.class);
+		employers = DAOUtil.getInstance().getEmployerDAO().findAll();
 
 		DAOUtil.getInstance().commitTransaction();
 	}
 
-	public HtmlInputText getSearchString() {
-		return searchString;
+	public HtmlInputText getSimpleSearchString() {
+		return simpleSearchString;
 	}
 
-	public void setSearchString(HtmlInputText searchString) {
-		this.searchString = searchString;
+	public void setSimpleSearchString(HtmlInputText simpleSearchString) {
+		this.simpleSearchString = simpleSearchString;
 	}
 
 	public List<SectionHolder> getSectionHolders() {
@@ -128,12 +128,12 @@ public class Search implements Serializable {
 		this.sectionHolders = sectionHolders;
 	}
 
-	public List<Vacancy> getCurrentSectionVacancies() {
-		return currentSectionVacancies;
+	public List<Vacancy> getCurrentSearchVacancies() {
+		return currentSearchVacancies;
 	}
 
-	public void setCurrentSectionVacancies(List<Vacancy> currentSectionVacancies) {
-		this.currentSectionVacancies = currentSectionVacancies;
+	public void setCurrentSearchVacancies(List<Vacancy> currentSectionVacancies) {
+		this.currentSearchVacancies = currentSectionVacancies;
 	}
 
 	public Long getCurrentSectionId() {
@@ -144,12 +144,12 @@ public class Search implements Serializable {
 		this.currentSectionId = currentSectionId;
 	}
 
-	public List<PaginatorItem> getVacancyPages() {
-		return vacancyPages;
+	public List<PaginatorItem> getPages() {
+		return pages;
 	}
 
-	public void setVacancyPages(List<PaginatorItem> vacancyPages) {
-		this.vacancyPages = vacancyPages;
+	public void setPages(List<PaginatorItem> pages) {
+		this.pages = pages;
 	}
 
 	public Integer getCurrentPage() {
@@ -275,8 +275,16 @@ public class Search implements Serializable {
 	}
 
 	// web actions
-	public String doSearch(){
-		searchString.setValue("processed");
+	public String doSimpleSearch(){
+		DAOUtil.getInstance().beginTransaction();
+		
+		String searchString=(String)simpleSearchString.getValue();
+		
+		currentSearchVacancies = DAOUtil.getInstance().getVacancyDAO().findMany(Restrictions.ilike("jobTitle", "%"+searchString+"%"));
+		
+		//simpleSearchString.setValue("processed");
+		
+		DAOUtil.getInstance().commitTransaction();
 		return ""; // stay on same page
 	}
 	
@@ -299,7 +307,7 @@ public class Search implements Serializable {
 
 		currentPage=page;
 		
-		vacancyPages.clear();
+		pages.clear();
 		int left=Math.max(0, currentPage-5);
 		int right=Math.min(currentPage+5, totalPages);
 		if (right-left<10){
@@ -308,11 +316,11 @@ public class Search implements Serializable {
 		}
 
 		for (int i=left;i<right;i++){
-			vacancyPages.add(new PaginatorItem(sectionId,i));
+			pages.add(new PaginatorItem(sectionId,i));
 		}
 
 		// get data with paginationg
-		currentSectionVacancies = DAOUtil.getInstance().getVacancyDAO().findByCategoryIdPagination(sectionId, PERPAGE*page, PERPAGE);
+		currentSearchVacancies = DAOUtil.getInstance().getVacancyDAO().findByCategoryIdPagination(sectionId, PERPAGE*page, PERPAGE);
 		
 		DAOUtil.getInstance().commitTransaction();
 

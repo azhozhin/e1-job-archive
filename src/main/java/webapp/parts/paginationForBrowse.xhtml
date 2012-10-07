@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="pagination pagination-centered">
+		<ul>
+			<ui:repeat value="#{search.pages}" var="page">
+				<li class="#{search.currentPage==page.pageNum ? 'active' : '' }">
+					<h:commandLink action="#{search.doShowVacancies(page.sectionId,page.pageNum)}" value="#{page.pageNum}" />
+				</li>
+			</ui:repeat>
+		</ul>
+	</div>
+</ui:composition>

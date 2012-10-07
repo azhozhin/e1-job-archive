@@ -1,0 +1,101 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+  	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:ui="http://java.sun.com/jsf/facelets">
+  
+<div class="row-fluid">
+	<!-- left column -->
+	<div class="span6">
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.jobTitle']}</label>
+			<div class="controls">
+				<input type="password" id="inputPassword" />
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputEmail">#{msg['property.salary']}</label>
+			<div class="controls">
+				#{msg['common.from']}: <input type="text" id="inputEmail" />
+				<br />
+				#{msg['common.to']}:<input type="text" id="inputEmail" />
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.dutyType']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedDutyType}">
+					<f:selectItems value="#{search.dutyTypes}" var="dt"	itemLabel="#{dt.name}" itemValue="#{dt.id}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.education']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedEducation}">
+					<f:selectItems value="#{search.educations}" var="edu" itemLabel="#{edu.name}" itemValue="#{edu.id}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.experience']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedExperience}">
+					<f:selectItems value="#{search.experiences}" var="exp" itemLabel="#{exp}" itemValue="#{exp}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.schedule']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedSchedule}">
+					<f:selectItems value="#{search.schedules}" var="schedule" itemLabel="#{schedule.name}" itemValue="#{schedule.id}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.city']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedCity}">
+					<f:selectItems value="#{search.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city.id}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">#{msg['property.employer']}</label>
+			<div class="controls">
+				<h:selectOneMenu value="#{search.selectedEmployer}">
+					<f:selectItems value="#{search.employers}" var="emp" itemLabel="#{emp.name}" itemValue="#{emp.id}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+	</div>
+	<!-- right column -->
+	<div class="span6">
+		<h:selectManyCheckbox value="#{search.selectedSections}"
+			layout="pageDirection" styleClass="table table-condensed"
+			unselectedClass="checkbox inline" selectedClass="checkbox inline">
+			<f:selectItems value="#{search.sections}" var="section"
+				itemLabel="#{section.name}" itemValue="#{section.id}" />
+		</h:selectManyCheckbox>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn">#{msg['page.search.button']}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div><!-- /fluid row -->
+
+</ui:composition>

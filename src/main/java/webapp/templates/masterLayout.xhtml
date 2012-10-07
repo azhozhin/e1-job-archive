@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Hello!</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+	<h:outputStylesheet library="css" name="bootstrap.css" />
+	<h:outputScript library="js" name="bootstrap.js" />
+</h:head>
+<h:body>
+	<h:form styleClass="search-form form-horizontal">
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+					<h:messages />
+					<div class="page-header">
+						<h1>#{msg['page.title']}</h1>
+					</div>
+
+					<h:outputText value=""/>
+
+					<div>
+						<ul class="nav nav-pills">
+							<li class="#{view.viewId == '/pages/browse.xhtml' ? 'active' : ''}"><a href="browse.xhtml">#{msg['page.search.browse']}</a></li>
+							<li class="#{view.viewId == '/pages/simpleSearch.xhtml' ? 'active' : ''}"><a href="simpleSearch.xhtml">#{msg['page.search.simple']}</a></li>
+							<li class="#{view.viewId == '/pages/advancedSearch.xhtml' ? 'active' : ''}"><a href="advancedSearch.xhtml">#{msg['page.search.advanced']}</a></li>
+						</ul>
+					</div>
+
+					<div>
+						<ui:insert name="searchForm">
+							Search form goes here
+						</ui:insert>
+					</div>
+				</div>
+			</div>
+			<div class="divider">&nbsp;</div>
+			
+			<div class="row">
+				<ui:insert name="searchResults">
+					Search Results goes here
+				</ui:insert>
+			</div>
+			
+		</div>
+	</h:form>
+
+</h:body>
+</html>

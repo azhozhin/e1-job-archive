@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div>
+		<div>
+			<a href="#" data-toggle="collapse"	data-target="#vacancy_#{vacancy.id}">
+				<div class="row-fluid">
+					<div class="span10">
+						<h:outputText value="#{vacancy.jobTitle}" />
+					</div>
+					<div class="span2">
+						<h:outputText value="#{vacancy.salary}" />
+					</div>
+				</div>
+			</a>
+		</div>
+		<div id="vacancy_#{vacancy.id}" class="collapse out">
+			<dl class="dl-horizontal">
+				<dt>#{msg['property.dutyType']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.dutyType.name}" />
+				</dd>
+				<dt>#{msg['property.education']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.education.name}" />
+				</dd>
+				<dt>#{msg['property.experience']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.experience}" />
+				</dd>
+				<dt>#{msg['property.schedule']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.schedule.name}" />
+				</dd>
+				<dt>#{msg['property.city']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.city.name}" />
+				</dd>
+				<dt>#{msg['property.employer']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.employer.name}" />
+				</dd>
+				<dt>#{msg['property.date']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.date}" />
+				</dd>
+				<dt>#{msg['property.contactInformation']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.contactInformation}" />
+				</dd>
+				<dt>#{msg['property.presentedBy']}</dt>
+				<dd>
+					<h:outputText value="#{vacancy.presentedBy}" />
+				</dd>
+			</dl>
+			<div>
+				<h:outputText value="#{vacancy.body}" escape="false" />
+			</div>
+			<hr />
+		</div>
+	</div>
+</ui:composition>

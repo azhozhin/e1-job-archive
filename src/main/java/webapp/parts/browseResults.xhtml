@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets" >
+
+	<!-- Sidebar -->
+	<div class="span5">
+		<div class="well" style="padding: 8px 0;">
+			<ul class="nav nav-list">
+				<li class="nav-header">#{msg['page.sections.header']}</li>
+				<ui:repeat value="#{search.sectionHolders}" var="sectionHolder">
+					<li
+						class="#{search.currentSectionId == sectionHolder.section.id ? 'active' : '' }">
+						<h:commandLink
+							action="#{search.doShowVacancies(sectionHolder.section.id,0)}"
+							value="#{sectionHolder.section.name} (#{sectionHolder.vacanciesCount})" />
+					</li>
+				</ui:repeat>
+			</ul>
+		</div>
+	</div>
+	<!-- Content -->
+	<div class="span7">
+		<ui:include src="/parts/paginationForBrowse.xhtml" />
+		<ui:include src="/parts/vacanciesList.xhtml" />
+	</div>
+
+</ui:composition>
