@@ -32,7 +32,7 @@ public class EducationSet {
 		Education result=new Education(counter,from);
 		educations.add(result);
 		counter++;
-		return null;
+		return result;
 	}
 	
 	public synchronized List<Education> getEducations(){

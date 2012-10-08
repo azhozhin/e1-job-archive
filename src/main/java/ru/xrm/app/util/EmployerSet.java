@@ -32,7 +32,7 @@ public class EmployerSet {
 		Employer result=new Employer(counter,from);
 		employers.add(result);
 		counter++;
-		return null;
+		return result;
 	}
 	
 	public synchronized List<Employer> getEmployers(){
