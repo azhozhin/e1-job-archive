@@ -10,21 +10,21 @@ IDE: eclipse
 + junit
 
 
-Structure of data on http://www.e1.ru/business/job/:
+Structure of data on http://www.e1.ru/business/job/ :
 	
-Vacancy Section1
-    + VacancyList page0
-        + VacancyLink1
-           - Vacancy1
-        + VacancyLink2
-           - Vacancy2
+    Vacancy Section1
+        + VacancyList page0
+            + VacancyLink1
+               - Vacancy1
+            + VacancyLink2
+               - Vacancy2
+            ...
+            + VacancyLinkN
+               - VacancyN
+        + VacancyList page1
         ...
-        + VacancyLinkN
-           - VacancyN
-    + VacancyList page1
-    ...
-    + VacancyList pageX
+        + VacancyList pageX
     
-Vacancy Section2
-...
-Vacancy SectionN
+    Vacancy Section2
+    ...
+    Vacancy SectionN
