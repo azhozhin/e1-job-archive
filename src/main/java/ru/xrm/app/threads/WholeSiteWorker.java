@@ -120,7 +120,7 @@ public class WholeSiteWorker implements Runnable {
 				if (pageCounter%30==0){
 					System.out.println();
 				}
-				break; // FIXME
+				//break; // FIXME
 			}// loop pages
 			System.out.println();
 			//break; // FIME
