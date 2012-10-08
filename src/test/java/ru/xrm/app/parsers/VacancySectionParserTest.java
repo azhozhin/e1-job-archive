@@ -103,9 +103,6 @@ public class VacancySectionParserTest {
 		assertEquals(new Long(17), list.get(21).getId());
 		assertEquals(new Long(2),  list.get(22).getId());
 		
-		for(Section s:list){
-			System.out.format("%d - %s\n", s.getId(), s.getName());
-		}
 	}
 
 }
