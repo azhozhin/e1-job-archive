@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/masterLayout.xhtml">
+
+	<ui:define name="searchForm">
+		<h:commandButton value="#{msg['page.config.load']}" action="#{search.doLoadVacancies}" styleClass="btn btn-danger"/>
+		<br/>
+		<br/>
+		<h:commandButton value="#{msg['page.config.refresh']}" action="#{search.doRefresh}" styleClass="btn"/> <br/>
+		<h:outputText value="#{msg['page.config.phase.loading']}: #{search.loadPhase}"/>  <br/>
+		<h:outputText value="#{msg['page.config.phase.processAndSave']}: #{search.processAndSavePhase}"/>		
+		<br/>
+		<br/>
+		<h:commandButton value="#{msg['page.config.reloadCatalog']}" action="#{search.doReloadCatalog}" styleClass="btn"/> 
+	</ui:define>
+
+	<ui:define name="searchResults">
+	</ui:define>
+
+</ui:composition>
