@@ -18,7 +18,6 @@ public class CachingHttpFetcher {
 	String cacheLocation;
 	UrlHelper urlHelper;
 	static CachingHttpFetcher instance;
-	Map<String,String> innerCache;
 	
 	public static synchronized CachingHttpFetcher getInstance(){
 		if (instance==null){
@@ -30,7 +29,6 @@ public class CachingHttpFetcher {
 	private CachingHttpFetcher(String cacheLocation){
 		this.cacheLocation = cacheLocation+"/";
 		this.urlHelper = UrlHelper.getInstance();
-		this.innerCache=new HashMap<String, String>();
 	}
 
 	public String fetch(String address, String encoding) throws IOException{
@@ -39,12 +37,8 @@ public class CachingHttpFetcher {
 		StringBuilder result=new StringBuilder();
 		try {
 			String encodedUrl;
-			if (!innerCache.containsKey(address)){
-				encodedUrl=urlHelper.encode(address);
-				innerCache.put(address, encodedUrl);
-			}else{
-				encodedUrl=innerCache.get(address);
-			}
+			encodedUrl=urlHelper.encode(address);
+
 			String cacheFileName=cacheLocation+encodedUrl;
 
 			File f=new File(cacheFileName);
