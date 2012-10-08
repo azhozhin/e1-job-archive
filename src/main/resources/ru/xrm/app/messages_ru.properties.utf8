@@ -2,6 +2,7 @@ page.title = e1.ru архив вакансий
 page.search.browse = Каталог
 page.search.simple = Простой поиск
 page.search.advanced = Расширенный поиск
+page.config = Конфигурация
 page.search.button = Найти!
 page.sections.header = Разделы
 page.search.any.m = Любой
@@ -21,3 +22,10 @@ property.presentedBy = Предоставлено
 
 common.from = от
 common.to = до
+
+page.config.load = Загрузить все
+page.config.refresh = Обновить
+page.config.remaining = Оставшиеся задания
+page.config.phase.loading = Поток загрузки 
+page.config.phase.processAndSave = Поток обработки и сохранения
+page.config.reloadCatalog = Обновить каталог
