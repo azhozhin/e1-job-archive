@@ -69,5 +69,28 @@ public class VacancyDAOHibernateImpl extends GenericDAOHibernateImpl<Long, Vacan
 		return result;
 	}
 
+	public List<Vacancy> findManyPagination(Long startPosition, Long perPage, List<Criterion> crits) {
+		Session session=HibernateUtil.getSession();
+		Criteria criteria = session.createCriteria(Vacancy.class);
+		for (Criterion c:crits){
+			criteria.add(c);
+		}
+		criteria.setFirstResult(startPosition.intValue());
+		criteria.setMaxResults(perPage.intValue());
+		List<Vacancy> result=(List<Vacancy>)criteria.list();
+		return result;
+	}
+
+	public Long countByCriterions(List<Criterion> crits) {
+		Session session=HibernateUtil.getSession();
+		Criteria criteria=session.createCriteria(Vacancy.class);
+		for (Criterion c:crits){
+			criteria.add(c);
+		}
+		criteria.setProjection(Projections.rowCount());
+		Long result = (Long)criteria.uniqueResult();
+		return result;
+	}
+
 	
 }
