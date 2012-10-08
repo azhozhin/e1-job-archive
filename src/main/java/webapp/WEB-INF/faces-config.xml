@@ -9,12 +9,13 @@
 			<base-name>ru.xrm.app.messages</base-name>
 			<var>msg</var>
 		</resource-bundle>
-		<message-bundle>msg</message-bundle>
+		
 		<locale-config>
 			<default-locale>ru</default-locale>
 			<supported-locale>en</supported-locale>
 		</locale-config>
 	</application>
+
 
 	<managed-bean>
 		<managed-bean-name>search</managed-bean-name>
@@ -23,4 +24,9 @@
 	</managed-bean>
 
 
+	<converter>
+	<converter-id>dutyTypeConverter</converter-id>
+	<converter-class>ru.xrm.app.webapp.converters.DutyTypeConverter</converter-class>
+	</converter>
+ 
 </faces-config>
