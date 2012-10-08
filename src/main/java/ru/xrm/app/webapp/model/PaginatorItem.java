@@ -3,9 +3,9 @@ package ru.xrm.app.webapp.model;
 public class PaginatorItem {
 	
 	private Long sectionId;
-	private Integer pageNum;
+	private Long pageNum;
 	
-	public PaginatorItem(Long sectionId, Integer pageNum){
+	public PaginatorItem(Long sectionId, Long pageNum){
 		this.sectionId=sectionId;
 		this.pageNum=pageNum;
 	}
@@ -16,10 +16,10 @@ public class PaginatorItem {
 	public void setSectionId(Long sectionId) {
 		this.sectionId = sectionId;
 	}
-	public Integer getPageNum() {
+	public Long getPageNum() {
 		return pageNum;
 	}
-	public void setPageNum(Integer pageNum) {
+	public void setPageNum(Long pageNum) {
 		this.pageNum = pageNum;
 	}
 	

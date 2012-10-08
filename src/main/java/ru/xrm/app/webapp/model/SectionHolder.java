@@ -5,9 +5,9 @@ import ru.xrm.app.domain.Section;
 public class SectionHolder {
 
 	private Section section;
-	private Integer vacanciesCount;
+	private Long vacanciesCount;
 	
-	public SectionHolder(Section section, Integer vacanciesCount){
+	public SectionHolder(Section section, Long vacanciesCount){
 		this.section=section;
 		this.vacanciesCount=vacanciesCount;
 	}
@@ -18,10 +18,10 @@ public class SectionHolder {
 	public void setSection(Section section) {
 		this.section = section;
 	}
-	public Integer getVacanciesCount() {
+	public Long getVacanciesCount() {
 		return vacanciesCount;
 	}
-	public void setVacanciesCount(int vacanciesCount) {
+	public void setVacanciesCount(Long vacanciesCount) {
 		this.vacanciesCount = vacanciesCount;
 	}
 	

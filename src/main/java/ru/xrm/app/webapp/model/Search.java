@@ -38,14 +38,16 @@ public class Search implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int PERPAGE=10; 
+	private static final long PERPAGE = 10L; 
 
 	private HtmlInputText simpleSearchString;
+	private String currentSimpleSearch;
+	
 	private List<SectionHolder> sectionHolders;
 	private List<Vacancy> currentSearchVacancies;
 	private Long currentSectionId=-1L;
-	private Integer totalPages=-1;
-	private Integer currentPage=-1;
+	private Long totalPages=-1L;
+	private Long currentPage=-1L;
 	private List<PaginatorItem> pages=new ArrayList<PaginatorItem>();
 
 	private List<City> cities;
@@ -70,6 +72,7 @@ public class Search implements Serializable {
 	}
 	
 	private void init(){
+		currentSimpleSearch="";
 		sectionHolders=new ArrayList<SectionHolder>();
 		DAOUtil.getInstance().beginTransaction();
 
@@ -78,7 +81,7 @@ public class Search implements Serializable {
 		
 		for (Section s:sections){
 
-			Integer vacanciesCount=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(s.getId());
+			Long vacanciesCount=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(s.getId());
 			
 			sectionHolders.add(new SectionHolder(s, vacanciesCount));
 		}
@@ -152,11 +155,11 @@ public class Search implements Serializable {
 		this.pages = pages;
 	}
 
-	public Integer getCurrentPage() {
+	public Long getCurrentPage() {
 		return currentPage;
 	}
 
-	public void setCurrentPage(Integer currentPage) {
+	public void setCurrentPage(Long currentPage) {
 		this.currentPage = currentPage;
 	}
 	
@@ -275,12 +278,39 @@ public class Search implements Serializable {
 	}
 
 	// web actions
-	public String doSimpleSearch(){
+	public String doShowSimpleSearchResults(Long page){
 		DAOUtil.getInstance().beginTransaction();
-		
+
 		String searchString=(String)simpleSearchString.getValue();
 		
-		currentSearchVacancies = DAOUtil.getInstance().getVacancyDAO().findMany(Restrictions.ilike("jobTitle", "%"+searchString+"%"));
+		Criterion restriction=Restrictions.ilike("jobTitle", "%"+searchString+"%");
+		
+		if (!currentSimpleSearch.equals(searchString)){
+			currentSimpleSearch=searchString;
+			Long totalVacancies = DAOUtil.getInstance().getVacancyDAO().countByCriterions(restriction);
+			
+			if (totalVacancies % PERPAGE == 0){
+				totalPages = totalVacancies/PERPAGE;
+			}else{
+				totalPages = totalVacancies/PERPAGE+1;
+			}
+		}
+		
+		currentPage = page;
+		
+		pages.clear();
+		Long left = Math.max(0, currentPage-5);
+		Long right = Math.min(currentPage+5, totalPages);
+		if (right-left<10){
+				right = Math.min(right+(10-right+left), totalPages);
+				left = Math.max(0, left-(10-right+left));
+		}
+
+		for (Long i=left;i<right;i++){
+			pages.add(new PaginatorItem(Long.valueOf(currentSimpleSearch.hashCode()),i));
+		}
+		
+		currentSearchVacancies = DAOUtil.getInstance().getVacancyDAO().findManyPagination(page*PERPAGE, PERPAGE, restriction);
 		
 		//simpleSearchString.setValue("processed");
 		
@@ -288,14 +318,14 @@ public class Search implements Serializable {
 		return ""; // stay on same page
 	}
 	
-	public String doShowVacancies(Long sectionId, Integer page){
+	public String doShowVacancies(Long sectionId, Long page){
 
 		DAOUtil.getInstance().beginTransaction();
 
 		// this is new section, get count of vacancies in this section and calculate pages
 		if (currentSectionId!=sectionId){
 			
-			Integer totalVacanvies=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(sectionId);
+			Long totalVacanvies=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(sectionId);
 
 			if (totalVacanvies % PERPAGE == 0){
 				totalPages=totalVacanvies/PERPAGE;
@@ -308,14 +338,14 @@ public class Search implements Serializable {
 		currentPage=page;
 		
 		pages.clear();
-		int left=Math.max(0, currentPage-5);
-		int right=Math.min(currentPage+5, totalPages);
+		Long left=Math.max(0, currentPage-5);
+		Long right=Math.min(currentPage+5, totalPages);
 		if (right-left<10){
 				right=Math.min(right+(10-right+left), totalPages);
 				left=Math.max(0, left-(10-right+left));
 		}
 
-		for (int i=left;i<right;i++){
+		for (Long i=left;i<right;i++){
 			pages.add(new PaginatorItem(sectionId,i));
 		}
 

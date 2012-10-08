@@ -4,7 +4,7 @@
   
 <div class="input-append">
 	<h:inputText binding="#{search.simpleSearchString}" styleClass="span4" />
-	<h:commandButton action="#{search.doSimpleSearch}" styleClass="btn" value="#{msg['page.search.button']}" />
+	<h:commandButton action="#{search.doShowSimpleSearchResults(0)}" styleClass="btn" value="#{msg['page.search.button']}" />
 </div>
 
 </ui:composition>
