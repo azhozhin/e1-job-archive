@@ -1,58 +1,35 @@
 package ru.xrm.app;
 
-import java.util.Date;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import java.util.List;
 
-import ru.xrm.app.domain.Section;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.util.HibernateUtil;
+import ru.xrm.app.util.DAOUtil;
+
 
 public class Try {
-/*
+
 	public static void main(String[] args) {
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		Transaction transaction = null;
-		try {
-			transaction = session.beginTransaction();
-
-			Section section = new Section("Section 1", "http://ya.ru");
-			section.setId(new Long(1));
-
-			Vacancy vacancy1 = new Vacancy();
-			vacancy1.setId(new Long(1));
-			vacancy1.setSalary(new Integer(100));
-			vacancy1.setJobTitle("worker");
-			vacancy1.setDutyType("full");
-			vacancy1.setEducation("educ");
-			vacancy1.setExperience(" ");
-			vacancy1.setSchedule("any");
-			vacancy1.setCity("moscow");
-			vacancy1.setEmployer("empl");
-			vacancy1.setDate(new Date(2012, 8, 1));
-			vacancy1.setContactInformation("fhgf");
-			vacancy1.setPresentedBy("me");
-
-			vacancy1.setBody("text");
-
-			vacancy1.setSection(section);
-
-			// System.out.print(vacancy1);
-
-			session.save(section);
-			session.save(vacancy1);
-
-			transaction.commit();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
+		Logger logger = LoggerFactory.getLogger(Try.class);
+		
+		logger.info("Hello there");
+		
+		DAOUtil.getInstance().beginTransaction();
+		//List<Vacancy> list=DAOUtil.getInstance().getVacancyDAO().findAll();
+		List<Vacancy> list=DAOUtil.getInstance().getVacancyDAO().findMany(Restrictions.ilike("jobTitle", "%Опер%"));
+		
+		for (Vacancy v:list){
+			System.out.format("%s \n",v.getJobTitle());
 		}
+		
+		System.out.println(DAOUtil.getInstance().getVacancyDAO().countByCriterions(Restrictions.ilike("jobTitle", "%Опер%")));
+		
+		DAOUtil.getInstance().commitTransaction();
+		
 	}
-	*/
 }
