@@ -26,7 +26,7 @@ public class Vacancy {
 	private Long id;
 
 	@Column(name="salary")
-	private Integer salary;
+	private Long salary;
 
 	@Column(name = "job_title")
 	private String jobTitle;
@@ -40,7 +40,7 @@ public class Vacancy {
 	private Education education;
 
 	@Column(name="experience")
-	private Integer experience;
+	private Long experience;
 
 	@ManyToOne
 	@JoinColumn(name="schedule")
@@ -80,11 +80,11 @@ public class Vacancy {
 		this.id = id;
 	}
 
-	public Integer getSalary() {
+	public Long getSalary() {
 		return salary;
 	}
 
-	public void setSalary(Integer salary) {
+	public void setSalary(Long salary) {
 		this.salary = salary;
 	}
 
@@ -112,11 +112,11 @@ public class Vacancy {
 		this.education = education;
 	}
 
-	public Integer getExperience() {
+	public Long getExperience() {
 		return experience;
 	}
 
-	public void setExperience(Integer experience) {
+	public void setExperience(Long experience) {
 		this.experience = experience;
 	}
 
