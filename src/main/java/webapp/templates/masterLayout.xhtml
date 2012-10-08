@@ -25,10 +25,12 @@
 					<h:outputText value=""/>
 
 					<div>
-						<ul class="nav nav-pills">
-							<li class="#{view.viewId == '/pages/browse.xhtml' ? 'active' : ''}"><a href="browse.xhtml">#{msg['page.search.browse']}</a></li>
-							<li class="#{view.viewId == '/pages/simpleSearch.xhtml' ? 'active' : ''}"><a href="simpleSearch.xhtml">#{msg['page.search.simple']}</a></li>
-							<li class="#{view.viewId == '/pages/advancedSearch.xhtml' ? 'active' : ''}"><a href="advancedSearch.xhtml">#{msg['page.search.advanced']}</a></li>
+						<ul class="nav nav-tabs">
+							<li class="#{view.viewId == '/browse.xhtml' ? 'active' : ''}"><a href="browse.xhtml">#{msg['page.search.browse']}</a></li>
+							<li class="#{view.viewId == '/simpleSearch.xhtml' ? 'active' : ''}"><a href="simpleSearch.xhtml">#{msg['page.search.simple']}</a></li>
+							<li class="#{view.viewId == '/advancedSearch.xhtml' ? 'active' : ''}"><a href="advancedSearch.xhtml">#{msg['page.search.advanced']}</a></li>
+							<li class="divider"></li>
+							<li class="#{view.viewId == '/config.xhtml' ? 'active' : ''} pull-right"><a href="config.xhtml">#{msg['page.config']}</a></li>
 						</ul>
 					</div>
 

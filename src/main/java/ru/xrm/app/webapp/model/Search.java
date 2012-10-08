@@ -8,10 +8,12 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlSelectOneMenu;
+
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import ru.xrm.app.domain.City;
 import ru.xrm.app.domain.DutyType;
@@ -25,6 +27,8 @@ import ru.xrm.app.util.DAOUtil;
 @ManagedBean(name="search")
 @SessionScoped
 public class Search implements Serializable {
+	
+    protected Logger log = LoggerFactory.getLogger( Search.class );
 
 	private static final long serialVersionUID = 1L;
 
@@ -60,14 +64,14 @@ public class Search implements Serializable {
 	private List<String> currentSections=new ArrayList<String>();
 
 	// selected properties
-	private HtmlInputText selectedSalaryFromUI;
-	private HtmlInputText selectedSalaryToUI;
-	private	String selectedDutyType;
-	private String selectedEducation;
-	private String selectedExperience;
-	private String selectedSchedule;
-	private String selectedCity;
-	private String selectedEmployer;
+	private String selectedSalaryFrom="";
+	private String selectedSalaryTo="";
+	private	String selectedDutyType="";
+	private String selectedEducation="";
+	private String selectedExperience="";
+	private String selectedSchedule="";
+	private String selectedCity="";
+	private String selectedEmployer="";
 	private List<String> selectedSections;
 	
 	public Search(){
@@ -159,20 +163,20 @@ public class Search implements Serializable {
 	}
 
 
-	public HtmlInputText getSelectedSalaryFromUI() {
-		return selectedSalaryFromUI;
+	public String getSelectedSalaryFrom() {
+		return selectedSalaryFrom;
 	}
 
-	public void setSelectedSalaryFromUI(HtmlInputText selectedSalaryFromUI) {
-		this.selectedSalaryFromUI = selectedSalaryFromUI;
+	public void setSelectedSalaryFrom(String selectedSalaryFrom) {
+		this.selectedSalaryFrom = selectedSalaryFrom;
 	}
 
-	public HtmlInputText getSelectedSalaryToUI() {
-		return selectedSalaryToUI;
+	public String getSelectedSalaryTo() {
+		return selectedSalaryTo;
 	}
 
-	public void setSelectedSalaryToUI(HtmlInputText selectedSalaryToUI) {
-		this.selectedSalaryToUI = selectedSalaryToUI;
+	public void setSelectedSalaryTo(String selectedSalaryTo) {
+		this.selectedSalaryTo = selectedSalaryTo;
 	}
 
 	public String getSelectedDutyType() {
@@ -376,26 +380,31 @@ public class Search implements Serializable {
 	public String doShowAdvancedSearchResults(Long page){
 		List<Criterion> restrictions=new LinkedList<Criterion>();
 		//restrictions=Restrictions.ilike("jobTitle", "%"+currentSimpleSearch+"%");
-
-		String searchString=(String)simpleSearchString.getValue();
-		String selectedSalaryFrom=(String)selectedSalaryFromUI.getValue();
-		String selectedSalaryTo=(String)selectedSalaryToUI.getValue();
 		
-		System.err.println(searchString);
-		System.err.println(selectedDutyType);
-		System.err.println(selectedSalaryFrom);
-		System.err.println(selectedSalaryTo);
-		System.err.println(selectedEducation);
-		System.err.println(selectedExperience);
-		System.err.println(selectedSchedule);
-		System.err.println(selectedCity);
-		System.err.println(selectedEmployer);
+		String searchString=(String)simpleSearchString.getValue();
+		
+		log.info(String.format("searchString: %s",searchString));
+		log.info(String.format("selectedDutyType: %s",selectedDutyType));
+		log.info(String.format("selectedSalaryFrom: %s",selectedSalaryFrom));
+		log.info(String.format("selectedSalaryTo",selectedSalaryTo));
+		log.info(String.format("selectedEducation: %s",selectedEducation));
+		log.info(String.format("selectedExperience: %s",selectedExperience));
+		log.info(String.format("selectedSchedule: %s",selectedSchedule));
+		log.info(String.format("selectedCity: %s",selectedCity));    
+		log.info(String.format("selectedEmployer: %s",selectedEmployer));
 
-				
 		boolean newSearch=false;
 		
 		if (page==0){
 			// this can be new search, so we need check all search fields
+			currentSalaryFrom = currentSalaryFrom==null ? "" : currentSalaryFrom;
+			currentSalaryTo = currentSalaryTo==null ? "" : currentSalaryTo;
+			currentDutyType = currentDutyType==null ? "" : currentDutyType;
+			currentEducation = currentEducation==null ? "" : currentEducation;
+			currentExperience = currentExperience==null ? "" : currentExperience;
+			currentSchedule = currentSchedule==null ? "" : currentSchedule;
+			currentCity = currentCity==null ? "" : currentCity;
+			currentEmployer = currentEmployer==null ? "" : currentEmployer;
 			if (
 					!currentSimpleSearch.equals(searchString) ||
 					!currentSalaryFrom.equals(selectedSalaryFrom) ||
@@ -405,8 +414,8 @@ public class Search implements Serializable {
 					!currentExperience.equals(selectedExperience) ||
 					!currentSchedule.equals(selectedSchedule) ||
 					!currentCity.equals(selectedCity) ||
-					!currentEmployer.equals(selectedEmployer) ||
-					!currentSections.equals(selectedSections)  
+					!currentEmployer.equals(selectedEmployer) || 
+					!currentSections.equals(selectedSections)
 					){
 				// this is new search
 				currentSimpleSearch=searchString;
@@ -425,29 +434,35 @@ public class Search implements Serializable {
 			}
 		}
 		
+		log.info(String.format("*** new Search %s ***",newSearch));
+		
 		boolean nonEmptyCriterion=false;
-		if (!"".equals(currentSimpleSearch)){
+		
+		if (currentSimpleSearch!=null && !"".equals(currentSimpleSearch)){
 			restrictions.add(Restrictions.ilike("jobTitle", "%"+currentSimpleSearch+"%"));
 			nonEmptyCriterion=true;
 		}
-		if (!"".equals(currentSalaryFrom) && !"".equals(currentSalaryTo)){
-			restrictions.add(Restrictions.between("salary", Long.valueOf(currentSalaryFrom), Long.valueOf(currentSalaryTo)));
-			nonEmptyCriterion=true;
-		}
-		if (!"".equals(currentSalaryFrom) && "".equals(currentSalaryTo)){
-			restrictions.add(Restrictions.gt("salary", Long.valueOf(currentSalaryFrom)));
-			nonEmptyCriterion=true;
-		}
-		if ("".equals(currentSalaryFrom) && !"".equals(currentSalaryTo)){
-			restrictions.add(Restrictions.lt("salary", Long.valueOf(currentSalaryTo)));
-			nonEmptyCriterion=true;
+		
+		if (currentSalaryFrom!=null && currentSalaryTo!=null){
+			if ( !"".equals(currentSalaryFrom) && !"".equals(currentSalaryTo)){
+				restrictions.add(Restrictions.between("salary", Long.valueOf(currentSalaryFrom), Long.valueOf(currentSalaryTo)));
+				nonEmptyCriterion=true;
+			}
+			if (!"".equals(currentSalaryFrom) && "".equals(currentSalaryTo)){
+				restrictions.add(Restrictions.gt("salary", Long.valueOf(currentSalaryFrom)));
+				nonEmptyCriterion=true;
+			}
+			if ("".equals(currentSalaryFrom) && !"".equals(currentSalaryTo)){
+				restrictions.add(Restrictions.lt("salary", Long.valueOf(currentSalaryTo)));
+				nonEmptyCriterion=true;
+			}
 		}
 		
-		if (!"".equals(currentDutyType)){
+		if (currentDutyType!=null && !"".equals(currentDutyType)){
 			Long dtId=Long.valueOf(currentDutyType);
 			DutyType dt=null;
 			for (int i=0;i<dutyTypes.size();i++){
-				if (dutyTypes.get(i).getId()==dtId){
+				if (dutyTypes.get(i).getId().equals(dtId)){
 					dt=dutyTypes.get(i);
 					break;
 				}
@@ -456,13 +471,14 @@ public class Search implements Serializable {
 				restrictions.add(Restrictions.eq("dutyType", dt));
 				nonEmptyCriterion=true;
 			}
+			log.info(String.format("duty %s : %s of: %s ",dtId, dt,dutyTypes.size()));
 		}
 		
-		if (!"".equals(currentEducation)){
+		if (currentEducation!=null && !"".equals(currentEducation)){
 			Long edId=Long.valueOf(currentEducation);
 			Education ed=null;
 			for (int i=0;i<educations.size();i++){
-				if (educations.get(i).getId()==edId){
+				if (educations.get(i).getId().equals(edId)){
 					ed=educations.get(i);
 					break;
 				}
@@ -472,16 +488,16 @@ public class Search implements Serializable {
 				nonEmptyCriterion=true;
 			}
 		}
-		if (!"".equals(currentExperience)){
+		if (currentExperience!=null && !"".equals(currentExperience)){
 			Long exp=Long.valueOf(currentExperience);
 			restrictions.add(Restrictions.le("experience", exp));
 			nonEmptyCriterion=true;
 		}
-		if (!"".equals(currentSchedule)){
+		if (currentSchedule!=null && !"".equals(currentSchedule)){
 			Long scId=Long.valueOf(currentSchedule);
 			Schedule sc=null; 
 			for (int i=0;i<schedules.size();i++){
-				if (schedules.get(i).getId()==scId){
+				if (schedules.get(i).getId().equals(scId)){
 					sc=schedules.get(i);
 					break;
 				}
@@ -491,11 +507,11 @@ public class Search implements Serializable {
 				nonEmptyCriterion=true;
 			}
 		}
-		if (!"".equals(currentCity)){
+		if (currentCity!=null && !"".equals(currentCity)){
 			Long ciId=Long.valueOf(currentCity);
 			City city=null;
 			for (int i=0;i<cities.size();i++){
-				if (cities.get(i).getId()==ciId){
+				if (cities.get(i).getId().equals(ciId)){
 					city=cities.get(i);
 					break;
 				}
@@ -505,11 +521,11 @@ public class Search implements Serializable {
 				nonEmptyCriterion=true;
 			}
 		}
-		if (!"".equals(currentEmployer)){
+		if (currentEmployer!=null && !"".equals(currentEmployer)){
 			Long empId=Long.valueOf(currentEmployer);
 			Employer emp=null;
 			for (int i=0;i<employers.size();i++){
-				if (employers.get(i).getId()==empId){
+				if (employers.get(i).getId().equals(empId)){
 					emp=employers.get(i);
 					break;
 				}
@@ -520,12 +536,35 @@ public class Search implements Serializable {
 			}
 		}
 		
+		if (currentSections!=null && currentSections.size()>0){
+			log.info(currentSections.toString());
+			Criterion sect=null;
+			boolean first=true;
+			for (String s:currentSections){
+				for (int i=0;i<sections.size();i++){
+					if (sections.get(i).getId().equals(Long.valueOf(s))){
+						if (first){
+							sect=Restrictions.eq("section", sections.get(i));
+							first=false;
+						}else{
+							sect=Restrictions.or(sect, Restrictions.eq("section", sections.get(i)));
+						}
+					}
+				}
+			}
+			if (sect!=null){
+				restrictions.add(sect);
+				nonEmptyCriterion=true;
+			}
+		}
+		
 		if (nonEmptyCriterion){
 			
 			DAOUtil.getInstance().beginTransaction();
 
 			if (newSearch){ 
-				Long totalVacancies = DAOUtil.getInstance().getVacancyDAO().countByCriterions((Criterion[])restrictions.toArray());
+				log.info(restrictions.toString());
+				Long totalVacancies = DAOUtil.getInstance().getVacancyDAO().countByCriterions(restrictions);
 
 				if (totalVacancies % PERPAGE == 0){
 					totalPages = totalVacancies/PERPAGE;
@@ -548,7 +587,7 @@ public class Search implements Serializable {
 				pages.add(new PaginatorItem(2L, i));
 			}
 
-			currentSearchVacancies=DAOUtil.getInstance().getVacancyDAO().findManyPagination(page*PERPAGE, PERPAGE, (Criterion[])restrictions.toArray());
+			currentSearchVacancies=DAOUtil.getInstance().getVacancyDAO().findManyPagination(page*PERPAGE, PERPAGE, restrictions);
 
 			DAOUtil.getInstance().commitTransaction();
 		}

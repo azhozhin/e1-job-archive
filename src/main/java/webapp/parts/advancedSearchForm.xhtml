@@ -17,9 +17,9 @@
 		<div class="control-group">
 			<label class="control-label" >#{msg['property.salary']}</label>
 			<div class="controls">
-				#{msg['common.from']}: <h:inputText binding="#{search.selectedSalaryFromUI}"/>
+				#{msg['common.from']}: <h:inputText value="#{search.selectedSalaryFrom}"/>
 				<br />
-				#{msg['common.to']}: <h:inputText binding="#{search.selectedSalaryToUI}"/>
+				#{msg['common.to']}: <h:inputText value="#{search.selectedSalaryTo}"/>
 			</div>
 		</div>
 
@@ -27,9 +27,8 @@
 			<label class="control-label">#{msg['property.dutyType']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedDutyType}" >
-					<f:converter converterId="dutyTypeConverter"/>
-					<f:selectItem itemLabel="#{msg['page.search.any.z']}" itemValue="#{null}"/>
-					<f:selectItems value="#{search.dutyTypes}" var="dt"	itemLabel="#{dt.name}" itemValue="#{dt.id}" />
+					<f:selectItem itemLabel="#{msg['page.search.any.m']}" itemValue="#{null}" noSelectionOption="true"/>
+					<f:selectItems value="#{search.dutyTypes}" var="dt" itemLabel="#{dt.name}" itemValue="#{dt.id}"/>
 				</h:selectOneMenu>
 			</div>
 		</div>
