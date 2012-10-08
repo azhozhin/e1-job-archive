@@ -33,7 +33,6 @@ public class SectionSet {
 		sections.add(section);
 	}
 	
-	
 	public synchronized Section getByName(String name){
 		for(Section s:sections){
 			if (s.getName().equals(name)){

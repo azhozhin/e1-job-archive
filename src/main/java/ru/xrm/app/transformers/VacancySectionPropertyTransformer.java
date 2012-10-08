@@ -12,7 +12,6 @@ public class VacancySectionPropertyTransformer implements PropertyTransformer {
 		if (sectionList.exists(from)){
 			result=sectionList.getByName(from);
 		}else{
-			System.err.format("\nCannot find section '%s' creating one\n", from);
 			return null;
 		}
 		
