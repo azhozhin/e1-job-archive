@@ -4,15 +4,15 @@ public class VacancyExperiencePropertyTransformer implements
 		PropertyTransformer {
 
 	public Object transform(String from) {
-		Integer result;
+		Long result;
 		String[] parts=from.split(" ");
 		if (parts.length==2){
-			result=Integer.valueOf(parts[0]);
+			result=Long.valueOf(parts[0]);
 			if (result<0){
-				result=0;
+				result=0L;
 			}
 		}else{
-			result=0;
+			result=0L;
 		}
 		return result;
 	}
