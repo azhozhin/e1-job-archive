@@ -69,11 +69,5 @@
 			<version>1.1</version>
 			<type>plugin</type>
 		</dependency>
-		<dependency>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>native2ascii-maven-plugin</artifactId>
-			<version>1.0-beta-1</version>
-			<type>maven-plugin</type>
-		</dependency>
 	</dependencies>
 </project>
