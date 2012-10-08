@@ -29,6 +29,6 @@
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>/pages/browse.xhtml</welcome-file>
+		<welcome-file>browse.xhtml</welcome-file>
 	</welcome-file-list>
 </web-app>

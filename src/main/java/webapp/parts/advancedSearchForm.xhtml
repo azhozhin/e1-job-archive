@@ -8,70 +8,77 @@
 	<div class="span6">
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.jobTitle']}</label>
+			<label class="control-label">#{msg['property.jobTitle']}</label>
 			<div class="controls">
-				<input type="password" id="inputPassword" />
+				<h:inputText binding="#{search.simpleSearchString}" />
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputEmail">#{msg['property.salary']}</label>
+			<label class="control-label" >#{msg['property.salary']}</label>
 			<div class="controls">
-				#{msg['common.from']}: <input type="text" id="inputEmail" />
+				#{msg['common.from']}: <h:inputText binding="#{search.selectedSalaryFromUI}"/>
 				<br />
-				#{msg['common.to']}:<input type="text" id="inputEmail" />
+				#{msg['common.to']}: <h:inputText binding="#{search.selectedSalaryToUI}"/>
 			</div>
 		</div>
 
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.dutyType']}</label>
+			<label class="control-label">#{msg['property.dutyType']}</label>
 			<div class="controls">
-				<h:selectOneMenu value="#{search.selectedDutyType}">
+				<h:selectOneMenu value="#{search.selectedDutyType}" >
+					<f:converter converterId="dutyTypeConverter"/>
+					<f:selectItem itemLabel="#{msg['page.search.any.z']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.dutyTypes}" var="dt"	itemLabel="#{dt.name}" itemValue="#{dt.id}" />
 				</h:selectOneMenu>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.education']}</label>
+			<label class="control-label" >#{msg['property.education']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedEducation}">
+					<f:selectItem itemLabel="#{msg['page.search.any.s']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.educations}" var="edu" itemLabel="#{edu.name}" itemValue="#{edu.id}" />
 				</h:selectOneMenu>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.experience']}</label>
+			<label class="control-label" >#{msg['property.experience']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedExperience}">
+					<f:selectItem itemLabel="#{msg['page.search.any.m']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.experiences}" var="exp" itemLabel="#{exp}" itemValue="#{exp}" />
 				</h:selectOneMenu>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.schedule']}</label>
+			<label class="control-label" >#{msg['property.schedule']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedSchedule}">
+					<f:selectItem itemLabel="#{msg['page.search.any.m']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.schedules}" var="schedule" itemLabel="#{schedule.name}" itemValue="#{schedule.id}" />
 				</h:selectOneMenu>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.city']}</label>
+			<label class="control-label" >#{msg['property.city']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedCity}">
+					<f:selectItem itemLabel="#{msg['page.search.any.m']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.cities}" var="city" itemLabel="#{city.name}" itemValue="#{city.id}" />
 				</h:selectOneMenu>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label" for="inputPassword">#{msg['property.employer']}</label>
+			<label class="control-label" >#{msg['property.employer']}</label>
 			<div class="controls">
 				<h:selectOneMenu value="#{search.selectedEmployer}">
+					<f:selectItem itemLabel="#{msg['page.search.any.z']}" itemValue="#{null}"/>
 					<f:selectItems value="#{search.employers}" var="emp" itemLabel="#{emp.name}" itemValue="#{emp.id}" />
 				</h:selectOneMenu>
 			</div>
@@ -91,7 +98,7 @@
 		<div class="span12">
 			<div class="control-group">
 				<div class="controls">
-					<button type="submit" class="btn">#{msg['page.search.button']}</button>
+					<h:commandButton action="#{search.doShowAdvancedSearchResults(0)}" styleClass="btn" value="#{msg['page.search.button']}" />
 				</div>
 			</div>
 		</div>
