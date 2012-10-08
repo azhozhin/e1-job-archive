@@ -52,7 +52,7 @@ public class OnePageWorker implements Callable<List<Vacancy>>{
 
 			// get vacancy itself
 
-			content=fetcher.fetch(link, "windows-1251");
+			content=fetcher.fetch(link, encoding);
 
 			VacancyParser vacancyParser=new VacancyParser(config, content);
 			Vacancy vacancy=vacancyParser.parse();
