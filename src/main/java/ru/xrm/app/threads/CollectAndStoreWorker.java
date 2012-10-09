@@ -1,8 +1,6 @@
 package ru.xrm.app.threads;
 
 import java.lang.Thread.State;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -61,7 +59,6 @@ public class CollectAndStoreWorker implements Runnable{
 			}
 		}
 
-		ThreadMXBean threadBean = ManagementFactory.getThreadMXBean();
 		log.info("Wait for child thread to finish");
 		
 		// Wait for all threads ends
@@ -72,9 +69,6 @@ public class CollectAndStoreWorker implements Runnable{
 		do{
 			threadCounter=0;
 			allReady=true;
-
-			long[] threadIds = threadBean.findMonitorDeadlockedThreads();
-			int deadlockedThreads = threadIds != null? threadIds.length : 0;
 
 			for (Future<List<Vacancy>> f:allVacancyListParts){
 				if (!f.isDone()){
@@ -89,7 +83,7 @@ public class CollectAndStoreWorker implements Runnable{
 				e.printStackTrace();
 			}
 
-			log.info(String.format("\n remaining tasks: %d deadlocked threads: %d\n", threadCounter,deadlockedThreads));
+			log.info(String.format("\n remaining tasks: %d \n", threadCounter));
 
 		}while(!allReady);
 

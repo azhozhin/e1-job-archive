@@ -1,27 +1,14 @@
 package ru.xrm.app.webapp.model;
 
 import java.io.Serializable;
-import java.lang.Thread.State;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlInputText;
 
-
-import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -35,16 +22,8 @@ import ru.xrm.app.domain.Employer;
 import ru.xrm.app.domain.Schedule;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
-import ru.xrm.app.threads.WholeSiteWorker;
-import ru.xrm.app.util.CitySet;
 import ru.xrm.app.util.DAOUtil;
-import ru.xrm.app.util.DutyTypeSet;
-import ru.xrm.app.util.EducationSet;
-import ru.xrm.app.util.EmployerSet;
-import ru.xrm.app.util.HibernateUtil;
 import ru.xrm.app.util.LoadAndSave;
-import ru.xrm.app.util.ScheduleSet;
-import ru.xrm.app.util.SectionSet;
 
 @ManagedBean(name="search")
 @SessionScoped
@@ -56,6 +35,7 @@ public class Search implements Serializable {
 
 	private static final long PERPAGE = 10L; 
 
+	// variables for JSF
 	private HtmlInputText simpleSearchString;
 	private String currentSimpleSearch="";
 
@@ -67,6 +47,10 @@ public class Search implements Serializable {
 	private Long currentPage=-1L;
 	private List<PaginatorItem> pages=new ArrayList<PaginatorItem>();
 
+	private String loadPhase="";
+	private String processAndSavePhase="";
+	
+	// lists of domain objects for catalog browser  
 	private List<City> cities;
 	private List<Schedule> schedules;
 	private List<Integer> experiences;
@@ -86,7 +70,7 @@ public class Search implements Serializable {
 	private String currentEmployer="";
 	private List<String> currentSections=new ArrayList<String>();
 
-	// selected properties
+	// selected properties for JSF
 	private String selectedSalaryFrom="";
 	private String selectedSalaryTo="";
 	private	String selectedDutyType="";
@@ -97,96 +81,10 @@ public class Search implements Serializable {
 	private String selectedEmployer="";
 	private List<String> selectedSections;
 
-	private String loadPhase="";
-	private String processAndSavePhase="";
-	
 	public Search(){
 		init();
 	}
 
-	private void init(){
-		Config config=Config.getInstance();
-		try{
-			config.load("config.xml");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		sectionHolders=new ArrayList<SectionHolder>();
-		DAOUtil.getInstance().beginTransaction();
-
-		// Load sections and vacancies count per section
-		sections = DAOUtil.getInstance().getSectionDAO().findAll();
-
-		for (Section s:sections){
-
-			Long vacanciesCount=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(s.getId());
-
-			sectionHolders.add(new SectionHolder(s, vacanciesCount));
-		}
-
-		// Load cities
-		cities=new ArrayList<City>();
-		cities=DAOUtil.getInstance().getCityDAO().findAll();
-
-		// Load schedules
-		schedules=new ArrayList<Schedule>();
-		schedules=DAOUtil.getInstance().getScheduleDAO().findAll();
-		int index=-1;
-
-		for (int i=0;i<schedules.size();i++){
-			if ("любой".equals(schedules.get(i).getName().toLowerCase())){
-				index=i;
-				break;
-			}
-		}
-		if (index!=-1){
-			schedules.remove(index);
-		}
-
-		// populate experiences
-		experiences = new ArrayList<Integer>();
-		for (int i=0;i<10;i++){
-			experiences.add(i);
-		}
-
-		// load educations
-		educations = new ArrayList<Education>();
-		educations = DAOUtil.getInstance().getEducationDAO().findAll();
-		index=-1;
-		for(int i=0;i<educations.size();i++){
-			if ("любое".equals(educations.get(i).getName().toLowerCase())){
-				index=i;
-				break;
-			}
-		}
-		if (index!=-1){
-			educations.remove(index);
-		}
-
-		// load dutyTypes
-		dutyTypes = new ArrayList<DutyType>();
-		dutyTypes = DAOUtil.getInstance().getDutyTypeDAO().findAll();
-		DutyType dt=null;
-		index=-1;
-		for (int i=0;i<dutyTypes.size();i++){
-			if ("любая".equals(dutyTypes.get(i).getName().toLowerCase())){
-				index=i;
-				break;
-			}
-		}
-		if (index!=-1){
-			dutyTypes.remove(index);
-		}
-
-		// load employers
-		employers = new ArrayList<Employer>();
-		employers = DAOUtil.getInstance().getEmployerDAO().findAll();
-
-		DAOUtil.getInstance().commitTransaction();
-	}
-
-		
 	public String getLoadPhase() {
 		return loadPhase;
 	}
@@ -218,7 +116,6 @@ public class Search implements Serializable {
 	public void setSelectedExperience(String selectedExperience) {
 		this.selectedExperience = selectedExperience;
 	}
-
 
 	public String getSelectedSalaryFrom() {
 		return selectedSalaryFrom;
@@ -324,7 +221,6 @@ public class Search implements Serializable {
 		this.currentPage = currentPage;
 	}
 
-
 	public List<City> getCities() {
 		return cities;
 	}
@@ -332,7 +228,6 @@ public class Search implements Serializable {
 	public void setCities(List<City> cities) {
 		this.cities = cities;
 	}
-
 
 	public List<Schedule> getSchedules() {
 		return schedules;
@@ -350,7 +245,6 @@ public class Search implements Serializable {
 		this.experiences = experiences;
 	}
 
-
 	public List<Education> getEducations() {
 		return educations;
 	}
@@ -359,7 +253,6 @@ public class Search implements Serializable {
 		this.educations = educations;
 	}
 
-
 	public List<DutyType> getDutyTypes() {
 		return dutyTypes;
 	}
@@ -367,7 +260,6 @@ public class Search implements Serializable {
 	public void setDutyTypes(List<DutyType> dutyTypes) {
 		this.dutyTypes = dutyTypes;
 	}
-
 
 	public List<Employer> getEmployers() {
 		return employers;
@@ -393,7 +285,90 @@ public class Search implements Serializable {
 		this.selectedSections = selectedSections;
 	}
 
+	// 
+	private void init(){
+		Config config=Config.getInstance();
+		try{
+			config.load("config.xml");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		sectionHolders=new ArrayList<SectionHolder>();
+		DAOUtil.getInstance().beginTransaction();
+
+		// Load sections and vacancies count per section
+		sections = DAOUtil.getInstance().getSectionDAO().findAll();
+
+		for (Section s:sections){
+
+			Long vacanciesCount=DAOUtil.getInstance().getVacancyDAO().countByCategoryId(s.getId());
+
+			sectionHolders.add(new SectionHolder(s, vacanciesCount));
+		}
+
+		// Load cities
+		cities=new ArrayList<City>();
+		cities=DAOUtil.getInstance().getCityDAO().findAll();
+
+		// Load schedules
+		schedules=new ArrayList<Schedule>();
+		schedules=DAOUtil.getInstance().getScheduleDAO().findAll();
+		int index=-1;
+
+		for (int i=0;i<schedules.size();i++){
+			if ("любой".equals(schedules.get(i).getName().toLowerCase())){
+				index=i;
+				break;
+			}
+		}
+		if (index!=-1){
+			schedules.remove(index);
+		}
+
+		// populate experiences
+		experiences = new ArrayList<Integer>();
+		for (int i=0;i<10;i++){
+			experiences.add(i);
+		}
+
+		// load educations
+		educations = new ArrayList<Education>();
+		educations = DAOUtil.getInstance().getEducationDAO().findAll();
+		index=-1;
+		for(int i=0;i<educations.size();i++){
+			if ("любое".equals(educations.get(i).getName().toLowerCase())){
+				index=i;
+				break;
+			}
+		}
+		if (index!=-1){
+			educations.remove(index);
+		}
+
+		// load dutyTypes
+		dutyTypes = new ArrayList<DutyType>();
+		dutyTypes = DAOUtil.getInstance().getDutyTypeDAO().findAll();
+		DutyType dt=null;
+		index=-1;
+		for (int i=0;i<dutyTypes.size();i++){
+			if ("любая".equals(dutyTypes.get(i).getName().toLowerCase())){
+				index=i;
+				break;
+			}
+		}
+		if (index!=-1){
+			dutyTypes.remove(index);
+		}
+
+		// load employers
+		employers = new ArrayList<Employer>();
+		employers = DAOUtil.getInstance().getEmployerDAO().findAll();
+
+		DAOUtil.getInstance().commitTransaction();
+	}
 	// web actions
+	
 	public String doShowSimpleSearchResults(Long page){
 		DAOUtil.getInstance().beginTransaction();
 
@@ -428,18 +403,16 @@ public class Search implements Serializable {
 
 		currentSearchVacancies = DAOUtil.getInstance().getVacancyDAO().findManyPagination(page*PERPAGE, PERPAGE, restriction);
 
-		//simpleSearchString.setValue("processed");
-
 		DAOUtil.getInstance().commitTransaction();
 		return ""; // stay on same page
 	}
 
 	public String doShowAdvancedSearchResults(Long page){
 		List<Criterion> restrictions=new LinkedList<Criterion>();
-		//restrictions=Restrictions.ilike("jobTitle", "%"+currentSimpleSearch+"%");
 
 		String searchString=(String)simpleSearchString.getValue();
 
+		log.info("Received values for advanced search:");
 		log.info(String.format("searchString: %s",searchString));
 		log.info(String.format("selectedDutyType: %s",selectedDutyType));
 		log.info(String.format("selectedSalaryFrom: %s",selectedSalaryFrom));
@@ -648,7 +621,7 @@ public class Search implements Serializable {
 
 			DAOUtil.getInstance().commitTransaction();
 		}
-		return "";
+		return ""; // stay on same page
 	}
 
 	public String doShowVacancies(Long sectionId, Long page){
@@ -687,23 +660,23 @@ public class Search implements Serializable {
 
 		DAOUtil.getInstance().commitTransaction();
 
-		return "";
+		return ""; // stay on same page
 	}
 
 	public String doLoadVacancies(){
 		LoadAndSave.getInstance().startLoad();
-		return "";
+		return ""; // stay on same page
 	}
 	
 	public String doRefresh(){
 		loadPhase = LoadAndSave.getInstance().getWholeSiteWorkerStatus().toString();
 		processAndSavePhase = LoadAndSave.getInstance().getCollectAndStoreWorkerStatus().toString(); 
-		return "";
+		return ""; // stay on same page
 	}
 	
 	public String doReloadCatalog(){
 		init();
-		return "";
+		return ""; // stay on same page
 	}
 
 }
