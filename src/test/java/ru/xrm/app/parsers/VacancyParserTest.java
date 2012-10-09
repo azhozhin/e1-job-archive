@@ -65,10 +65,10 @@ public class VacancyParserTest {
 		assertEquals(sb.toString(),parser.getHtml());
 		Vacancy v=parser.parse();
 		assertEquals(new Long(892764), v.getId());
-		assertEquals(new Integer(35000),v.getSalary());
+		assertEquals(new Long(35000),v.getSalary());
 		assertEquals(new DutyType(0L, "полная"), v.getDutyType());
 		assertEquals(new Education(0L,"среднее"), v.getEducation());
-		assertEquals(new Integer(0), v.getExperience());
+		assertEquals(new Long(0), v.getExperience());
 		assertEquals(new Schedule(0L,"полный рабочий день"), v.getSchedule());
 		assertEquals(new City(0L,"Екатеринбург"),v.getCity());
 		assertEquals(new Employer(0L, "ГК \"ЭКСПРЕСС НЕДВИЖИМОСТЬ\""),v.getEmployer());
