@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ru.xrm.app.config.Config;
 import ru.xrm.app.domain.Section;
 import ru.xrm.app.domain.Vacancy;
@@ -20,6 +23,8 @@ import ru.xrm.app.util.SectionSet;
 import ru.xrm.app.util.VacancyPage;
 
 public class WholeSiteWorker implements Runnable {
+	
+	protected Logger log = LoggerFactory.getLogger( WholeSiteWorker.class );
 
 	private List<Future<List<Vacancy>>> allVacancyListParts;
 	private String encoding;
@@ -55,7 +60,7 @@ public class WholeSiteWorker implements Runnable {
 
 		// for all sections
 		for (Section section:sections){
-			System.out.format("\n*** NEW SECTION: %s ***\n",section.getName());
+			log.info(String.format("*** NEW SECTION: %s ***",section.getName()));
 			String vacancyListCurrentPageUrl=section.getHref();
 
 			vacancyListCurrentPageUrl=UrlHelper.constructAbsoluteUrl(vacancyListCurrentPageUrl, basename);
@@ -67,7 +72,7 @@ public class WholeSiteWorker implements Runnable {
 			List<VacancyPage> pages=onePageParser.getPages();		
 			// if we have just one page, then getPages returns zero size list
 			if (pages.size()==0){
-				System.err.println("there is ONE page per Section");
+				log.info("there is ONE page per Section");
 				pages.add(new VacancyPage(vacancyListCurrentPageUrl));
 			}
 
@@ -88,11 +93,10 @@ public class WholeSiteWorker implements Runnable {
 				String vacancyNextPageUrl=p.getHref();
 				vacancyNextPageUrl=UrlHelper.constructAbsoluteUrl(vacancyNextPageUrl, basename);
 
-				System.out.format("%d ",pageCounter);
 				// try to add some new pages
 				content=cf.fetchWithRetry(vacancyNextPageUrl, encoding, 1000);
 				if (content==null){
-					System.err.format("Cannot download page %s adding it to end of queue\n",vacancyNextPageUrl);
+					log.error(String.format("Cannot download page %s adding it to end of queue",vacancyNextPageUrl));
 					pageQueue.addLast(p);
 					continue;
 				}
@@ -117,21 +121,15 @@ public class WholeSiteWorker implements Runnable {
 				allVacancyListParts.add(partVacancyList);
 
 				pageCounter++;
-				if (pageCounter%30==0){
-					System.out.println();
-				}
-				//break; // FIXME
 			}// loop pages
-			System.out.println();
-			//break; // FIME
 		}// loop sections
 
 
-		System.out.format("<<< Done filling pages >>>\n");
+		log.info("<<< Done filling pages >>>");
 
 		executorService.shutdown();
 		
 		Date d2=new Date();
-		System.out.format("\n %d ms. \n",d2.getTime()-d1.getTime());
+		log.info(String.format("Total time: %d ms. ",d2.getTime()-d1.getTime()));
 	}
 }
