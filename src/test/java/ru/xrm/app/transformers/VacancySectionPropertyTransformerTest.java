@@ -16,8 +16,8 @@ public class VacancySectionPropertyTransformerTest {
 		Section section1=new Section("section1");
 		Section section2=new Section("section2");
 		SectionSet s=SectionSet.getInstance();
-		s.getSections().add(section1);
-		s.getSections().add(section2);
+		s.add(section1);
+		s.add(section2);
 		
 		assertEquals(section1, t.transform("section1"));
 		assertEquals(section2, t.transform("section2"));
