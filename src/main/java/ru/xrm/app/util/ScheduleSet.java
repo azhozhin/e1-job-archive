@@ -1,14 +1,16 @@
 package ru.xrm.app.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.xrm.app.domain.Schedule;
 
 public class ScheduleSet {
 
 	private static ScheduleSet instance;
-	private List<Schedule> schedules;
+	private Map<String,Schedule> schedules;
 	private Long counter;
 	
 	public static ScheduleSet getInstance(){
@@ -19,23 +21,25 @@ public class ScheduleSet {
 	}
 	
 	public ScheduleSet(){
-		schedules=new ArrayList<Schedule>();
+		schedules=new HashMap<String,Schedule>();
 		counter=0L;
 	}
 	
 	public synchronized Schedule findOrCreate(String name){
-		for (Schedule s:schedules){
-			if (s.getName().equals(name)){
-				return s;
-			}
+		if (schedules.containsKey(name)){
+			return schedules.get(name);
 		}
 		Schedule result=new Schedule(counter,name);
-		schedules.add(result);
+		schedules.put(name,result);
 		counter++;
 		return result;
 	}
 	
 	public synchronized List<Schedule> getSchedules(){
-		return schedules;
+		List<Schedule> result=new ArrayList<Schedule>();
+		for (Schedule s:schedules.values()){
+			result.add(s);
+		}
+		return result;
 	}
 }

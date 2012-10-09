@@ -1,7 +1,9 @@
 package ru.xrm.app.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.xrm.app.domain.DutyType;
 
@@ -9,7 +11,7 @@ public class DutyTypeSet {
 
 	private static DutyTypeSet instance;
 	private Long counter;
-	List<DutyType> dutyTypes;
+	Map<String, DutyType> dutyTypes;
 	
 	public static synchronized DutyTypeSet getInstance(){
 		if (instance==null){
@@ -20,23 +22,26 @@ public class DutyTypeSet {
 	
 	private DutyTypeSet(){
 		counter=0L;
-		dutyTypes=new ArrayList<DutyType>();
+		dutyTypes=new HashMap<String, DutyType>();
 	}
 
 	public synchronized DutyType findOrCreate(String name){
-		for (DutyType dt:dutyTypes){
-			if (dt.getName().equals(name)){
-				return dt;
-			}
+		if (dutyTypes.containsKey(name)){
+			return dutyTypes.get(name);
 		}
+
 		DutyType result =new DutyType(counter,name);
-		dutyTypes.add(result);
+		dutyTypes.put(name,result);
 		counter++;
 		return result;
 	}
 	
 	public synchronized List<DutyType> getDutyTypes(){
-		return dutyTypes;
+		List<DutyType> result=new ArrayList<DutyType>();
+		for(DutyType dt:dutyTypes.values()){
+			result.add(dt);
+		}
+		return result;
 	}
 	
 }

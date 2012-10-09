@@ -1,14 +1,16 @@
 package ru.xrm.app.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.xrm.app.domain.Education;
 
 public class EducationSet {
 
 	private static EducationSet instance;
-	private List<Education> educations;
+	private Map<String,Education> educations;
 	private Long counter;
 	
 	public static synchronized EducationSet getInstance(){
@@ -19,24 +21,27 @@ public class EducationSet {
 	}
 	
 	private EducationSet(){
-		educations = new ArrayList<Education>();
+		educations = new HashMap<String, Education>();
 		counter=0L;
 	}
 
-	public synchronized Education findOrCreate(String from) {
-		for (Education e:educations){
-			if (e.getName().equals(from)){
-				return e;
-			}
+	public synchronized Education findOrCreate(String name) {
+		if (educations.containsKey(name)){
+			return educations.get(name);
 		}
-		Education result=new Education(counter,from);
-		educations.add(result);
+		
+		Education result=new Education(counter,name);
+		educations.put(name, result);
 		counter++;
 		return result;
 	}
 	
 	public synchronized List<Education> getEducations(){
-		return educations;
+		List<Education> result=new ArrayList<Education>();
+		for (Education e:educations.values()){
+			result.add(e);
+		}
+		return result;
 	}
 	
 }
