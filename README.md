@@ -28,3 +28,5 @@ Structure of data on http://www.e1.ru/business/job/ :
     Vacancy Section2
     ...
     Vacancy SectionN
+
+see config.xml to understand relationship between ElementWalker, ElementEvaluator and PropertyTransformer
