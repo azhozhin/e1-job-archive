@@ -30,3 +30,22 @@ Structure of data on http://www.e1.ru/business/job/ :
     Vacancy SectionN
 
 see config.xml to understand relationship between ElementWalker, ElementEvaluator and PropertyTransformer
+
+Getting started
+===============
+
+create database folder
+
+    mkdir target/data
+
+extract database files from data/data.7z to 'target/data'
+    
+start database engine
+
+    ./start_hsqldb.sh
+    
+start web container
+
+    mvn jetty:run
+    
+browse http://127.0.0.1:8080
