@@ -1,13 +1,15 @@
 package ru.xrm.app.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ru.xrm.app.domain.Section;
 
 public class SectionSet {
-	static SectionSet instance;
-	List<Section> sections;
+	private static SectionSet instance;
+	private List<Section> sections;
 
 	public static synchronized SectionSet getInstance(){
 		if(instance==null){
@@ -17,7 +19,11 @@ public class SectionSet {
 	}
 	
 	private SectionSet(){
-		sections=new LinkedList<Section>();
+		reset();
+	}
+	
+	public synchronized void reset(){
+		sections=new ArrayList<Section>();
 	}
 	
 	public synchronized boolean exists(String name){
@@ -34,16 +40,25 @@ public class SectionSet {
 	}
 	
 	public synchronized Section getByName(String name){
-		for(Section s:sections){
+		for (Section s:sections){
 			if (s.getName().equals(name)){
-				return s; 
+				return s;
 			}
 		}
 		return null;
 	}
 	
+	public synchronized Section getByIndex(Long idx){
+		if (idx<0 || idx>=sections.size()){
+			return null;
+		}
+		return sections.get(idx.intValue());
+	}
+	
 	public synchronized List<Section> getSections(){
 		return sections;
 	}
+	
+	
 
 }

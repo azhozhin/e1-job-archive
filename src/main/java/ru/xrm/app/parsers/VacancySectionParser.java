@@ -34,7 +34,7 @@ public class VacancySectionParser {
 			// here we got multiple elements for each vacancySectionProperty
 			Elements elems=doc.select(prop.getCssQuery());
 			Object value="";
-			int idx=0;
+			Long idx=0L;
 			for (Element e:elems){
 
 				if (prop.getElementWalker() != null){
@@ -50,9 +50,8 @@ public class VacancySectionParser {
 				Section section;
 				
 				// if object of some index does not exists, create it and add to result
-				try{
-					section=sections.getSections().get(idx);
-				}catch(IndexOutOfBoundsException ex){
+				section=sections.getByIndex(idx);
+				if (section==null){
 					section=new Section();
 					sections.add(section);
 				}			
